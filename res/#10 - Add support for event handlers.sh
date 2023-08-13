@@ -1,0 +1,57 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+step_name="$(basename "$0" | sed -E 's/^#[0-9]+ - //' | sed -E 's/\.sh$//')"
+step_number="$(basename "$0" | grep -Eo '^#[0-9]+' | sed -E 's/#//')"
+echo "$step_number) $step_name"
+
+code_body='
+	//start
+	case *events.OfflineSyncCompleted:
+		log.Infof("Offline Sync Completed")
+	case *events.Disconnected:
+		is_connected = false
+		log.Infof("Bad network, mdtest is waiting for reconnection")
+		err := cli.Connect()
+		if err != nil {
+			log.Errorf("Failed to connect: %v", err)
+		}
+	//stop
+'
+
+sed -i -e "$(($(grep -nm 1 -F 'case *events.AppState:' whatsmeow/mdtest/main.go | sed 's/:.*//')-1))r /dev/stdin" whatsmeow/mdtest/main.go <<< $code_body
+
+code_body='
+		//start
+		is_connected = false
+		cli.Disconnect()
+		err := cli.Connect()
+		if err != nil {
+			log.Errorf("Failed to connect: %v", err)
+		}
+		//stop
+'
+
+sed -i -e "$(grep -nm 1 -F 'log.Debugf("Keepalive timeout event: %+v", evt)' whatsmeow/mdtest/main.go | sed 's/:.*//')r /dev/stdin" whatsmeow/mdtest/main.go <<< $code_body
+
+code_body='
+				//start
+				is_connected = true
+				if *isMode == "both" {
+					log.Infof("Receive/Send Mode Enabled")
+		            log.Infof("Will Now Receive/Send Messages In Tasker")
+	            	go MdtestStart()
+            	} else if *isMode == "receive" {
+            		log.Infof("Receive Mode Enabled")
+		            log.Infof("Will Now Receive Messages In Tasker")
+	            	go MdtestStart()
+	            } else if *isMode == "send" {
+	            	log.Infof("Send Mode Enabled")
+		            log.Infof("Can Now Send Messages From Tasker")
+	            	go MdtestStart()
+            	}
+				//stop
+'
+
+
+
+grep -n -F 'log.Infof("Marked self as available")' whatsmeow/mdtest/main.go | sed 's/:.*//' | sort -V | sort -r | while read -r line; do sed -i -e "${line}r /dev/stdin" whatsmeow/mdtest/main.go <<< "$code_body"; done
