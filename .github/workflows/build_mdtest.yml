@@ -64,7 +64,7 @@ jobs:
           fi
 
           docker pull termux/termux-docker:${{ matrix.platform }}
-          docker run --privileged --name mdtest-${{ matrix.platform }} termux/termux-docker:${{ matrix.platform }} bash -c "yes | pkg upgrade -y && pkg install -y git && git clone https://github.com/$GITHUB_REPOSITORY repo && cd repo && bash build_whatsmeow5.sh"
+          docker run --privileged --name mdtest-${{ matrix.platform }} termux/termux-docker:${{ matrix.platform }} bash -c "yes | pkg upgrade -y && pkg install -y git && git clone https://github.com/HunterXProgrammer/Tasker-MdtestV5 --depth 1 repo && cd repo && bash build_whatsmeow5.sh"
           docker cp mdtest-${{ matrix.platform }}:/data/data/com.termux/files/home/repo/build/mdtest.zip build/mdtest-${{ env.arch_name }}.zip
 
       - name: Upload Artifact
