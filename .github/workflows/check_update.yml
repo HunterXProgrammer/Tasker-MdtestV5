@@ -1,0 +1,47 @@
+name: Check And Push Commit Hash
+
+on:
+  schedule:
+    - cron: '0 0 * * 3'
+  workflow_dispatch:
+
+concurrency:
+  group: check-and-build-mdtest
+
+jobs:
+  push_commit_hash:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Get Commit Hash
+        run: |
+          git clone https://github.com/tulir/whatsmeow target-repo
+          cd target-repo
+          echo "commit_hash=$(git show HEAD | grep -Eo '^commit [0-9a-f]{40}' | awk '{print $2}')" >> $GITHUB_ENV
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+
+      - name: Check And Push commit_hash.txt
+        run: |
+          if cat commit_hash.txt | grep -Eq "^${{ env.commit_hash }}$" &>/dev/null; then
+              echo "Already Latest Commit"
+          else
+              echo "update=true" >> $GITHUB_ENV
+              echo "${{ env.commit_hash }}" > commit_hash.txt
+              git config user.name github-actions
+              git config user.email github-actions@github.com
+              git add commit_hash.txt
+              git commit -m "Update commit_hash.txt"
+              git push
+          fi
+
+      - name: Repository Dispatch Build Mdtest
+        if: env.update == 'true'
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          event-type: build-mdtest
