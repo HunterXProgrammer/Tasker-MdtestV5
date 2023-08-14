@@ -17,7 +17,7 @@ code_body='
 				}
 				time.Sleep(2 * time.Second)
 				if !cli.IsLoggedIn() {
-					fmt.Println("  If not paired, try running -\n\n       ./mdtest pair-phone <number>\n\n  (<number> is \"Country Code\" + \"Phone Number\")\n\n  (ie:- \"Country Code\" = 91, then 919876543210)")
+					fmt.Fprintln(os.Stderr, " If not paired, try running -\n\n ./mdtest pair-phone <number>\n\n (<number> is \"Country Code\" + \"Phone Number\")\n\n (ie:- \"Country Code\" = 91, then 919876543210)")
 					os.Exit(1)
 				}
 			}()
@@ -36,7 +36,7 @@ code_body='
 			}
 			time.Sleep(2 * time.Second)
 			if !cli.IsLoggedIn() {
-				fmt.Println("  If not paired, try running -\n\n       ./mdtest pair-phone <number>\n\n  (<number> is \"Country Code\" + \"Phone Number\")\n\n  (ie:- \"Country Code\" = 91, then 919876543210)")
+				fmt.Fprintln(os.Stderr, " If not paired, try running -\n\n ./mdtest pair-phone <number>\n\n (<number> is \"Country Code\" + \"Phone Number\")\n\n (ie:- \"Country Code\" = 91, then 919876543210)")
 				os.Exit(1)
 			}
 		}()
