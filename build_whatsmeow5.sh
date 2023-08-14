@@ -79,26 +79,30 @@ cd $current_dir
 
 bash res/build_dynamic.sh ffmpeg
 
-cd build
-
-7z a -tzip -mx=9 -bd -bso0 mdtest.zip ffmpeg ffmpeg.bin lib-ffmpeg 
-
-cd $current_dir
-
 if [ -n $TERMUX_VERSION ]; then
     pkg clean
 fi
 
-mkdir -p whatsmeow5/mdtest &>/dev/null
+chmod 744 build/ffmpeg build/ffmpeg.bin
+
+mkdir -p whatsmeow5/mdtest/ffmpeg &>/dev/null
 
 mv build/mdtest whatsmeow5/mdtest &>/dev/null
 
 mv build/mdtest.bin whatsmeow5/mdtest &>/dev/null
 
-mv build/ffmpeg whatsmeow5/mdtest &>/dev/null
+mv build/ffmpeg whatsmeow5/mdtest/ffmpeg &>/dev/null
 
-mv build/ffmpeg.bin whatsmeow5/mdtest &>/dev/null
+mv build/ffmpeg.bin whatsmeow5/mdtest/ffmpeg &>/dev/null
 
-mv build/lib-ffmpeg whatsmeow5/mdtest &>/dev/null
+mv build/lib-ffmpeg whatsmeow5/mdtest/ffmpeg &>/dev/null
+
+cp -rf whatsmeow5/mdtest/ffmpeg build
+
+cd build
+
+echo -e "Adding ffmpeg to mdtest.zip...\n"
+
+7z a -tzip -mx=9 -bd -bso0 mdtest.zip ffmpeg
 
 echo -e "All done! You can type this -\n  \n\" cd whatsmeow5/mdtest; ./mdtest \"\n\nType without quotes to run Mdtest\n"
