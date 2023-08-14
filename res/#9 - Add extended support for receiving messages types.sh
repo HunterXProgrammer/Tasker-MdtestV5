@@ -264,7 +264,7 @@ code_body='
 					jsonData, _ = AppendToJSON(jsonData, "display_name", display_name)
 					os.MkdirAll(filepath.Join(currentDir, "media", "contact"), os.ModePerm)
 					path = filepath.Join(currentDir, "media", "contact", fmt.Sprintf("%s.vcf", evt.Info.ID))
-					err := os.WriteFile(path, []byte(vcard), 0644)
+					err := os.WriteFile(tmpPath, []byte(vcard), 0644)
 					if err != nil {
 						log.Errorf("Failed to save vcard: %v", err)
 						return
