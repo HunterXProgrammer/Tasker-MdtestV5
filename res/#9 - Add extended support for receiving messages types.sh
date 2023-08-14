@@ -282,13 +282,13 @@ code_body='
 						display_name := fmt.Sprintf("%s", contactInfo.GetDisplayName())
 						jsonData, _ = AppendToJSON(jsonData, "display_name", display_name)
 						vcard := fmt.Sprintf("%s", contactInfo.GetVcard())
-						path = filepath.Join(currentDir, "media", "contact", fmt.Sprintf("%s-%d.vcf", evt.Info.ID, i+1))
-						err := os.WriteFile(path, []byte(vcard), 0644)
+						tmpPath := filepath.Join(currentDir, "media", "contact", fmt.Sprintf("%s-%d.vcf", evt.Info.ID, i+1))
+						err := os.WriteFile(tmpPath, []byte(vcard), 0644)
 						if err != nil {
 							log.Errorf("Failed to save vcard: %v", err)
 						} else {
-							log.Infof("Saved vcard in message to %s", path)
-							jsonData, _ = AppendToJSON(jsonData, "path", path)
+							log.Infof("Saved vcard in message to %s", tmpPath)
+							jsonData, _ = AppendToJSON(jsonData, "path", tmpPath)
 							if isSupported {
 								log.Infof("%s", jsonData)
 								//http
@@ -297,9 +297,9 @@ code_body='
 							}
 							if *autoDelete {
 								go func() {
-									if path != "" || newPath != "" {
+									if tmpPath != "" {
 										time.Sleep(30 * time.Second)
-										os.Remove(path)
+										os.Remove(tmpPath)
 									}
 								}()
 							}
@@ -389,7 +389,7 @@ code_body='
 							return
 						}
 						os.MkdirAll(filepath.Join(currentDir, "media", "document"), os.ModePerm)
-						path := filepath.Join(currentDir, "media", "document", fmt.Sprintf("%s.tmp", evt.Info.ID))
+						path = filepath.Join(currentDir, "media", "document", fmt.Sprintf("%s.tmp", evt.Info.ID))
 						err = os.WriteFile(path, data, 0644)
 						if err != nil {
 							log.Errorf("Failed to save document: %v", err)
@@ -400,7 +400,7 @@ code_body='
 							log.Errorf("Document message extension unknown, saving as %s", path)
 							jsonData, _ = AppendToJSON(jsonData, "path", path)
 						} else {
-							newPath := filepath.Join(currentDir, "media", "document", fmt.Sprintf("%s%s", evt.Info.ID, mimeType.Extensions[0]))
+							newPath = filepath.Join(currentDir, "media", "document", fmt.Sprintf("%s%s", evt.Info.ID, mimeType.Extensions[0]))
 							os.Rename(path, newPath)
 							log.Infof("Saved document in message to %s", newPath)
 							jsonData, _ = AppendToJSON(jsonData, "path", newPath)
@@ -416,7 +416,7 @@ code_body='
 							return
 						}
 						os.MkdirAll(filepath.Join(currentDir, "media", "audio"), os.ModePerm)
-						path := filepath.Join(currentDir, "media", "audio", fmt.Sprintf("%s.tmp", evt.Info.ID))
+						path = filepath.Join(currentDir, "media", "audio", fmt.Sprintf("%s.tmp", evt.Info.ID))
 						err = os.WriteFile(path, data, 0644)
 						if err != nil {
 							log.Errorf("Failed to save audio: %v", err)
@@ -428,12 +428,12 @@ code_body='
 							jsonData, _ = AppendToJSON(jsonData, "path", path)
 						} else {
 							if mimeType.Extensions[0] == ".ogg" || mimeType.Extensions[0] == ".oga" {
-								newPath := filepath.Join(currentDir, "media", "audio", fmt.Sprintf("%s.ogg", evt.Info.ID))
+								newPath = filepath.Join(currentDir, "media", "audio", fmt.Sprintf("%s.ogg", evt.Info.ID))
 								os.Rename(path, newPath)
 								log.Infof("Saved audio in message to %s", newPath)
 								jsonData, _ = AppendToJSON(jsonData, "path", newPath)
 							} else {
-								newPath := filepath.Join(currentDir, "media", "audio", fmt.Sprintf("%s%s", evt.Info.ID, mimeType.Extensions[0]))
+								newPath = filepath.Join(currentDir, "media", "audio", fmt.Sprintf("%s%s", evt.Info.ID, mimeType.Extensions[0]))
 								os.Rename(path, newPath)
 								log.Infof("Saved audio in message to %s", newPath)
 								jsonData, _ = AppendToJSON(jsonData, "path", newPath)
