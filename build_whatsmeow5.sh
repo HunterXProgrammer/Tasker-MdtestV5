@@ -105,4 +105,6 @@ echo -e "Adding ffmpeg to mdtest.zip...\n"
 
 7z a -tzip -mx=9 -bd -bso0 mdtest.zip ffmpeg
 
+rm -rf ffmpeg &>/dev/null
+
 echo -e "All done! You can type this -\n  \n\" cd whatsmeow5/mdtest; ./mdtest \"\n\nType without quotes to run Mdtest\n"
