@@ -282,13 +282,13 @@ code_body='
 						display_name := fmt.Sprintf("%s", contactInfo.GetDisplayName())
 						jsonData, _ = AppendToJSON(jsonData, "display_name", display_name)
 						vcard := fmt.Sprintf("%s", contactInfo.GetVcard())
-						path = filepath.Join(currentDir, "media", "contact", fmt.Sprintf("%s-%d.vcf", evt.Info.ID, i+1))
+						tmpPath := filepath.Join(currentDir, "media", "contact", fmt.Sprintf("%s-%d.vcf", evt.Info.ID, i+1))
 						err := os.WriteFile(path, []byte(vcard), 0644)
 						if err != nil {
 							log.Errorf("Failed to save vcard: %v", err)
 						} else {
-							log.Infof("Saved vcard in message to %s", path)
-							jsonData, _ = AppendToJSON(jsonData, "path", path)
+							log.Infof("Saved vcard in message to %s", tmpPath)
+							jsonData, _ = AppendToJSON(jsonData, "path", tmpPath)
 							if isSupported {
 								log.Infof("%s", jsonData)
 								//http
@@ -297,9 +297,9 @@ code_body='
 							}
 							if *autoDelete {
 								go func() {
-									if path != "" {
+									if tmpPath != "" {
 										time.Sleep(30 * time.Second)
-										os.Remove(path)
+										os.Remove(tmpPath)
 									}
 								}()
 							}
