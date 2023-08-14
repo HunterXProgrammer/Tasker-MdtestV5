@@ -48,12 +48,12 @@ chmod 744 "$dir/${bin_name}.bin" &>/dev/null
 if [ $(getprop ro.build.version.sdk) -gt 28 ]; then
 	if getprop ro.product.cpu.abilist | grep -q "64"
 	then
-    	exec /system/bin/linker64 "$dir/${bin_name}.bin" "$@" 2>&1
+    	exec /system/bin/linker64 "$dir/${bin_name}.bin" "$@"
 	else
-    	exec /system/bin/linker "$dir/${bin_name}.bin" "$@" 2>&1
+    	exec /system/bin/linker "$dir/${bin_name}.bin" "$@"
 	fi
 else
-	exec "$dir/${bin_name}.bin" "$@" 2>&1
+	exec "$dir/${bin_name}.bin" "$@"
 fi'
 
 if [ $? -eq 0 ]; then
