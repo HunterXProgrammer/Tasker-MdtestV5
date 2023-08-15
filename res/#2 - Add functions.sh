@@ -11,6 +11,7 @@ var is_connected bool
 var device_id string
 var device_jid string
 var default_jid string
+var keepalive_timeout bool
 
 func sendHttpPost(json_data string, path string) {
 	send_http := &http.Client{
