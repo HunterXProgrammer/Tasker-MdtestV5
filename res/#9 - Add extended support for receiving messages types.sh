@@ -206,111 +206,109 @@ code_body='
 							}
 						}
 					}
-				} else if evt.Message.GetLocationMessage() != nil {
-					
-					isSupported = true
-					jsonData, _ = AppendToJSON(jsonData, "type", "location_message")
-					jsonData, _ = AppendToJSON(jsonData, "message_id", message_id)
-					locData := evt.Message.GetLocationMessage()
-					latitude := fmt.Sprintf("%f", locData.GetDegreesLatitude())
-					longitude := fmt.Sprintf("%f", locData.GetDegreesLongitude())
-					jsonData, _ = AppendToJSON(jsonData, "latitude", latitude)
-					jsonData, _ = AppendToJSON(jsonData, "longitude", longitude)
-					locThumbnail := locData.GetJpegThumbnail()
-					os.MkdirAll(filepath.Join(currentDir, "media", "location"), os.ModePerm)
-					path = filepath.Join(currentDir, "media", "location", fmt.Sprintf("%s.jpg", evt.Info.ID))
-					err := os.WriteFile(path, locThumbnail, 0644)
-					if err != nil {
-						log.Errorf("Failed to save location thumbnail: %v", err)
-						return
-					}
-					log.Infof("Saved location thumbnail in message to %s", path)
-					jsonData, _ = AppendToJSON(jsonData, "path", path)
-				} else if evt.Message.GetLiveLocationMessage() != nil {
-					
-					isSupported = true
-					jsonData, _ = AppendToJSON(jsonData, "type", "location_message")
-					jsonData, _ = AppendToJSON(jsonData, "message_id", message_id)
-					locData := evt.Message.GetLiveLocationMessage()
-					caption := locData.GetCaption()
-					if caption != "" {
-						jsonData, _ = AppendToJSON(jsonData, "caption", caption)
-					}
-					latitude := fmt.Sprintf("%f", locData.GetDegreesLatitude())
-					longitude := fmt.Sprintf("%f", locData.GetDegreesLongitude())
-					jsonData, _ = AppendToJSON(jsonData, "latitude", latitude)
-					jsonData, _ = AppendToJSON(jsonData, "longitude", longitude)
-					locThumbnail := locData.GetJpegThumbnail()
-					if len(locThumbnail) == 0 {
-						log.Errorf("Failed to save location thumbnail: User cancelled it")
-						return
-					}
-					os.MkdirAll(filepath.Join(currentDir, "media", "location"), os.ModePerm)
-					path = filepath.Join(currentDir, "media", "location", fmt.Sprintf("%s.jpg", evt.Info.ID))
-					err := os.WriteFile(path, locThumbnail, 0644)
-					if err != nil {
-						log.Errorf("Failed to save location thumbnail: %v", err)
-						return
-					}
-					log.Infof("Saved location thumbnail in message to %s", path)
-					jsonData, _ = AppendToJSON(jsonData, "path", path)
-				} else if evt.Message.GetContactMessage() != nil {
-					
-					isSupported = true
-					jsonData, _ = AppendToJSON(jsonData, "type", "contact_message")
-					jsonData, _ = AppendToJSON(jsonData, "message_id", message_id)
-					display_name := fmt.Sprintf("%s", evt.Message.ContactMessage.GetDisplayName())
-					vcard := fmt.Sprintf("%s", evt.Message.ContactMessage.GetVcard())
-					jsonData, _ = AppendToJSON(jsonData, "display_name", display_name)
-					os.MkdirAll(filepath.Join(currentDir, "media", "contact"), os.ModePerm)
-					path = filepath.Join(currentDir, "media", "contact", fmt.Sprintf("%s.vcf", evt.Info.ID))
-					err := os.WriteFile(path, []byte(vcard), 0644)
-					if err != nil {
-						log.Errorf("Failed to save vcard: %v", err)
-						return
-					}
-					log.Infof("Saved vcard in message to %s", path)
-					jsonData, _ = AppendToJSON(jsonData, "path", path)
-				} else if evt.Message.GetContactsArrayMessage() != nil {
-					
-					isSupported = true
-					jsonData, _ = AppendToJSON(jsonData, "type", "contact_message")
-					jsonData, _ = AppendToJSON(jsonData, "message_id", message_id)
-					os.MkdirAll(filepath.Join(currentDir, "media", "contact"), os.ModePerm)
-					contactData := evt.Message.GetContactsArrayMessage()
-					for i, contactInfo  := range contactData.GetContacts() {
-						display_name := fmt.Sprintf("%s", contactInfo.GetDisplayName())
-						jsonData, _ = AppendToJSON(jsonData, "display_name", display_name)
-						vcard := fmt.Sprintf("%s", contactInfo.GetVcard())
-						tmpPath := filepath.Join(currentDir, "media", "contact", fmt.Sprintf("%s-%d.vcf", evt.Info.ID, i+1))
-						err := os.WriteFile(tmpPath, []byte(vcard), 0644)
+				} else if *saveMedia {
+    					if evt.Message.GetLocationMessage() != nil {
+						
+						isSupported = true
+						jsonData, _ = AppendToJSON(jsonData, "type", "location_message")
+						jsonData, _ = AppendToJSON(jsonData, "message_id", message_id)
+						locData := evt.Message.GetLocationMessage()
+						latitude := fmt.Sprintf("%f", locData.GetDegreesLatitude())
+						longitude := fmt.Sprintf("%f", locData.GetDegreesLongitude())
+						jsonData, _ = AppendToJSON(jsonData, "latitude", latitude)
+						jsonData, _ = AppendToJSON(jsonData, "longitude", longitude)
+						locThumbnail := locData.GetJpegThumbnail()
+						os.MkdirAll(filepath.Join(currentDir, "media", "location"), os.ModePerm)
+						path = filepath.Join(currentDir, "media", "location", fmt.Sprintf("%s.jpg", evt.Info.ID))
+						err := os.WriteFile(path, locThumbnail, 0644)
 						if err != nil {
-							log.Errorf("Failed to save vcard: %v", err)
-						} else {
-							log.Infof("Saved vcard in message to %s", tmpPath)
-							jsonData, _ = AppendToJSON(jsonData, "path", tmpPath)
-							if isSupported {
-								log.Infof("%s", jsonData)
-								//http
-								httpPath := "/message"
-								go sendHttpPost(jsonData, httpPath)
-							}
-							if *autoDelete {
-								go func() {
-									if tmpPath != "" {
-										time.Sleep(30 * time.Second)
-										os.Remove(tmpPath)
-									}
-								}()
+							log.Errorf("Failed to save location thumbnail: %v", err)
+							return
+						}
+						log.Infof("Saved location thumbnail in message to %s", path)
+						jsonData, _ = AppendToJSON(jsonData, "path", path)
+    					} else if evt.Message.GetLiveLocationMessage() != nil {
+					
+						isSupported = true
+						jsonData, _ = AppendToJSON(jsonData, "type", "location_message")
+						jsonData, _ = AppendToJSON(jsonData, "message_id", message_id)
+						locData := evt.Message.GetLiveLocationMessage()
+						caption := locData.GetCaption()
+						if caption != "" {
+							jsonData, _ = AppendToJSON(jsonData, "caption", caption)
+						}
+						latitude := fmt.Sprintf("%f", locData.GetDegreesLatitude())
+						longitude := fmt.Sprintf("%f", locData.GetDegreesLongitude())
+						jsonData, _ = AppendToJSON(jsonData, "latitude", latitude)
+						jsonData, _ = AppendToJSON(jsonData, "longitude", longitude)
+						locThumbnail := locData.GetJpegThumbnail()
+						if len(locThumbnail) == 0 {
+							log.Errorf("Failed to save location thumbnail: User cancelled it")
+							return
+						}
+						os.MkdirAll(filepath.Join(currentDir, "media", "location"), os.ModePerm)
+						path = filepath.Join(currentDir, "media", "location", fmt.Sprintf("%s.jpg", evt.Info.ID))
+						err := os.WriteFile(path, locThumbnail, 0644)
+						if err != nil {
+							log.Errorf("Failed to save location thumbnail: %v", err)
+							return
+						}
+						log.Infof("Saved location thumbnail in message to %s", path)
+						jsonData, _ = AppendToJSON(jsonData, "path", path)
+					} else if evt.Message.GetContactsArrayMessage() != nil {
+						
+						isSupported = true
+						jsonData, _ = AppendToJSON(jsonData, "type", "contact_message")
+						jsonData, _ = AppendToJSON(jsonData, "message_id", message_id)
+						os.MkdirAll(filepath.Join(currentDir, "media", "contact"), os.ModePerm)
+						contactData := evt.Message.GetContactsArrayMessage()
+						for i, contactInfo  := range contactData.GetContacts() {
+							display_name := fmt.Sprintf("%s", contactInfo.GetDisplayName())
+							jsonData, _ = AppendToJSON(jsonData, "display_name", display_name)
+							vcard := fmt.Sprintf("%s", contactInfo.GetVcard())
+							pathTmp := filepath.Join(currentDir, "media", "contact", fmt.Sprintf("%s-%d.vcf", evt.Info.ID, i+1))
+							err := os.WriteFile(pathTmp, []byte(vcard), 0644)
+							if err != nil {
+								log.Errorf("Failed to save vcard: %v", err)
+							} else {
+								log.Infof("Saved vcard in message to %s", pathTmp)
+								jsonData, _ = AppendToJSON(jsonData, "path", pathTmp)
+								if isSupported {
+									log.Infof("%s", jsonData)
+									//http
+									httpPath := "/message"
+									go sendHttpPost(jsonData, httpPath)
+								}
+								if *autoDelete {
+									go func() {
+										if pathTmp != "" {
+											time.Sleep(30 * time.Second)
+											os.Remove(pathTmp)
+										}
+									}()
+								}
 							}
 						}
-					}
-					return
-				} else if *saveMedia {
+						return
+      					} else if evt.Message.GetContactMessage() != nil {
 					
-					if evt.Message.GetImageMessage() != nil {
 						isSupported = true
-						jsonData, _ = AppendToJSON(jsonData, "type", "image_message")
+						jsonData, _ = AppendToJSON(jsonData, "type", "contact_message")
+						jsonData, _ = AppendToJSON(jsonData, "message_id", message_id)
+						display_name := fmt.Sprintf("%s", evt.Message.ContactMessage.GetDisplayName())
+						vcard := fmt.Sprintf("%s", evt.Message.ContactMessage.GetVcard())
+						jsonData, _ = AppendToJSON(jsonData, "display_name", display_name)
+						os.MkdirAll(filepath.Join(currentDir, "media", "contact"), os.ModePerm)
+						path = filepath.Join(currentDir, "media", "contact", fmt.Sprintf("%s.vcf", evt.Info.ID))
+						err := os.WriteFile(path, []byte(vcard), 0644)
+						if err != nil {
+							log.Errorf("Failed to save vcard: %v", err)
+							return
+						}
+						log.Infof("Saved vcard in message to %s", path)
+						jsonData, _ = AppendToJSON(jsonData, "path", path)
+					} else if evt.Message.GetImageMessage() != nil {
+						isSupported = true
 						jsonData, _ = AppendToJSON(jsonData, "message_id", message_id)
 						imgData := evt.Message.GetImageMessage()
 						caption := imgData.GetCaption()
@@ -322,26 +320,47 @@ code_body='
 							log.Errorf("Failed to download image: %v", err)
 							return
 						}
-						os.MkdirAll(filepath.Join(currentDir, "media", "image"), os.ModePerm)
-						path = filepath.Join(currentDir, "media", "image", fmt.Sprintf("%s.tmp", evt.Info.ID))
-						err = os.WriteFile(path, data, 0644)
-						if err != nil {
-							log.Errorf("Failed to save image: %v", err)
-							return
-						}
-						mimeType, err := mimemagic.MatchFilePath(path, -1)
-						if len(mimeType.Extensions) == 0 || err != nil {
-							log.Errorf("Image message extension unknown, saving as %s", path)
-							jsonData, _ = AppendToJSON(jsonData, "path", path)
-						} else {
-							newPath = filepath.Join(currentDir, "media", "image", fmt.Sprintf("%s%s", evt.Info.ID, mimeType.Extensions[0]))
-							os.Rename(path, newPath)
-							log.Infof("Saved image in message to %s", newPath)
-							jsonData, _ = AppendToJSON(jsonData, "path", newPath)
-						}
+      						if receiver_jid == "status@broadcast" {
+							jsonData, _ = AppendToJSON(jsonData, "type", "status_message")
+       							os.MkdirAll(filepath.Join(currentDir, "media", "status"), os.ModePerm)
+							path = filepath.Join(currentDir, "media", "status", fmt.Sprintf("%s.tmp", evt.Info.ID))
+							err = os.WriteFile(path, data, 0644)
+							if err != nil {
+								log.Errorf("Failed to save status: %v", err)
+								return
+							}
+							mimeType, err := mimemagic.MatchFilePath(path, -1)
+							if len(mimeType.Extensions) == 0 || err != nil {
+								log.Errorf("Status message extension unknown, saving as %s", path)
+								jsonData, _ = AppendToJSON(jsonData, "path", path)
+							} else {
+								newPath = filepath.Join(currentDir, "media", "status", fmt.Sprintf("%s%s", evt.Info.ID, mimeType.Extensions[0]))
+								os.Rename(path, newPath)
+								log.Infof("Saved status in message to %s", newPath)
+								jsonData, _ = AppendToJSON(jsonData, "path", newPath)
+							}
+	   					} else {
+							jsonData, _ = AppendToJSON(jsonData, "type", "image_message")
+       							os.MkdirAll(filepath.Join(currentDir, "media", "image"), os.ModePerm)
+							path = filepath.Join(currentDir, "media", "image", fmt.Sprintf("%s.tmp", evt.Info.ID))
+							err = os.WriteFile(path, data, 0644)
+							if err != nil {
+								log.Errorf("Failed to save image: %v", err)
+								return
+							}
+							mimeType, err := mimemagic.MatchFilePath(path, -1)
+							if len(mimeType.Extensions) == 0 || err != nil {
+								log.Errorf("Image message extension unknown, saving as %s", path)
+								jsonData, _ = AppendToJSON(jsonData, "path", path)
+							} else {
+								newPath = filepath.Join(currentDir, "media", "image", fmt.Sprintf("%s%s", evt.Info.ID, mimeType.Extensions[0]))
+								os.Rename(path, newPath)
+								log.Infof("Saved image in message to %s", newPath)
+								jsonData, _ = AppendToJSON(jsonData, "path", newPath)
+							}
+       						}
 					} else if evt.Message.GetVideoMessage() != nil {
 						isSupported = true
-						jsonData, _ = AppendToJSON(jsonData, "type", "video_message")
 						jsonData, _ = AppendToJSON(jsonData, "message_id", message_id)
 						vidData := evt.Message.GetVideoMessage()
 						caption := vidData.GetCaption()
@@ -353,23 +372,45 @@ code_body='
 							log.Errorf("Failed to download video: %v", err)
 							return
 						}
-						os.MkdirAll(filepath.Join(currentDir, "media", "video"), os.ModePerm)
-						path = filepath.Join(currentDir, "media", "video", fmt.Sprintf("%s.tmp", evt.Info.ID))
-						err = os.WriteFile(path, data, 0644)
-						if err != nil {
-							log.Errorf("Failed to save video: %v", err)
-							return
-						}
-						mimeType, err := mimemagic.MatchFilePath(path, -1)
-						if len(mimeType.Extensions) == 0 || err != nil {
-							log.Errorf("Video message extension unknown, saving as %s", path)
-							jsonData, _ = AppendToJSON(jsonData, "path", path)
-						} else {
-							newPath = filepath.Join(currentDir, "media", "video", fmt.Sprintf("%s%s", evt.Info.ID, mimeType.Extensions[0]))
-							os.Rename(path, newPath)
-							log.Infof("Saved video in message to %s", newPath)
-							jsonData, _ = AppendToJSON(jsonData, "path", newPath)
-						}
+      						if receiver_jid == "status@broadcast" {
+							jsonData, _ = AppendToJSON(jsonData, "type", "status_message")
+       							os.MkdirAll(filepath.Join(currentDir, "media", "status"), os.ModePerm)
+							path = filepath.Join(currentDir, "media", "status", fmt.Sprintf("%s.tmp", evt.Info.ID))
+							err = os.WriteFile(path, data, 0644)
+							if err != nil {
+								log.Errorf("Failed to save status: %v", err)
+								return
+							}
+							mimeType, err := mimemagic.MatchFilePath(path, -1)
+							if len(mimeType.Extensions) == 0 || err != nil {
+								log.Errorf("Status message extension unknown, saving as %s", path)
+								jsonData, _ = AppendToJSON(jsonData, "path", path)
+							} else {
+								newPath = filepath.Join(currentDir, "media", "status", fmt.Sprintf("%s%s", evt.Info.ID, mimeType.Extensions[0]))
+								os.Rename(path, newPath)
+								log.Infof("Saved status in message to %s", newPath)
+								jsonData, _ = AppendToJSON(jsonData, "path", newPath)
+							}
+	   					} else {
+							jsonData, _ = AppendToJSON(jsonData, "type", "video_message")
+       							os.MkdirAll(filepath.Join(currentDir, "media", "video"), os.ModePerm)
+							path = filepath.Join(currentDir, "media", "video", fmt.Sprintf("%s.tmp", evt.Info.ID))
+							err = os.WriteFile(path, data, 0644)
+							if err != nil {
+								log.Errorf("Failed to save video: %v", err)
+								return
+							}
+							mimeType, err := mimemagic.MatchFilePath(path, -1)
+							if len(mimeType.Extensions) == 0 || err != nil {
+								log.Errorf("Video message extension unknown, saving as %s", path)
+								jsonData, _ = AppendToJSON(jsonData, "path", path)
+							} else {
+								newPath = filepath.Join(currentDir, "media", "video", fmt.Sprintf("%s%s", evt.Info.ID, mimeType.Extensions[0]))
+								os.Rename(path, newPath)
+								log.Infof("Saved video in message to %s", newPath)
+								jsonData, _ = AppendToJSON(jsonData, "path", newPath)
+							}
+       						}
 					} else if evt.Message.GetDocumentMessage() != nil {
 						isSupported = true
 						jsonData, _ = AppendToJSON(jsonData, "type", "document_message")
