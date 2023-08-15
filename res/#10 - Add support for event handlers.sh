@@ -23,11 +23,19 @@ sed -i -e "$(($(grep -nm 1 -F 'case *events.AppState:' whatsmeow/mdtest/main.go 
 code_body='
 		//start
 		is_connected = false
-		cli.Disconnect()
-		err := cli.Connect()
-		if err != nil {
-			log.Errorf("Failed to connect: %v", err)
-		}
+  		if !keepalive_timeout {
+			keepalive_timeout = true
+   			for {
+	   			cli.Disconnect()
+	      			err := cli.Connect()
+				if err == nil {
+	   				break
+	       			}
+				log.Errorf("Failed to connect after keepalive timeout: %v", err)
+	   			time.Sleep(2 * time.Second)
+      			}
+	 		keepalive_timeout = false
+    		}
 		//stop
 '
 
