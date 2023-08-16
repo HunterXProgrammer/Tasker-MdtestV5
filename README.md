@@ -26,9 +26,9 @@ Made for Project Mdtest V5.
 - Pin/Unpin chats (New!)
 - Archive/Unarchive chats (New!)
 - Multi-Number/User support (New!)
-  - previously Mdtest could support only one WhatsApp number, but now you can have as many as you want)
+  - Previously Mdtest could support only one WhatsApp number, but now you can have as many as you want
 - Receive details of incoming messages as Tasker variables. Can use this for automated replies (check **[VARIABLES]()**)
-- Added support to link WhatsApp using phone number pairing method.
+- Added support to link WhatsApp using phone number pairing method
 
 ### Changes in Mdtest V5 Compared To Previous V4
 - Now can link WhatsApp using phone number pairing method.  
