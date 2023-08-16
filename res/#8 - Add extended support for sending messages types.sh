@@ -73,7 +73,7 @@ code_body='
 		question, optionsStr, _ := strings.Cut(remainingArgs, "--")
 		question = strings.TrimSpace(question)
 		options := strings.Split(optionsStr, "/")
-		if *isMode == "both" || *isMode == "receive" {
+		if *isMode == "both" {
 			os.MkdirAll(filepath.Join(currentDir, ".tmp"), os.ModePerm)
 			msgID := whatsmeow.GenerateMessageID()
 			err := os.WriteFile(filepath.Join(currentDir, ".tmp", "poll_question_" + msgID), []byte(question), 0644)
@@ -725,7 +725,7 @@ code_body='
 			log.Errorf("invalid second argument: %v", err)
 			return
 		}
-		if *isMode != "both" && *isMode != "receive" && *isMode != "send" {
+		if *isMode != "both" && *isMode != "send" {
 			names := []appstate.WAPatchName{appstate.WAPatchName(args[0])}
 			new_args := []string{"all"}
 			if new_args[0] == "all" {
@@ -768,7 +768,7 @@ code_body='
 				hours, _ = time.ParseDuration("8h")
 			}
 		}
-		if *isMode != "both" && *isMode != "receive" && *isMode != "send" {
+		if *isMode != "both" && *isMode != "send" {
 			names := []appstate.WAPatchName{appstate.WAPatchName(args[0])}
 			new_args := []string{"all"}
 			if new_args[0] == "all" {
@@ -804,7 +804,7 @@ code_body='
 			log.Errorf("invalid second argument: %v", err)
 			return
 		}
-		if *isMode != "both" && *isMode != "receive" && *isMode != "send" {
+		if *isMode != "both" && *isMode != "send" {
 			names := []appstate.WAPatchName{appstate.WAPatchName(args[0])}
 			new_args := []string{"all"}
 			if new_args[0] == "all" {

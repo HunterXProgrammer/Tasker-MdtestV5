@@ -68,24 +68,21 @@ func mdtest(w http.ResponseWriter, r *http.Request) {
 	case "GET":
 		if is_connected {
 			if *isMode == "both" {
-		    	log.Infof("get request received, mdtest is running in both mode")
-		    	io.WriteString(w, "mdtest is running in both mode")
-	    	} else if *isMode == "receive" {
-	    		log.Infof("get request received, mdtest is running in receive mode")
-		    	io.WriteString(w, "mdtest is running in receive mode")
-    		} else if *isMode == "send" {
-    			log.Infof("get request received, mdtest is running in send mode")
-		    	io.WriteString(w, "mdtest is running in send mode")
+				log.Infof("get request received, mdtest is running in both mode")
+				io.WriteString(w, "mdtest is running in both mode")
+			} else if *isMode == "send" {
+				log.Infof("get request received, mdtest is running in send mode")
+				io.WriteString(w, "mdtest is running in send mode")
 			}
-	    } else {
-	    	log.Infof("get request received, mdtest is waiting for reconnection")
-		    io.WriteString(w, "Bad network, mdtest is waiting for reconnection")
-    	}
-    	return
+		} else {
+			log.Infof("get request received, mdtest is waiting for reconnection")
+			io.WriteString(w, "Bad network, mdtest is waiting for reconnection")
+		}
+		return
 	case "POST":
-  	  dec := json.NewDecoder(r.Body)
-	    for {
-	    	argsData := struct {
+		dec := json.NewDecoder(r.Body)
+		for {
+			argsData := struct {
 				Args []string `json:"args"`
 			}{}
 			
@@ -124,18 +121,14 @@ func mdtest(w http.ResponseWriter, r *http.Request) {
 					kill_server()
 					if *isMode == "both" {
 						log.Infof("Receive/Send Mode Enabled")
-		            	log.Infof("Will Now Receive/Send Messages In Tasker")
-	            		go MdtestStart()
-            		} else if *isMode == "receive" {
-            			log.Infof("Receive Mode Enabled")
-		            	log.Infof("Will Now Receive Messages In Tasker")
-	            		go MdtestStart()
-	            	} else if *isMode == "send" {
-	            		log.Infof("Send Mode Enabled")
-		            	log.Infof("Can Now Send Messages From Tasker")
-	            		go MdtestStart()
-            		}
-				}()
+						log.Infof("Will Now Receive/Send Messages In Tasker")
+						go MdtestStart()
+					} else if *isMode == "send" {
+						log.Infof("Send Mode Enabled")
+						log.Infof("Can Now Send Messages From Tasker")
+		            	go MdtestStart()
+	            	}
+            	}()
 				return
 			}
 			io.WriteString(w, "command received")
@@ -143,7 +136,7 @@ func mdtest(w http.ResponseWriter, r *http.Request) {
 				go handleCmd(strings.ToLower(args[0]), args[1:])
 			}
 		}
-	    return
+		return
 	default:
 		log.Errorf("%s, only GET and POST methods are supported.", w)
 		return
@@ -744,7 +737,7 @@ var ffmpegScriptPath string
 var server_running bool
 var currentDir string
 var httpPort = flag.Int("port", 0, "Port can be anything from 1204 ~ 65535\nIt must not be 9990\n(default option: 7774)")
-var isMode = flag.String("mode", "", "Select mode: none, both, send, receive\n(default option: none)")
+var isMode = flag.String("mode", "", "Select mode: none, both, send\n(default option: none)")
 var saveMedia = flag.Bool("save-media", false, "Save Media")
 var autoDelete = flag.Bool("auto-delete-media", false, "Delete Downloaded Media After 30s")
 //stop

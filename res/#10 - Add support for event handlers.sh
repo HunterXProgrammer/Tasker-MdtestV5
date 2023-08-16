@@ -52,20 +52,14 @@ code_body='
 				is_connected = true
 				if *isMode == "both" {
 					log.Infof("Receive/Send Mode Enabled")
-		            log.Infof("Will Now Receive/Send Messages In Tasker")
-	            	go MdtestStart()
-            	} else if *isMode == "receive" {
-            		log.Infof("Receive Mode Enabled")
-		            log.Infof("Will Now Receive Messages In Tasker")
-	            	go MdtestStart()
-	            } else if *isMode == "send" {
-	            	log.Infof("Send Mode Enabled")
-		            log.Infof("Can Now Send Messages From Tasker")
-	            	go MdtestStart()
-            	}
+					log.Infof("Will Now Receive/Send Messages In Tasker")
+					go MdtestStart()
+				} else if *isMode == "send" {
+					log.Infof("Send Mode Enabled")
+					log.Infof("Can Now Send Messages From Tasker")
+					go MdtestStart()
+				}
 				//stop
 '
-
-
 
 grep -n -F 'log.Infof("Marked self as available")' whatsmeow/mdtest/main.go | sed 's/:.*//' | sort -V | sort -r | while read -r line; do sed -i -e "${line}r /dev/stdin" whatsmeow/mdtest/main.go <<< "$code_body"; done
