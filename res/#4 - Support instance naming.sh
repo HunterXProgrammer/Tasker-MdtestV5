@@ -16,7 +16,8 @@ sed -i -e "$(($(grep -nm 1 -F 'cli = whatsmeow.NewClient(device, waLog.Stdout("C
 code_body='
 	//start
 	version, _ := store.ParseVersion(fmt.Sprintf("%s", store.GetWAVersion()))
-	store.SetOSInfo("Mdtest (V5)(" + fmt.Sprintf("%d", *httpPort) + ")", version)
+	//store.SetOSInfo("Mdtest (V5)(" + fmt.Sprintf("%d", *httpPort) + ")", version)
+ 	store.SetOSInfo("Firefox (Android)", version)
 	args := flag.Args()
 	//stop
 '
