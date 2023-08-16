@@ -20,20 +20,30 @@ Made for Project Mdtest V5.
 - Send Poll messages
 - Mark as read
 - Revoke messages
-- Download Media Messages (New!) (includes media like images/videos/audio/documents/contacts/status/location previews)
+- Download Media Messages (New!)
+  - Now includes media like images/videos/audio/documents/contacts/status/location previews
 - Mute/Unmute chats (New!)
 - Pin/Unpin chats (New!)
 - Archive/Unarchive chats (New!)
 - Multi-Number/User support (New!)
-
-(previously Mdtest could support only one WhatsApp number, but now you can have as many as you want)
-
+ - previously Mdtest could support only one WhatsApp number, but now you can have as many as you want)
 - Receive details of incoming messages as Tasker variables. Can use this for automated replies (check **[VARIABLES]()**)
-- Added support to easily scan QR Code over devices connected to the same Wi-Fi (check **[Some Tips]()**).
+- Added support to link WhatsApp using phone number pairing method.
 
->The above features works for both single contacts and group chats.
-
-# Changes From The Previous Version
+### Changes in Mdtest V5 Compared To Previous V4
+- Now can link WhatsApp using phone number pairing method.  
+  Previous(V4) method of scanning QR code was tiresome and needed a spare device.  
+  Now with the new pairing method(V5) everything is done from the main device in a few seconds.
+- Better support for sending images/videos/audio.  
+  Previously(V4) needed to send an image thumbnail seperately along with the main media file.  
+  Now no longer necessary, Mdtest(V5) handles it.
+- Added support for receiving media messages and downloading the media file.  
+  Includes downloading images/videos/audio/documents/contacts/status/location previews.  
+  The media files are stored in `~/whatsmeow5/mdtest/media`.  
+  To enable downloading media pass the flag `--save-media` when starting `mdtest`.
+- Added support to send link preview messages.  
+  Only for websites that support the **[Open Graph](https://ogp.me/)** protocol.  
+  Eg:- `https://github.com/HunterXProgrammer/Tasker-MdtestV5`
 
 # Disclaimer
 You are responsible for what you do with this.
