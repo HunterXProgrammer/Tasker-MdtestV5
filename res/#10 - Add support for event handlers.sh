@@ -7,9 +7,14 @@ echo "$step_number) $step_name"
 code_body='
 	//start
 	case *events.OfflineSyncCompleted:
-		log.Infof("Offline Sync Completed")
+		go func() {
+			waitSync.Wait()
+			log.Infof("Offline Sync Completed")
+			waitSync = sync.WaitGroup{}
+		}()
 	case *events.Disconnected:
 		is_connected = false
+		waitSync = sync.WaitGroup{}
 		log.Infof("Bad network, mdtest is waiting for reconnection")
 		err := cli.Connect()
 		if err != nil {
@@ -23,19 +28,20 @@ sed -i -e "$(($(grep -nm 1 -F 'case *events.AppState:' whatsmeow/mdtest/main.go 
 code_body='
 		//start
 		is_connected = false
-  		if !keepalive_timeout {
+		waitSync = sync.WaitGroup{}
+		if !keepalive_timeout {
 			keepalive_timeout = true
-   			for {
-	   			cli.Disconnect()
-	      			err := cli.Connect()
+			for {
+				cli.Disconnect()
+				err := cli.Connect()
 				if err == nil {
-	   				break
-	       			}
+					break
+				}
 				log.Errorf("Failed to connect after keepalive timeout: %v", err)
-	   			time.Sleep(2 * time.Second)
-      			}
-	 		keepalive_timeout = false
-    		}
+				time.Sleep(2 * time.Second)
+			}
+			keepalive_timeout = false
+		}
 		//stop
 '
 

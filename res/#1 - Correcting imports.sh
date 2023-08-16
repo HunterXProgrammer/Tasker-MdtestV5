@@ -18,6 +18,7 @@ code_body='
 	"image/jpeg"
 	_ "image/png"
 	"os/exec"
+	"sync"
 	//stop
 '
 
