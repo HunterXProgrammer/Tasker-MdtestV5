@@ -46,6 +46,7 @@ sed -i '/mutations, newState, err := cli.appStateProc.DecodePatches(patches, sta
 code_body='
 		//start
 		is_connected = false
+		waitSync = sync.WaitGroup{}
 		//stop
 '
 
