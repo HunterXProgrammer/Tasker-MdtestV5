@@ -164,10 +164,6 @@ The **COMMAND** and **PARAMETERS** are:-
 
 The **"<>"** means required, the **"[ ]"** means optional and **\<action\>** is one of **true|false**.
 
-# TODO
-- Send co-ordinates as location message - 
-
-
 # Credits
 **[whatsmeow](https://github.com/tulir/whatsmeow) -** Go library `mdtest` is based on.
 
