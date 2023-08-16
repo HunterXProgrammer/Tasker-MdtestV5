@@ -40,7 +40,7 @@ Made for Project Mdtest V5.
 - Added support for receiving media messages and downloading the media file.  
   Includes downloading images/videos/audio/documents/contacts/status/location previews.  
   The media files are stored in `~/whatsmeow5/mdtest/media`.  
-  To enable downloading media pass the flag `--save-media` when starting `mdtest`.
+  To enable downloading media pass the `--save-media` flag when starting `mdtest`.
 - Added support to send link preview messages.  
   Only for websites that support the **[Open Graph](https://ogp.me/)** protocol.  
   Eg:- `https://github.com/HunterXProgrammer/Tasker-MdtestV5`
