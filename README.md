@@ -14,11 +14,13 @@ Made for Project Mdtest V5.
 - Send Text Messages
 - Send Images
 - Send Videos
+- Send Audio
 - Send PDF/Documents
 - Send Link Previews (New!)
 - Send Poll messages
 - Mark as read
 - Revoke messages
+- Download Media Messages (New!) (includes media like images/videos/audio/documents/contacts/status/location previews)
 - Mute/Unmute chats (New!)
 - Pin/Unpin chats (New!)
 - Archive/Unarchive chats (New!)
