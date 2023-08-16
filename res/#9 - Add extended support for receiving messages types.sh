@@ -6,7 +6,7 @@ echo "$step_number) $step_name"
 
 code_body='
 		//start
-		if *isMode == "both" || *isMode == "receive" {
+		if *isMode == "both" {
 			if is_connected {
 				waitSync.Add(1)
 			}
