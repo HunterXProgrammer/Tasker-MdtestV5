@@ -6,7 +6,7 @@ Previous post intro:-
 >Recently I've been getting a lot of inquiries on how to send images, videos or documents in WhatsApp using Tasker. Possibly with the screen off, phone locked, without unlocking, etc. Had some time to make this so here it is.
 
 # Details
-Contains assets that are used for running Mdtest directly in Tasker, without needing Termux.
+Contains assets that are used for running Mdtest V5 directly in Tasker, without needing Termux.
 
 Made for Project Mdtest V5.
 
@@ -68,7 +68,7 @@ Your [Run Shell] action to use `mdtest` will look like this -
     #!/system/bin/sh
     mdtest_dir="/data/data/net.dinglisch.android.taskerm/files/whatsmeow5/mdtest"
     cd $mdtest_dir.7774
-    sh $mdtest_dir/mdtest COMMAND PARAMETERS
+    sh $mdtest_dir/mdtest FLAGS COMMAND PARAMETERS
 
 Check **[Commands And Parameters](https://github.com/HunterXProgrammer/Tasker-MdtestV5#commands-and-parameters)** for more info about the available CLI commands.
 
@@ -116,9 +116,16 @@ Your script will look like this -
 
     #!/data/data/com.termux/files/usr/bin/bash
     cd ~/whatsmeow5/mdtest
-    ./mdtest COMMAND PARAMETERS
+    ./mdtest FLAGS COMMAND PARAMETERS
 
 ### Commands And Parameters
+
+The **FLAGS** are -
+
+    --save-media
+
+
+
 
 The **COMMAND** and **PARAMETERS** are:-
 
