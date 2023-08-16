@@ -21,7 +21,7 @@ Made for Project Mdtest V5.
 - Mark as read
 - Revoke messages
 - Download Media Messages (New!)
-  - Now includes media like images/videos/audio/documents/contacts/status/location previews
+  - Now includes downloading media like images/videos/audio/documents/contacts/status/location previews
 - Mute/Unmute chats (New!)
 - Pin/Unpin chats (New!)
 - Archive/Unarchive chats (New!)
