@@ -30,7 +30,7 @@ Made for Project Mdtest V5.
   - Previously Mdtest could support only one WhatsApp number, but now you can have as many as you want
 - Receive details of incoming messages as Tasker variables. Can use this for automated replies (check **[VARIABLES]()**)  
   Current list of message types that are supported and can be received as Tasker variables:-
-  - Text, forwarded text, image, video, audio, document, poll, list, button, status, location(co-ordinates), contact, etc.
+  - Text, image, video, audio, document, poll, link, list, button, status, location(co-ordinates), contact, etc.
 - Added support to link WhatsApp using phone number pairing method
 
 ### Changes in Mdtest V5 Compared To Previous V4
