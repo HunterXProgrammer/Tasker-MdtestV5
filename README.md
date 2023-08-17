@@ -184,8 +184,8 @@ The **COMMAND** and **PARAMETERS** are:-
     chatpresence <jid> <composing/paused> [audio]
     getuser <jids...>
     getavatar <jid> [existing ID] [--preview] [--community]
-    getgroup <jid>
-    subgroups <jid>
+    getgroup <group jid>
+    subgroups <group jid>
     communityparticipants <jid>
     getinvitelink <jid> [--reset]
     queryinvitelink <link>
