@@ -126,9 +126,19 @@ Your script will look like this -
 The **FLAGS** are -
 
     --save-media
-
-
-
+          Save Media
+    
+    --mode <value>
+          Select mode: none, both, send
+          (default option: none)
+    
+    --port <value>
+          Port can be anything from 1024 ~ 65535
+          It must not be 9990
+          (default option: 7774)
+    
+    --auto-delete-media
+          Delete Downloaded Media After 30s
 
 The **COMMAND** and **PARAMETERS** are:-
 
