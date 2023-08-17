@@ -69,8 +69,8 @@ if [ $? -eq 0 ]; then
     chmod 744 mdtest mdtest.bin
     7z a -tzip -mx=9 -bd -bso0 mdtest.zip mdtest mdtest.bin
 fi
-#rm -rf $tmpdir &>/dev/null
-echo $tmpdir
+rm -rf $tmpdir &>/dev/null
+#echo $tmpdir
 #go clean -cache
 
 echo -e "\nSuccessfuly built Mdtest. Adding media support\nusing ffmpeg...\n"
