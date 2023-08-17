@@ -142,37 +142,50 @@ The **FLAGS** are -
 
 The **COMMAND** and **PARAMETERS** are:-
 
-    appstate <types...>
-    request-appstate-key <ids...>
-    checkuser <phone numbers...>
-    subscribepresence <jid> 
-    presence <available/unavailable>
-    chatpresence <jid> <composing/paused> [audio]
-    getuser <jids...>
-    getavatar <jid> [existing ID] [--preview] [--community]
-    getgroup <jid>
-    subgroups <jid>
-    communityparticipants <jid>
-    getinvitelink <jid> [--reset]
-    queryinvitelink <link>
-    querybusinesslink <link>
-    acceptinvitelink <link>
-    setdisappeartimer <jid> <days>
-    send <jid> <text>
-    react <jid> <message ID> <reaction>
-    revoke <jid> <message ID>
-    senddoc <jid> <document path> <title> [mime-type]
-    sendvid <jid> <video path> [caption]
-    sendaudio <jid> <audio path>
-    sendimg <jid> <image path> [caption]
-    setstatus <message>
-    sendpoll <jid> <max answers> <question> -- <option 1> / <option 2> / ...
-    markread <jid> <message ID 1> [message ID X] (Note: Can add multiple message IDs to mark as read. [] is optional)
-    mute <jid> <action> <hours> (default is 8hrs, if 0 then indefinitely)
-    pin <jid> <action>
-    archive <jid> <action>
+sendind <jid> <text>
+sendimg <jid> <image path> [caption]
+sendvid <jid> <video path> [caption]
+sendaudio <jid> <audio path>
+senddoc <jid> <document path> <title> [mime-type]
+sendpoll <jid> <max answers> <question> -- <option 1> / <option 2> / ...
+sendlink <jid> <url/link> [text]
+markread <jid> <message ID No.1> [message ID No.X] (Note: Can add multiple message IDs to mark as read. [] is optional)
+revoke <jid> <message ID>
+listusers <jid>
+listgroups <jid>
+batchsendgroupmembers <group jid> <text>
+archive <jid> <true/false>
+mute <jid> <true/false> <hours> (default is 8hrs, if 0 then indefinitely)
+pin <jid> <true/false>
+pair-phone <number>
+appstate <types...>
+request-appstate-key <ids...>
+unavailable-request <chat JID> <sender JID> <message ID>
+checkuser <phone numbers...>
+subscribepresence <jid>
+presence <available/unavailable>
+chatpresence <jid> <composing/paused> [audio]
+getuser <jids...>
+getavatar <jid> [existing ID] [--preview] [--community]
+getgroup <jid>
+subgroups <jid>
+communityparticipants <jid>
+getinvitelink <jid> [--reset]
+queryinvitelink <link>
+querybusinesslink <link>
+joininvitelink <link>
+setdisappeartimer <jid> <days>
+multisend <jids...> -- <text>
+react <jid> <message ID> <reaction>
+setstatus <message>
+reconnect
+logout
+checkupdate
+privacysettings
+mediaconn
+getstatusprivacy
 
-The **"<>"** means required, the **"[ ]"** means optional and **\<action\>** is one of **true|false**.
+The **"<>"** means required, the **"[ ]"** means optional.
 
 # Credits
 **[whatsmeow](https://github.com/tulir/whatsmeow) -** Go library `mdtest` is based on.
