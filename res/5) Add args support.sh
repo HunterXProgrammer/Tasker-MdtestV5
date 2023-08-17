@@ -1,11 +1,27 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-step_name="$(basename "$0" | sed -E 's/^#[0-9]+ - //' | sed -E 's/\.sh$//')"
-step_number="$(basename "$0" | grep -Eo '^#[0-9]+' | sed -E 's/#//')"
+step_name="$(basename "$0" | sed -E 's/^[0-9]+\) //' | sed -E 's/\.sh$//')"
+step_number="$(basename "$0" | grep -Eo '^[0-9]+')"
 echo "$step_number) $step_name"
 
 code_body='
 	//start
+	if device_id != "<nil>" {
+		tmp_jid, _ := parseJID(device_id)
+		device_jid = fmt.Sprintf("%s", tmp_jid)
+		jids := []types.JID{}
+		jids = append(jids, tmp_jid)
+		userinfo, error := cli.GetUserInfo(jids)
+		if error != nil {
+			log.Errorf("Failed to get user info: %v", error)
+			} else {
+				for jid, _ := range userinfo {
+						default_jid = fmt.Sprintf("%s", jid)
+				break
+			}
+		}
+	}
+	
 	if len(args) > 0 {
 		if args[0] != "pair-phone" {
 			go func() {
@@ -40,24 +56,6 @@ code_body='
 				os.Exit(1)
 			}
 		}()
-	}
-	
-	
-	
-	if device_id != "<nil>" {
-		tmp_jid, _ := parseJID(device_id)
-		device_jid = fmt.Sprintf("%s", tmp_jid)
-		jids := []types.JID{}
-		jids = append(jids, tmp_jid)
-		userinfo, error := cli.GetUserInfo(jids)
-		if error != nil {
-			log.Errorf("Failed to get user info: %v", error)
-			} else {
-				for jid, _ := range userinfo {
-						default_jid = fmt.Sprintf("%s", jid)
-				break
-			}
-		}
 	}
 	//stop
 '

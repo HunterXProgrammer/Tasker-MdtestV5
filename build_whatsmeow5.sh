@@ -21,7 +21,7 @@ fi
 
 # Add extended support
 echo -e "\n------------------------\n\nAdding extended support:-\n"
-find $current_dir/res -maxdepth 1 -type f -name "#*" -regex ".*/#[0-9]+ - .*" | sort -V | while read -r i; do
+find $current_dir/res -maxdepth 1 -type f -name "*)*" -regex ".*/[0-9]+) .*" | sort -V | while read -r i; do
     echo -n " " && bash "$i"
 done
 echo -e "\nDone adding extended support\n\n------------------------\n"
@@ -69,8 +69,8 @@ if [ $? -eq 0 ]; then
     chmod 744 mdtest mdtest.bin
     7z a -tzip -mx=9 -bd -bso0 mdtest.zip mdtest mdtest.bin
 fi
-rm -rf $tmpdir &>/dev/null
-#echo $tmpdir
+#rm -rf $tmpdir &>/dev/null
+echo $tmpdir
 #go clean -cache
 
 echo -e "\nSuccessfuly built Mdtest. Adding media support\nusing ffmpeg...\n"

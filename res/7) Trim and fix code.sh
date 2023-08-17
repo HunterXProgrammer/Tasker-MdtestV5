@@ -1,7 +1,7 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-step_name="$(basename "$0" | sed -E 's/^#[0-9]+ - //' | sed -E 's/\.sh$//')"
-step_number="$(basename "$0" | grep -Eo '^#[0-9]+' | sed -E 's/#//')"
+step_name="$(basename "$0" | sed -E 's/^[0-9]+\) //' | sed -E 's/\.sh$//')"
+step_number="$(basename "$0" | grep -Eo '^[0-9]+')"
 echo "$step_number) $step_name"
 
 sed -i '/case "sendimg":/,/var startupTime = time.Now().Unix()/d' whatsmeow/mdtest/main.go
