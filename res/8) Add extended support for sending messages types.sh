@@ -672,11 +672,11 @@ code_body='
 			log.Infof("Mark as read sent")
 		}
 	case "batchmessagegroupmembers":
-		if len(args) < 3 || args[0] != "send" {
-			log.Errorf("Usage: batchsendgroupmembers send <group jid> <text>")
+		if len(args) < 2 {
+			log.Errorf("Usage: batchsendgroupmembers <group jid> <text>")
 			return
 		}
-		group, ok := parseJID(args[1])
+		group, ok := parseJID(args[0])
 		if !ok {
 			return
 		} else if group.Server != types.GroupServer {
@@ -695,8 +695,8 @@ code_body='
 				} else {
 					new_args := []string{}
 					new_args = append(new_args, participant_jid)
-					new_args = append(new_args, args[2:]...)
-					handleCmd(strings.ToLower(args[0]), new_args[0:])
+					new_args = append(new_args, args[1:]...)
+					handleCmd(strings.ToLower("send", new_args[0:])
 				}
 			}
 		}
