@@ -126,16 +126,25 @@ Your script will look like this -
 The **FLAGS** are -
 
     --save-media
-          Save Media
+          Download And Save Media.
+          This flag also enables receiving media message types
+          such as:- images, videos, audio, documents, contacts,
+          status, location previews.
+          Note:- Will only be effective if "--mode" is "both"
     
     --mode <value>
-          Select mode: none, both, send
+          Select mode: none, both or send
           (default option: none)
+          both -> Mdtest will receive mesages and as well as send messages
+          send -> Mdtest will only send messages, not receive.
     
     --port <value>
           Port can be anything from 1024 ~ 65535
+          Mdtest accepts requests on this port.
           It must not be 9990
           (default option: 7774)
+          Note:-  To be used in conjuction with "--mode"
+          Will only accept requests if "--mode" is "both" or "send"
     
     --auto-delete-media
           Delete Downloaded Media After 30s
