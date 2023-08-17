@@ -127,35 +127,35 @@ The **FLAGS** are -
 
     --save-media
           Download And Save Media.
-          This flag also enables receiving media message types
+          - This flag also enables receiving media message types
           such as:- images, videos, audio, documents, contacts,
           status, location previews.
-          Meida saved to whatsmeow5/mdtest/media
-          Note:- To be used in conjuction with "--mode <value>"
-          Will only be effective if "<value>" is "both"
+          - Meida saved to whatsmeow5/mdtest/media
+          - Note:- To be used in conjuction with "--mode <value>"
+                    Will only be effective if "<value>" is "both"
     
     --mode <value>
           Select mode: none, both or send
           (default option: none)
-          both -> Mdtest will receive mesages and as well as send messages
-          send -> Mdtest will only send messages, not receive.
+          - both -> Mdtest will receive mesages and as well as send messages
+          - send -> Mdtest will only send messages, not receive.
     
     --port <value>
           Port can be anything from 1024 ~ 65535
-          Mdtest accepts requests on this port.
           It must not be 9990
           (default option: 7774)
-          Note:-  To be used in conjuction with "--mode <value>"
-          Will only accept requests if "<value>" is "both" or "send"
+          - Mdtest accepts requests on this port.
+          - Note:-  To be used in conjuction with "--mode <value>"
+                    Will only accept requests if "<value>" is "both" or "send"
     
     --auto-delete-media
           Delete Downloaded Media After 30s
-          Useful for auto-deleting rubbish media that probably won't
-          ever be used.
-          The idea is that if the user doesn't use the
-          downloaded media after 30s, save space by deleting
-          what is most likely redundant files.
-          Note:- To be used in conjunction with "--save-media"
+          - Useful for auto-deleting rubbish media that probably won't
+            ever be used.
+          - The idea is that if the user doesn't use the
+            downloaded media after 30s, save space by deleting
+            what is most likely redundant files.
+          - Note:- To be used in conjunction with "--save-media"
 
 The **COMMAND** and **PARAMETERS** are:-
 
