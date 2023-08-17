@@ -101,9 +101,9 @@ You can build and compile it by yourself in Termux -
 >
 >Type -
 >
->`cd ~/whatsmeow5/mdtest; ./mdtest pair-phone 91987654321`
+>`cd ~/whatsmeow5/mdtest; ./mdtest pair-phone 919876543210`
 >
->(Here "91" is the country code and "987654321" is the number. Adjust as needed)
+>(Here "91" is the country code and "9876543210" is the number. Adjust as needed)
 >
 >This will generate the linking code.
 >
