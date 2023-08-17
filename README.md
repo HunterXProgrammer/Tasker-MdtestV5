@@ -128,8 +128,8 @@ The **FLAGS** are -
     --save-media
           Download And Save Media.
           - This flag also enables receiving media message types
-          such as:- images, videos, audio, documents, contacts,
-          status, location previews.
+            such as:- images, videos, audio, documents, contacts,
+            status, location previews.
           - Meida saved to whatsmeow5/mdtest/media
           - Note:- To be used in conjuction with "--mode <value>"
                     Will only be effective if "<value>" is "both"
