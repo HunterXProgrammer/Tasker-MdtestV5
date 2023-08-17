@@ -1,7 +1,7 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-step_name="$(basename "$0" | sed -E 's/^#[0-9]+ - //' | sed -E 's/\.sh$//')"
-step_number="$(basename "$0" | grep -Eo '^#[0-9]+' | sed -E 's/#//')"
+step_name="$(basename "$0" | sed -E 's/^[0-9]+\) //' | sed -E 's/\.sh$//')"
+step_number="$(basename "$0" | grep -Eo '^[0-9]+')"
 echo "$step_number) $step_name"
 
 start_line=""
@@ -293,12 +293,44 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 		jsonData, _ = AppendToJSON(jsonData, "message", message)
 		jsonData, _ = AppendToJSON(jsonData, "message_id", message_id)
 	} else if evt.Message.GetExtendedTextMessage() != nil {
-		isSupported = true
-		extended_message := fmt.Sprintf("%s", evt.Message.ExtendedTextMessage.GetText())
-		
-		jsonData, _ = AppendToJSON(jsonData, "type", "extended_message")
-		jsonData, _ = AppendToJSON(jsonData, "message", extended_message)
-		jsonData, _ = AppendToJSON(jsonData, "message_id", message_id)
+		if evt.Info.Type == "text" {
+			isSupported = true
+			message := fmt.Sprintf("%s", evt.Message.ExtendedTextMessage.GetText())
+			jsonData, _ = AppendToJSON(jsonData, "type", "message")
+			jsonData, _ = AppendToJSON(jsonData, "message", message)
+			jsonData, _ = AppendToJSON(jsonData, "message_id", message_id)
+		} else if evt.Info.Type == "media" {
+			msgData := evt.Message.GetExtendedTextMessage()
+			if msgData.GetCanonicalUrl() != "" {
+				isSupported = true
+				message := fmt.Sprintf("%s", msgData.GetText())
+				matched_text := fmt.Sprintf("%s", msgData.GetMatchedText())
+				canonical_url := fmt.Sprintf("%s", msgData.GetCanonicalUrl())
+				description := fmt.Sprintf("%s", msgData.GetDescription())
+				title := fmt.Sprintf("%s", msgData.GetTitle())
+				linkPreviewThumbnail := msgData.GetJpegThumbnail()
+				if len(linkPreviewThumbnail) == 0 {
+					log.Errorf("Failed to save link preview thumbnail: User cancelled it")
+					return
+				}
+				os.MkdirAll(filepath.Join(currentDir, "media", "link"), os.ModePerm)
+				path = filepath.Join(currentDir, "media", "link", fmt.Sprintf("%s.jpg", evt.Info.ID))
+				err := os.WriteFile(path, linkPreviewThumbnail, 0644)
+				if err != nil {
+					log.Errorf("Failed to save link preview thumbnail: %v", err)
+					return
+				}
+				log.Infof("Saved link preview thumbnail in message to %s", path)
+				jsonData, _ = AppendToJSON(jsonData, "path", path)
+				jsonData, _ = AppendToJSON(jsonData, "type", "link")
+				jsonData, _ = AppendToJSON(jsonData, "message", message)
+				jsonData, _ = AppendToJSON(jsonData, "matched_text", matched_text)
+				jsonData, _ = AppendToJSON(jsonData, "canonical_url", canonical_url)
+				jsonData, _ = AppendToJSON(jsonData, "description", description)
+				jsonData, _ = AppendToJSON(jsonData, "title", title)
+				jsonData, _ = AppendToJSON(jsonData, "message_id", message_id)
+			}
+		}
 	} else if evt.Message.GetButtonsResponseMessage() != nil {
 		isSupported = true
 		origin_message_id := fmt.Sprintf("%s", evt.Message.ButtonsResponseMessage.ContextInfo.GetStanzaId())
@@ -434,6 +466,10 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 			jsonData, _ = AppendToJSON(jsonData, "latitude", latitude)
 			jsonData, _ = AppendToJSON(jsonData, "longitude", longitude)
 			locThumbnail := locData.GetJpegThumbnail()
+			if len(locThumbnail) == 0 {
+				log.Errorf("Failed to save location thumbnail: User cancelled it")
+				return
+			}
 			os.MkdirAll(filepath.Join(currentDir, "media", "location"), os.ModePerm)
 			path = filepath.Join(currentDir, "media", "location", fmt.Sprintf("%s.jpg", evt.Info.ID))
 			err := os.WriteFile(path, locThumbnail, 0644)
@@ -736,8 +772,8 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 var ffmpegScriptPath string
 var server_running bool
 var currentDir string
-var httpPort = flag.Int("port", 0, "Port can be anything from 1204 ~ 65535\nIt must not be 9990\n(default option: 7774)")
-var isMode = flag.String("mode", "", "Select mode: none, both, send\n(default option: none)")
+var httpPort = flag.Int("port", 0, "Port can be anything from 1024 ~ 65535\nIt must not be 9990\n(default option: 7774)")
+var isMode = flag.String("mode", "none", "Select mode: none, both, send\n(default option: none)")
 var saveMedia = flag.Bool("save-media", false, "Save Media")
 var autoDelete = flag.Bool("auto-delete-media", false, "Delete Downloaded Media After 30s")
 //stop
