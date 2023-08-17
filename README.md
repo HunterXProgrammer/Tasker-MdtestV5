@@ -204,6 +204,14 @@ The **COMMAND** and **PARAMETERS** are:-
 
 The **"<>"** means required, the **"[ ]"** means optional.
 
+#### Note About JID
+For single contacts, JID is usually the country-code followed by the phone-number and appended with "@s.whatsapp.net".  
+**Eg:-** Say country-code is "91", then JID will be ->  
+919876543210@s.whatsapp.net
+
+For group contacts, JID is usually the group phone-number appended with "@g.us".  
+**Eg:-** 1234567890987654321@g.us
+
 # Credits
 **[whatsmeow](https://github.com/tulir/whatsmeow) -** Go library `mdtest` is based on.
 
