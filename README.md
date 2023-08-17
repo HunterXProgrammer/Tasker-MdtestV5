@@ -130,7 +130,9 @@ The **FLAGS** are -
           This flag also enables receiving media message types
           such as:- images, videos, audio, documents, contacts,
           status, location previews.
-          Note:- Will only be effective if "--mode" is "both"
+          Meida saved to whatsmeow5/mdtest/media
+          Note:- To be used in conjuction with "--mode <value>"
+          Will only be effective if "<value>" is "both"
     
     --mode <value>
           Select mode: none, both or send
@@ -143,11 +145,17 @@ The **FLAGS** are -
           Mdtest accepts requests on this port.
           It must not be 9990
           (default option: 7774)
-          Note:-  To be used in conjuction with "--mode"
-          Will only accept requests if "--mode" is "both" or "send"
+          Note:-  To be used in conjuction with "--mode <value>"
+          Will only accept requests if "<value>" is "both" or "send"
     
     --auto-delete-media
           Delete Downloaded Media After 30s
+          Useful for auto-deleting rubbish media that probably won't
+          ever be used.
+          The idea is that if the user doesn't use the
+          downloaded media after 30s, save space by deleting
+          what is most likely redundant files.
+          Note:- To be used in conjunction with "--save-media"
 
 The **COMMAND** and **PARAMETERS** are:-
 
