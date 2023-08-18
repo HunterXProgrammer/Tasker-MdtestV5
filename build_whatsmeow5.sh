@@ -78,9 +78,9 @@ else
     echo "Error occured, exiting..."
     exit 1
 fi
-#rm -rf $tmpdir &>/dev/null
-echo $tmpdir
-exit 0
+rm -rf $tmpdir &>/dev/null
+#echo $tmpdir
+#exit 0
 #go clean -cache
 
 echo -e "\nSuccessfuly built Mdtest. Adding media support\nusing ffmpeg...\n"
