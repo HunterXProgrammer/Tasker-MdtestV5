@@ -36,8 +36,6 @@ go mod tidy
 
 echo -e "\nFinal step, building mdtest binary. Takes about 10s~1min"
 
-go build -ldflags="-extldflags -s" -o mdtest.bin
-
 mdtest_script='#!/system/bin/sh
 
 dir="$(cd "$(dirname "$0")"; pwd)"
@@ -56,6 +54,8 @@ else
 	exec "$dir/${bin_name}.bin" "$@"
 fi'
 
+go build -ldflags="-extldflags -s" -o mdtest.bin
+
 if [ $? -eq 0 ]; then
     if [ -n $TERMUX_VERSION ]; then
         termux-elf-cleaner ${tmpdir}/whatsmeow/mdtest/mdtest.bin &>/dev/null
@@ -66,12 +66,17 @@ if [ $? -eq 0 ]; then
     cd build
     cp ${tmpdir}/whatsmeow/mdtest/mdtest.bin .
     if [ $? -ne 0 ]; then
+        rm -rf $tmpdir &>/dev/null
         echo "Error occured, exiting..."
 	exit 1
     fi
     echo "$mdtest_script" > mdtest
     chmod 744 mdtest mdtest.bin
     7z a -tzip -mx=9 -bd -bso0 mdtest.zip mdtest mdtest.bin
+else
+    rm -rf $tmpdir &>/dev/null
+    echo "Error occured, exiting..."
+    exit 1
 fi
 rm -rf $tmpdir &>/dev/null
 #echo $tmpdir
