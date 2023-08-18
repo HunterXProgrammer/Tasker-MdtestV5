@@ -289,14 +289,14 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 		isSupported = true
 		message := fmt.Sprintf("%s", evt.Message.GetConversation())
 		
-		jsonData, _ = AppendToJSON(jsonData, "type", "message")
+		jsonData, _ = AppendToJSON(jsonData, "type", "text_message")
 		jsonData, _ = AppendToJSON(jsonData, "message", message)
 		jsonData, _ = AppendToJSON(jsonData, "message_id", message_id)
 	} else if evt.Message.GetExtendedTextMessage() != nil {
 		if evt.Info.Type == "text" {
 			isSupported = true
 			message := fmt.Sprintf("%s", evt.Message.ExtendedTextMessage.GetText())
-			jsonData, _ = AppendToJSON(jsonData, "type", "message")
+			jsonData, _ = AppendToJSON(jsonData, "type", "text_message")
 			jsonData, _ = AppendToJSON(jsonData, "message", message)
 			jsonData, _ = AppendToJSON(jsonData, "message_id", message_id)
 		} else if evt.Info.Type == "media" {
@@ -322,7 +322,7 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 				}
 				log.Infof("Saved link preview thumbnail in message to %s", path)
 				jsonData, _ = AppendToJSON(jsonData, "path", path)
-				jsonData, _ = AppendToJSON(jsonData, "type", "link")
+				jsonData, _ = AppendToJSON(jsonData, "type", "link_message")
 				jsonData, _ = AppendToJSON(jsonData, "message", message)
 				jsonData, _ = AppendToJSON(jsonData, "matched_text", matched_text)
 				jsonData, _ = AppendToJSON(jsonData, "canonical_url", canonical_url)
