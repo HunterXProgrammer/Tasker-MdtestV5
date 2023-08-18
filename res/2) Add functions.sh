@@ -493,8 +493,8 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 			locData := evt.Message.GetLocationMessage()
 			latitude := fmt.Sprintf("%f", locData.GetDegreesLatitude())
 			longitude := fmt.Sprintf("%f", locData.GetDegreesLongitude())
-			jsonData, _ = AppendToJSON(jsonData, "latitude", latitude)
-			jsonData, _ = AppendToJSON(jsonData, "longitude", longitude)
+			jsonData, _ = AppendToJSON(jsonData, "location_latitude", latitude)
+			jsonData, _ = AppendToJSON(jsonData, "location_longitude", longitude)
 			locThumbnail := locData.GetJpegThumbnail()
 			if len(locThumbnail) == 0 {
 				log.Errorf("Failed to save location thumbnail: User cancelled it")
