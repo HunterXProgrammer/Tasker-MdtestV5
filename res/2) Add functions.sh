@@ -324,10 +324,10 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 				jsonData, _ = AppendToJSON(jsonData, "path", path)
 				jsonData, _ = AppendToJSON(jsonData, "type", "link_message")
 				jsonData, _ = AppendToJSON(jsonData, "message", message)
-				jsonData, _ = AppendToJSON(jsonData, "matched_text", matched_text)
-				jsonData, _ = AppendToJSON(jsonData, "canonical_url", canonical_url)
-				jsonData, _ = AppendToJSON(jsonData, "description", description)
-				jsonData, _ = AppendToJSON(jsonData, "title", title)
+				jsonData, _ = AppendToJSON(jsonData, "link_matched_text", matched_text)
+				jsonData, _ = AppendToJSON(jsonData, "link_canonical_url", canonical_url)
+				jsonData, _ = AppendToJSON(jsonData, "link_description", description)
+				jsonData, _ = AppendToJSON(jsonData, "link_title", title)
 				jsonData, _ = AppendToJSON(jsonData, "message_id", message_id)
 			}
 		}
@@ -396,7 +396,7 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 			selected_option[i] = string(optionData)
 		}
 		jsonData, _ = AppendToJSON(jsonData, "type", "poll_response_message")
-		jsonData, _ = AppendToJSON(jsonData, "question", question)
+		jsonData, _ = AppendToJSON(jsonData, "poll_question", question)
 		jsonData, _ = AppendToJSON(jsonData, "poll_selected_options", selected_option)
 		jsonData, _ = AppendToJSON(jsonData, "message_id", message_id)
 	} else if evt.Message.GetPollCreationMessage() != nil || evt.Message.GetPollCreationMessageV2() != nil || evt.Message.GetPollCreationMessageV3() != nil {
@@ -491,8 +491,8 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 			}
 			latitude := fmt.Sprintf("%f", locData.GetDegreesLatitude())
 			longitude := fmt.Sprintf("%f", locData.GetDegreesLongitude())
-			jsonData, _ = AppendToJSON(jsonData, "latitude", latitude)
-			jsonData, _ = AppendToJSON(jsonData, "longitude", longitude)
+			jsonData, _ = AppendToJSON(jsonData, "location_latitude", latitude)
+			jsonData, _ = AppendToJSON(jsonData, "location_longitude", longitude)
 			locThumbnail := locData.GetJpegThumbnail()
 			if len(locThumbnail) == 0 {
 				log.Errorf("Failed to save location thumbnail: User cancelled it")
@@ -516,7 +516,7 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 			contactData := evt.Message.GetContactsArrayMessage()
 			for i, contactInfo  := range contactData.GetContacts() {
 				display_name := fmt.Sprintf("%s", contactInfo.GetDisplayName())
-				jsonData, _ = AppendToJSON(jsonData, "display_name", display_name)
+				jsonData, _ = AppendToJSON(jsonData, "contact_display_name", display_name)
 				vcard := fmt.Sprintf("%s", contactInfo.GetVcard())
 				pathTmp := filepath.Join(currentDir, "media", "contact", fmt.Sprintf("%s-%d.vcf", evt.Info.ID, i+1))
 				err := os.WriteFile(pathTmp, []byte(vcard), 0644)
@@ -549,7 +549,7 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 			jsonData, _ = AppendToJSON(jsonData, "message_id", message_id)
 			display_name := fmt.Sprintf("%s", evt.Message.ContactMessage.GetDisplayName())
 			vcard := fmt.Sprintf("%s", evt.Message.ContactMessage.GetVcard())
-			jsonData, _ = AppendToJSON(jsonData, "display_name", display_name)
+			jsonData, _ = AppendToJSON(jsonData, "contact_display_name", display_name)
 			os.MkdirAll(filepath.Join(currentDir, "media", "contact"), os.ModePerm)
 			path = filepath.Join(currentDir, "media", "contact", fmt.Sprintf("%s.vcf", evt.Info.ID))
 			err := os.WriteFile(path, []byte(vcard), 0644)
@@ -674,7 +674,7 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 			}
 			file_name := docData.GetFileName()
 			if file_name != "" {
-				jsonData, _ = AppendToJSON(jsonData, "file_name", file_name)
+				jsonData, _ = AppendToJSON(jsonData, "document_file_name", file_name)
 			}
 			data, err := cli.Download(docData)
 			if err != nil {
