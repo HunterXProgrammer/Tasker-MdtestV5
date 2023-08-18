@@ -65,6 +65,10 @@ if [ $? -eq 0 ]; then
     mkdir -p build
     cd build
     cp ${tmpdir}/whatsmeow/mdtest/mdtest.bin .
+    if [ $? -eq 0 ]; then
+        echo "Error occured, exiting..."
+	exit 1
+    fi
     echo "$mdtest_script" > mdtest
     chmod 744 mdtest mdtest.bin
     7z a -tzip -mx=9 -bd -bso0 mdtest.zip mdtest mdtest.bin
