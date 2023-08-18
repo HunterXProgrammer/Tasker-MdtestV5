@@ -696,7 +696,7 @@ code_body='
 					new_args := []string{}
 					new_args = append(new_args, participant_jid)
 					new_args = append(new_args, args[1:]...)
-					handleCmd(strings.ToLower("send", new_args[0:]))
+					handleCmd("send", new_args[0:])
 				}
 			}
 		}
