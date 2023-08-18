@@ -51,6 +51,20 @@ code_body='
 				//start
 				is_connected = true
 				if *isMode == "both" {
+					updatedGroupInfo = false
+					groups, err := cli.GetJoinedGroups()
+					if err == nil {
+						jsonContent, err := json.MarshalIndent(groups, "", "  ")
+						if err == nil {
+							result := make(map[string]interface{})
+							result["groups"] = json.RawMessage(jsonContent)
+							groupData, err := json.MarshalIndent(result, "", "  ")
+							if err == nil {
+								json.Unmarshal(groupData, &groupInfo)
+							}
+						}
+					}
+					updatedGroupInfo = true
 					log.Infof("Receive/Send Mode Enabled")
 					log.Infof("Will Now Receive/Send Messages In Tasker")
 					go MdtestStart()
