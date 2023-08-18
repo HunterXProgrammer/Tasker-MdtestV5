@@ -37,6 +37,17 @@ var device_jid string
 var default_jid string
 var keepalive_timeout bool
 var waitSync sync.WaitGroup
+var groupInfo GroupInfo
+var updatedGroupInfo bool
+
+type Group struct {
+	JID       string          `json:"JID"`
+	Name      string          `json:"Name"`
+}
+
+type GroupInfo struct {
+	Groups []Group `json:"groups"`
+}
 
 func sendHttpPost(json_data string, path string) {
 	send_http := &http.Client{
@@ -248,6 +259,12 @@ func resizeImage(img image.Image) image.Image {
 
 func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 	defer wg.Done()
+	for !updatedGroupInfo {
+		time.Sleep(1 * time.Second)
+		if updatedGroupInfo {
+			break
+		}
+	}
 	isSupported := false
 	jsonData := "{}"
 	path := ""
@@ -271,8 +288,21 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 		is_from_myself = "0"
 	}
 	is_group := ""
+	group_name := ""
 	if evt.Info.MessageSource.IsGroup {
 		is_group = "1"
+		for _, group := range groupInfo.Groups {
+			if group.JID == receiver_jid {
+				group_name = group.Name
+				break
+			}
+		}
+		
+		if group_name != "" {
+			jsonData, _ = AppendToJSON(jsonData, "group_name", group_name)
+		} else {
+			jsonData, _ = AppendToJSON(jsonData, "group_name", " Unknown, Group Not Found")
+		}
 	} else {
 		is_group = "0"
 	}
