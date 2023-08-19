@@ -114,7 +114,7 @@ You are responsible for what you do with this.
 
 # Instructions
 ### For Tasker Users
-Check this Tasker Reddit **[post]()** for more info and importable Taskernet links.
+TODO
 
 ### For CLI Users
 **NOTE:-**
@@ -123,20 +123,7 @@ Check this Tasker Reddit **[post]()** for more info and importable Taskernet lin
 > Not recommended for Tasker beginners since there are ready made Taskernet links in the Tasker Reddit Post that you can import.
 
 #### CLI In Tasker
-Added preliminary CLI support to run `mdtest` from within Tasker itself using action [Run Shell].
-
-1\) Set it up as described in this Tasker Reddit **[post]()**.
-
-This will prepare Tasker to enable CLI support natively.
-
-Your [Run Shell] action to use `mdtest` will look like this -
-
-    #!/system/bin/sh
-    mdtest_dir="/data/data/net.dinglisch.android.taskerm/files/whatsmeow5/mdtest"
-    cd $mdtest_dir.7774
-    sh $mdtest_dir/mdtest FLAGS COMMAND PARAMETERS
-
-Check **[Commands And Parameters](https://github.com/HunterXProgrammer/Tasker-MdtestV5#commands-and-parameters)** for more info about the available CLI commands.
+TODO
 
 #### CLI In Termux
 CLI Setup:-
