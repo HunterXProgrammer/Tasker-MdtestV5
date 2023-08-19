@@ -99,13 +99,13 @@ You need to run **"Mdtest - Start (V5)"** from the **"Receive Messages"** Projec
   to identify which message to revoke or mark as read.
 
 #### \# Variables specific to:-  
-\-> **`%type` = `text_message`**
+**\-> `%type` = `text_message`**
 
 - **`%message`**  
   The text in the message.
 
 #### \# Variables specific to:-  
-\-> **`%type` = `image_message`**
+**\-> `%type` = `image_message`**
 
 - **`%caption`**  
   The caption in the image message.  
@@ -115,7 +115,7 @@ You need to run **"Mdtest - Start (V5)"** from the **"Receive Messages"** Projec
   The path to the downloaded image file.
 
 #### \# Variables specific to:-  
-\-> **`%type` = `video_message`**
+**\-> `%type` = `video_message`**
 
 - **`%caption`**  
   The caption in the video message.  
@@ -125,13 +125,13 @@ You need to run **"Mdtest - Start (V5)"** from the **"Receive Messages"** Projec
   The path to the downloaded video file.
 
 #### \# Variables specific to:-  
-\-> **`%type` = `audio_message`**
+**\-> `%type` = `audio_message`**
 
 - **`%path`**  
   The path to the downloaded audio file.
 
 #### \# Variables specific to:-  
-\-> **`%type` = `document_message`**
+**\-> `%type` = `document_message`**
 
 - **`%caption`**  
   The caption in the document message.  
@@ -144,7 +144,7 @@ You need to run **"Mdtest - Start (V5)"** from the **"Receive Messages"** Projec
   The file name of the document file.
 
 #### \# Variables specific to:-  
-\-> **`%type` = `status_message`**
+**\-> `%type` = `status_message`**
 
 - **`%caption`**  
   The caption in the status message.  
@@ -154,7 +154,7 @@ You need to run **"Mdtest - Start (V5)"** from the **"Receive Messages"** Projec
   The path to the downloaded status media file.
 
 #### \# Variables specific to:-  
-\-> **`%type` = `contact_message`**
+**\-> `%type` = `contact_message`**
 
 - **`%contact_display_name`**  
   The display name of the shared contact.
@@ -163,7 +163,7 @@ You need to run **"Mdtest - Start (V5)"** from the **"Receive Messages"** Projec
   The path to the downloaded contact **`.vcf`** file.
 
 #### \# Variables specific to:-  
-\-> **`%type` = `link_message`**
+**\-> `%type` = `link_message`**
 
 - **`%message`**  
   The text in the message.
@@ -184,7 +184,7 @@ You need to run **"Mdtest - Start (V5)"** from the **"Receive Messages"** Projec
   The path to the downloaded link message preview image file.
 
 #### \# Variables specific to:-  
-\-> **`%type` = `location_message`**
+**\-> `%type` = `location_message`**
 
 - **`%caption`**  
   The caption in the location message.  
@@ -200,7 +200,7 @@ You need to run **"Mdtest - Start (V5)"** from the **"Receive Messages"** Projec
   The path to the downloaded location message preview image file.
 
 #### \# Variables specific to:-  
-\-> **`%type` = `poll_response_message`**
+**\-> `%type` = `poll_response_message`**
 
 - **`%poll_question`**  
   The question text in the poll message.  
@@ -212,7 +212,7 @@ You need to run **"Mdtest - Start (V5)"** from the **"Receive Messages"** Projec
 
 
 #### \# Variables specific to:-  
-\-> **`%type` = `button_response_message`**
+**\-> `%type` = `button_response_message`**
 
 - **`%button_title`**  
   The title of the button message.
@@ -231,7 +231,7 @@ You need to run **"Mdtest - Start (V5)"** from the **"Receive Messages"** Projec
   (**Note:-** It is seperate from `%message_id`)
 
 #### \# Variables specific to:-  
-\-> **`%type` = `list_response_message`**
+**\-> `%type` = `list_response_message`**
 
 - **`%list_title`**  
   The title of the list message.
