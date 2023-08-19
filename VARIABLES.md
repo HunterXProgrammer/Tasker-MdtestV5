@@ -14,7 +14,7 @@ These variables are populated whenever a WhatApp message of the corresponding ty
 
 - **`%type`**  
   It indicates the type of message received.  
-  Can be one of:-  
+  Can be one of:-
   - text_message, image_message, video_message,   
     audio_message, document_message, status_message,  
     contact_message, link_message, location_message,  
@@ -41,38 +41,47 @@ These variables are populated whenever a WhatApp message of the corresponding ty
   Country code followed by the number and "@s.whatsapp.net" at the end.  
   Eg:- If country code is "91", then -> 919876543210@s.whatsapp.net
 
-    %receiver_number = Phone Number of the receiver.
-                       Country code followed by the number.
-                       Eg:- If country code is "91", then -> 919876543210
+- **`%receiver_number`**  
+  Phone Number of the receiver.  
+  Country code followed by the number.  
+  Eg:- If country code is "91", then -> 919876543210
 
-    %receiver_jid = The JID of the receiver.
-                    Country code followed by the number and "@s.whatsapp.net" at the end.
-                    Eg:- If country code is "91", then -> 919876543210@s.whatsapp.net
+- **`%receiver_jid`**  
+  The JID of the receiver.  
+  Country code followed by the number and "@s.whatsapp.net" at the end.  
+  Eg:- If country code is "91", then -> 919876543210@s.whatsapp.net
 
-    %is_from_myself = If message was sent by yourself. 
-                      Value is `1` if true, `0` if false.
+- **`%is_from_myself`**  
+  If message was sent by yourself.  
+  Value is `1` if true, `0` if false.
 
-    %is_group = If message was sent in group.
-                Value is `1` if true, `0` if false.
+- **`%is_group`**  
+  If message was sent in group.  
+  Value is `1` if true, `0` if false.
 
-    %group_name = Name of the Group.
-                  Will only be set if message was sent to group.
+- **`%group_name`**  
+  Name of the Group.  
+  Will only be set if message was sent to group.
 
-    %group_number = Number of the Group.
-                    Will only be set if message was sent to group.
-                    Eg:- 919876543210-1234567890
+- **`%group_number`**  
+  Number of the Group.  
+  Will only be set if message was sent to group.  
+  Eg:- 919876543210-1234567890
 
-    %group_jid = The JID of the group.
-                 Will only be set if message was sent to group
-                 Group number followed by "@g.us" at the end.
-                 Eg:- 919876543210-1234567890@g.us
+- **`%group_jid`**  
+  The JID of the group.  
+  Will only be set if message was sent to group.  
+  Group number followed by "@g.us" at the end.  
+  Eg:- 919876543210-1234567890@g.us
 
-    %time_stamp = Time stamp of the message.
-                  Time is in epoch seconds UTC.
+- **`%timestamp`**  
+  Time stamp of the message.  
+  Time is in epoch seconds UTC.
 
-    %message_id = Message ID of the received message.
-                  Used in advanced Task like Message Revoke, etc,
-                  to identify which message to revoke or mark as read.
+- **`%message_id`**  
+  Message ID of the received message.  
+  Used in advanced Task like Message Revoke, etc,  
+  to identify which message to revoke or mark as read.
 
 #### Variables specific to Text Messages:-
 
