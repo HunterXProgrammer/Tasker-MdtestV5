@@ -156,7 +156,6 @@ You can build and compile it by yourself in Termux -
     git clone https://github.com/HunterXProgrammer/Tasker-MdtestV5
     cd Tasker-MdtestV5
     bash build_whatsmeow5.sh
-    mv whatsmeow5 ~/
     
 3\) After that link with WhatsApp like this -
 
