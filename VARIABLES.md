@@ -91,12 +91,14 @@ These variables are populated whenever a WhatApp message of the corresponding ty
   Used in advanced Task like Message Revoke, etc,  
   to identify which message to revoke or mark as read.
 
-#### \# Variables specific to **`%type` = `text_message`**:-
+#### \# Variables specific to:-  
+**`%type` = `text_message`**
 
 - **`%message`**  
   The text in the message.
 
-#### \# Variables specific to **`%type` = `image_message`**:-
+#### \# Variables specific to:-  
+**`%type` = `image_message`**
 
 - **`%caption`**  
   The caption in the image message.  
@@ -105,7 +107,8 @@ These variables are populated whenever a WhatApp message of the corresponding ty
 - **`%path`**  
   The path to the downloaded image file.
 
-#### \# Variables specific to **`%type` = `video_message`**:-
+#### \# Variables specific to:-  
+**`%type` = `video_message`**
 
 - **`%caption`**  
   The caption in the video message.  
@@ -114,12 +117,14 @@ These variables are populated whenever a WhatApp message of the corresponding ty
 - **`%path`**  
   The path to the downloaded video file.
 
-#### \# Variables specific to **`%type` = `audio_message`**:-
+#### \# Variables specific to:-  
+**`%type` = `audio_message`**
 
 - **`%path`**  
   The path to the downloaded audio file.
 
-#### \# Variables specific to **`%type` = `document_message`**:-
+#### \# Variables specific to:-  
+**`%type` = `document_message`**
 
 - **`%caption`**  
   The caption in the document message.  
@@ -131,7 +136,8 @@ These variables are populated whenever a WhatApp message of the corresponding ty
 - **`%file_name`**  
   The file name of the document file.
 
-#### \# Variables specific to **`%type` = `status_message`**:-
+#### \# Variables specific to:-  
+**`%type` = `status_message`**
 
 - **`%caption`**  
   The caption in the status message.  
@@ -140,7 +146,8 @@ These variables are populated whenever a WhatApp message of the corresponding ty
 - **`%path`**  
   The path to the downloaded status media file.
 
-#### \# Variables specific to **`%type` = `contact_message`**:-
+#### \# Variables specific to:-  
+**`%type` = `contact_message`**
 
 - **`%contact_display_name`**  
   The display name of the shared contact.
@@ -148,7 +155,8 @@ These variables are populated whenever a WhatApp message of the corresponding ty
 - **`%path`**  
   The path to the downloaded contact **`.vcf`** file.
 
-#### \# Variables specific to **`%type` = `link_message`**:-
+#### \# Variables specific to:-  
+**`%type` = `link_message`**
 
 - **`%message`**  
   The text in the message.
@@ -168,7 +176,8 @@ These variables are populated whenever a WhatApp message of the corresponding ty
 - **`%path`**  
   The path to the downloaded link message preview image file.
 
-#### \# Variables specific to **`%type` = `location_message`**:-
+#### \# Variables specific to:-  
+**`%type` = `location_message`**
 
 - **`%caption`**  
   The caption in the location message.  
@@ -183,7 +192,8 @@ These variables are populated whenever a WhatApp message of the corresponding ty
 - **`%path`**  
   The path to the downloaded location message preview image file.
 
-#### \# Variables specific to **`%type` = `poll_response_message`**:-
+#### \# Variables specific to:-  
+**`%type` = `poll_response_message`**
 
 - **`%poll_question`**  
   The question text in the poll message.  
@@ -194,7 +204,8 @@ These variables are populated whenever a WhatApp message of the corresponding ty
   Will only be set if the poll response message was received when Mdtest was running.
 
 
-#### \# Variables specific to **`%type` = `button_response_message`**:-
+#### \# Variables specific to:-  
+**`%type` = `button_response_message`**
 
 - **`%button_title`**  
   The title of the button message.
@@ -212,7 +223,8 @@ These variables are populated whenever a WhatApp message of the corresponding ty
   The message id from which the button response message originated from.  
   (**Note:-** It is seperate from `%message_id`)
 
-#### \# Variables specific to **`%type` = `list_response_message`**:-
+#### \# Variables specific to:-  
+**`%type` = `list_response_message`**
 
 - **`%list_title`**  
   The title of the list message.
