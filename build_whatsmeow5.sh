@@ -73,11 +73,13 @@ if [ $? -eq 0 ]; then
     echo "$mdtest_script" > mdtest
     chmod 744 mdtest mdtest.bin
     7z a -tzip -mx=9 -bd -bso0 mdtest.zip mdtest mdtest.bin
+    rm -rf mdtest mdtest.bin &>/dev/null
 else
     rm -rf $tmpdir &>/dev/null
     echo "Error occured, exiting..."
     exit 1
 fi
+
 rm -rf $tmpdir &>/dev/null
 #echo $tmpdir
 #exit 0
@@ -95,21 +97,17 @@ fi
 
 chmod 744 build/ffmpeg build/ffmpeg.bin
 
-mkdir -p whatsmeow5/mdtest/ffmpeg &>/dev/null
+rm -rf ffmpeg &>/dev/null
 
-mv build/mdtest whatsmeow5/mdtest &>/dev/null
+mkdir -p ffmpeg &>/dev/null
 
-mv build/mdtest.bin whatsmeow5/mdtest &>/dev/null
+mv build/ffmpeg ffmpeg &>/dev/null
 
-mv build/ffmpeg whatsmeow5/mdtest/ffmpeg &>/dev/null
+mv build/ffmpeg.bin ffmpeg &>/dev/null
 
-mv build/ffmpeg.bin whatsmeow5/mdtest/ffmpeg &>/dev/null
+mv build/lib-ffmpeg ffmpeg &>/dev/null
 
-mv build/lib-ffmpeg whatsmeow5/mdtest/ffmpeg &>/dev/null
-
-cp -rf whatsmeow5/mdtest/ffmpeg build
-
-mv -f -T whatsmeow5 ~/
+mv ffmpeg build &>/dev/null 
 
 cd build
 
@@ -118,5 +116,11 @@ echo -e "Adding ffmpeg to mdtest.zip...\n"
 7z a -tzip -mx=9 -bd -bso0 mdtest.zip ffmpeg
 
 rm -rf ffmpeg &>/dev/null
+
+mkdir -p ~/whatsmeow5/mdtest
+
+7z x -aoa mdtest.zip -o$HOME/whatsmeow5/mdtest &>/dev/null
+
+chmod 744 ~/whatsmeow5/mdtest/mdtest
 
 echo -e "All done! You can type this -\n  \n\" cd ~/whatsmeow5/mdtest; ./mdtest \"\n\nType without quotes to run Mdtest\n"
