@@ -10,7 +10,7 @@ These variables are populated whenever a WhatApp message of the corresponding ty
 
 **Note:-** You need to run **"Mdtest - Start (V5)"** from the **"Receive Messages"** Project in `%mode` = `both` for the variables to be populated in the Task **"This Task Runs When Message Received (V5)"**.
 
-### Generally Available For All Message Types:-
+### \# Generally Available For All Message Types:-
 
 - **`%type`**  
   It indicates the type of message received.  
@@ -91,12 +91,12 @@ These variables are populated whenever a WhatApp message of the corresponding ty
   Used in advanced Task like Message Revoke, etc,  
   to identify which message to revoke or mark as read.
 
-#### Variables specific to **`%type` = `text_message`**:-
+#### \# Variables specific to **`%type` = `text_message`**:-
 
 - **`%message`**  
   The text in the message.
 
-#### Variables specific to **`%type` = `image_message`**:-
+#### \# Variables specific to **`%type` = `image_message`**:-
 
 - **`%caption`**  
   The caption in the image message.  
@@ -105,7 +105,7 @@ These variables are populated whenever a WhatApp message of the corresponding ty
 - **`%path`**  
   The path to the downloaded image file.
 
-#### Variables specific to **`%type` = `video_message`**:-
+#### \# Variables specific to **`%type` = `video_message`**:-
 
 - **`%caption`**  
   The caption in the video message.  
@@ -114,12 +114,12 @@ These variables are populated whenever a WhatApp message of the corresponding ty
 - **`%path`**  
   The path to the downloaded video file.
 
-#### Variables specific to **`%type` = `audio_message`**:-
+#### \# Variables specific to **`%type` = `audio_message`**:-
 
 - **`%path`**  
   The path to the downloaded audio file.
 
-#### Variables specific to **`%type` = `document_message`**:-
+#### \# Variables specific to **`%type` = `document_message`**:-
 
 - **`%caption`**  
   The caption in the document message.  
@@ -131,7 +131,7 @@ These variables are populated whenever a WhatApp message of the corresponding ty
 - **`%file_name`**  
   The file name of the document file.
 
-#### Variables specific to **`%type` = `status_message`**:-
+#### \# Variables specific to **`%type` = `status_message`**:-
 
 - **`%caption`**  
   The caption in the status message.  
@@ -140,7 +140,7 @@ These variables are populated whenever a WhatApp message of the corresponding ty
 - **`%path`**  
   The path to the downloaded status media file.
 
-#### Variables specific to **`%type` = `contact_message`**:-
+#### \# Variables specific to **`%type` = `contact_message`**:-
 
 - **`%contact_display_name`**  
   The display name of the shared contact.
@@ -148,45 +148,94 @@ These variables are populated whenever a WhatApp message of the corresponding ty
 - **`%path`**  
   The path to the downloaded contact **`.vcf`** file.
 
+#### \# Variables specific to **`%type` = `link_message`**:-
+
+- **`%message`**  
+  The text in the message.
+
+- **`%link_title`**  
+  The title of the link message.
+
+- **`%link_description`**  
+  The description of the link message.
+
+- **`%link_canonical_url`**  
+  The canonical url of the link message.
+
+- **`%link_matched_text`**  
+  The matched text of the link message.
+
+- **`%path`**  
+  The path to the downloaded link message preview image file.
+
+#### \# Variables specific to **`%type` = `location_message`**:-
+
+- **`%caption`**  
+  The caption in the location message.  
+  It is similar to `%message` but for caption.
+
+- **`%location_latitude`**  
+  The latitude co-ordinate in the location message.
+
+- **`%location_longitude`**  
+  The longitude co-ordinate in the location message.
+
+- **`%path`**  
+  The path to the downloaded location message preview image file.
+
+#### \# Variables specific to **`%type` = `poll_response_message`**:-
+
+- **`%poll_question`**  
+  The question text in the poll message.  
+  Will only be set if the poll response message was received when Mdtest was running.
+
+- **`%poll_selected_options()`**  
+  The array that contains the list of selected options.  
+  Will only be set if the poll response message was received when Mdtest was running.
 
 
+#### \# Variables specific to **`%type` = `button_response_message`**:-
 
+- **`%button_title`**  
+  The title of the button message.
 
+- **`%button_body`**  
+  The body of the button message.
 
-#### Variables specific to Button Response Messages:-
+- **`%button_footer`**  
+  The footer of the button message.
 
-`%button_title` = Title of the Button Message.
+- **`%button_selected_button`**  
+  The text of the selected button.
 
-`%button_body` = Body of the Button Message.
+- **`%origin_message_id`**  
+  The message id from which the button response message originated from.  
+  (**Note:-** It is seperate from `%message_id`)
 
-`%button_footer` = Footer of the Button Message.
+#### \# Variables specific to **`%type` = `list_response_message`**:-
 
-`%button_selected_button` = Text of the selected Button.
+- **`%list_title`**  
+  The title of the list message.
 
-`%origin_message_id` = The message id from which the Button Response Message originates from.  
-(**Note:-** It is seperate from `%message_id`)
+- **`%list_body`**  
+  The body of the list message.
 
-#### Variables specific to List Response Messages:-
+- **`%list_footer`**  
+  The footer of the list message.
 
-`%list_title` = Title of the List Message.
+- **`%list_header`**  
+  The header of the list message.
 
-`%list_body` = Body of the List Message.
+- **`%list_button_text`**  
+  The text of the button of the list message.
 
-`%list_footer` = Footer of the List Message.
+- **`%list_selected_title`**  
+  The text of the selected title.
 
-`%list_header` = Header of the List Message.
+- **`%list_selected_description`**  
+  The text of the selected description.
 
-`%list_button_text` = Text of the button of the List Message.
-
-`%list_selected_title` = The text of the selected Title
-
-`%list_selected_description` = The text of the  selected Description
-
-`%origin_message_id` = The message id from which the List Response Message originates from.  
-(**Note:-** It is seperate from `%message_id`)
-
-#### Variables specific to Poll Response Messages:-
-
-`%poll_question` = The Poll Question. Only set if the Poll Response Message was received when Mdtest was running. It will be written as old/outdated otherwise.
-
-`%poll_selected_options()` = The array that contains the list of selected options. Only set if the Poll Response Message was received when Mdtest was running.
+- **`%origin_message_id`**  
+  The message id from which the button response message originated from.  
+  (**Note:-** It is seperate from `%message_id`)
+  
