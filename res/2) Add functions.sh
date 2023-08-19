@@ -286,6 +286,9 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 		is_from_myself = "1"
 	} else {
 		is_from_myself = "0"
+		if sender_jid == receiver_jid && default_jid != "" {
+			receiver_jid = default_jid
+		}
 	}
 	is_group := ""
 	group_name := ""
