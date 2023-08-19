@@ -292,7 +292,7 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 	}
 	is_group := ""
 	group_name := ""
-	if evt.Info.MessageSource.IsGroup {
+	if evt.Info.MessageSource.IsGroup && receiver_jid != "status@broadcast" {
 		is_group = "1"
 		for _, group := range groupInfo.Groups {
 			if group.JID == receiver_jid {
