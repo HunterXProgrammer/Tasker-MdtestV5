@@ -99,13 +99,15 @@ Made for Project Mdtest V5.
 - Better support for sending images/videos/audio.  
   **(Old V4)** Previously needed to send an image thumbnail seperately along with the main media file.  
   **(New V5)** Now no longer necessary, Mdtest(V5) handles it.
-- Added support for receiving media messages and downloading the media file.  
-  Includes downloading images/videos/audio/documents/status/contacts/links/location previews.  
-  The media files are stored in `~/whatsmeow5/mdtest/media`.  
-  To enable downloading media pass the `--save-media` flag when starting `mdtest`.
+- Added support for receiving media messages and downloading the media file. 
+  - Includes downloading images/videos/audio/documents/status/contacts/links/location previews.
+    - To enable receiving media messages and downloading media in **Tasker** set variable **`%save_media` = `true`**  
+      The media files are stored in **`/data/data/net.dinglisch.android.taskerm/files/whatsmeow5/mdtest.7774/media`** **(where `7774` = `%port`)**
+    - To enable receiving media messages and in **Terminal(Termux)** pass the **`--save-media`** flag when starting `mdtest`.  
+      The media files are stored in **`~/whatsmeow5/mdtest/media`**
 - Added support to send link preview messages.  
   Only for websites that support the **[Open Graph](https://ogp.me/)** protocol.  
-  Eg:- `https://github.com/HunterXProgrammer/Tasker-MdtestV5`
+  **Eg:- `https://github.com/HunterXProgrammer/Tasker-MdtestV5`**
 
 # Disclaimer
 You are responsible for what you do with this.
