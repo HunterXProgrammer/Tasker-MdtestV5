@@ -183,7 +183,7 @@ The **FLAGS** are -
             status, location previews.
           - Media saved to whatsmeow5/mdtest/media
           - Note:- To be used in conjuction with "--mode <value>"
-                  Will only be effective if "<value>" is "both"
+                   Will only be effective if "<value>" is "both"
     
     --mode <value>
           Select mode: none, both or send
