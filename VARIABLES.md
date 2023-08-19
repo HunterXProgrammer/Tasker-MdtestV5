@@ -12,7 +12,7 @@ You need to run **"Mdtest - Start (V5)"** from the **"Receive Messages"** Projec
 
 **Note:-** Added support for receiving media messages and downloading the media file. 
   - Includes downloading images/videos/audio/documents/status/contacts/links/location previews.
-    - To enable downloading media in **Tasker** set variable **`%save_media` = `true` (default)**
+    - To enable downloading media in **Tasker** set variable **`%save_media` = `true`**
       The media files are stored in **`/data/data/net.dinglisch.android.taskerm/files/whatsmeow5/mdtest.7774/media`** **(where `7774` = `%port`)**
     - To enable downloading media in **Terminal(Termux)** pass the **`--save-media`** flag when starting `mdtest`.  
       The media files are stored in **`~/whatsmeow5/mdtest/media`**
