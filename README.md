@@ -147,7 +147,7 @@ CLI Setup:-
 
 **Eg:-** Depending on your device architecture(use `uname -m` to find out), you can download for `arm`,`arm64`(aarch64),`x86` and `x86_64` like this -
 
-    arch=arm64 && curl -s -L -o "mdtest-${arch}.zip" "https://github.com/HunterXProgrammer/Tasker-MdtestV5/releases/tag/MdtestV5-Assets/mdtest-${arch}.zip" && mkdir -p ~/whatsmeow5/mdtest && unzip -o -d ~/whatsmeow5/mdtest mdtest-${arch}.zip && chmod -R 744 ~/whatsmeow5/mdtest/mdtest
+    arch=arm64 && curl -s -L -o "mdtest-${arch}.zip" "https://github.com/HunterXProgrammer/Tasker-MdtestV5/releases/download/MdtestV5-Assets/mdtest-${arch}.zip" && mkdir -p ~/whatsmeow5/mdtest && unzip -o -d ~/whatsmeow5/mdtest mdtest-${arch}.zip && chmod -R 744 ~/whatsmeow5/mdtest/mdtest
 
 OR
 
