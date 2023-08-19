@@ -10,15 +10,23 @@ These variables are populated whenever a WhatApp message of the corresponding ty
 
 **Note:-** You need to run **"Mdtest - Start (V5)"** from the **"Receive Messages"** Project in `%mode` = `both` for the variables to be populated in the Task **"This Task Runs When Message Received (V5)"**.
 
-#### Generally Available For All Message Types:-
+### Generally Available For All Message Types:-
 
 - **`%type`**  
   It indicates the type of message received.  
   Can be one of:-
-  - text_message, image_message, video_message,   
-    audio_message, document_message, status_message,  
-    contact_message, link_message, location_message,  
-    poll_response_message, button_response_message, list_response_message
+  - **`text_message`**
+  - **`image_message`**
+  - **`video_message`**
+  - **`audio_message`**
+  - **`document_message`**
+  - **`status_message`**
+  - **`contact_message`**
+  - **`link_message`**
+  - **`location_message`**
+  - **`poll_response_message`**
+  - **`button_response_message`**
+  - **`list_response_message`**
 
 - **`%port`**  
   Think of it as a unique identifier.  
@@ -83,9 +91,67 @@ These variables are populated whenever a WhatApp message of the corresponding ty
   Used in advanced Task like Message Revoke, etc,  
   to identify which message to revoke or mark as read.
 
-#### Variables specific to Text Messages:-
+#### Variables specific to **`%type` = `text_message`**:-
 
-`%message` = The text message.
+- **`%message`**  
+  The text in the message.
+
+#### Variables specific to **`%type` = `image_message`**:-
+
+- **`%caption`**  
+  The caption in the image message.  
+  It is similar to `%message` but for caption.
+
+- **`%path`**  
+  The path to the downloaded image file.
+
+#### Variables specific to **`%type` = `video_message`**:-
+
+- **`%caption`**  
+  The caption in the video message.  
+  It is similar to `%message` but for caption.
+
+- **`%path`**  
+  The path to the downloaded video file.
+
+#### Variables specific to **`%type` = `audio_message`**:-
+
+- **`%path`**  
+  The path to the downloaded audio file.
+
+#### Variables specific to **`%type` = `document_message`**:-
+
+- **`%caption`**  
+  The caption in the document message.  
+  It is similar to `%message` but for caption.
+
+- **`%path`**  
+  The path to the downloaded document file.
+
+- **`%file_name`**  
+  The file name of the document file.
+
+#### Variables specific to **`%type` = `status_message`**:-
+
+- **`%caption`**  
+  The caption in the status message.  
+  It is similar to `%message` but for caption.
+
+- **`%path`**  
+  The path to the downloaded status media file.
+
+#### Variables specific to **`%type` = `contact_message`**:-
+
+- **`%contact_display_name`**  
+  The display name of the shared contact.
+
+- **`%path`**  
+  The path to the downloaded contact **`.vcf`** file.
+
+
+
+
+
 
 #### Variables specific to Button Response Messages:-
 
