@@ -22,14 +22,21 @@ Made for Project Mdtest V5.
 - Revoke messages
 - Download Media Messages (New!)  
   Now includes downloading media like:-
-  - Images, videos, audio, documents, status, contacts, link previews, location previews
+  - Images
+  - Videos
+  - Audio
+  - Documents
+  - Status
+  - Contacts
+  - Link previews
+  - Location previews
 - Mute/Unmute chats (New!)
 - Pin/Unpin chats (New!)
 - Archive/Unarchive chats (New!)
 - Multi-Number/User support (New!)
   - Previously Mdtest could support only one WhatsApp number, but now you can have as many as you want
-- Receive details of incoming messages as Tasker variables. Can use this for automated replies.
-  **Be sure to check [VARIABLE.md](https://github.com/HunterXProgrammer/Tasker-MdtestV5/blob/main/VARIABLES.md) for all the available variables.
+- Receive details of incoming messages as Tasker variables. Can use this for automated replies.  
+  **Be sure to check [VARIABLE.md](https://github.com/HunterXProgrammer/Tasker-MdtestV5/blob/main/VARIABLES.md) for all the available variables.**  
   Current list of message types that are supported and can be received as Tasker variables:-
   - Text, image, video, audio, document, status, contact, link, location, poll, button, list, etc.
 - Added support to link WhatsApp using phone number pairing method
