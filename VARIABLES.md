@@ -8,7 +8,7 @@ Based on these variables, you can setup your own Tasks that would analyze the co
 # List Of Tasker Variables
 These variables are populated whenever a WhatApp message of the corresponding type is received.
 
-You need to run **"Mdtest - Start (V5)"** from the **"Receive Messages"** Project in `%mode` = `both` for the variables to be populated in the Task **"This Task Runs When Message Received (V5)"**.
+You need to run **"Mdtest - Start (V5)"** from the **"Receive Messages"** Project in **`%mode` = `both`** for the variables to be populated in the Task **"This Task Runs When Message Received (V5)"**.
 
 **Note:-** Added support for receiving media messages and downloading the media file. 
   - Includes downloading images/videos/audio/documents/status/contacts/links/location previews.
