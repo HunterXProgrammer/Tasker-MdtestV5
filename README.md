@@ -1,12 +1,18 @@
 # Description
-Send WhatsApp Text/Images/Videos/PDF/Documents/Voice Messages automatically using Tasker.
+Send WhatsApp Text/Images/Videos/PDF/Documents/Voice/Poll Messages, plus many more types, automatically using Tasker.
+
+Also supports sending WhatsApp messages from the Terminal(Termux).
 
 Previous post intro:-
 
->Recently I've been getting a lot of inquiries on how to send images, videos or documents in WhatsApp using Tasker. Possibly with the screen off, phone locked, without unlocking, etc. Had some time to make this so here it is.
+>Recently I've been getting a lot of inquiries on how to send images, videos or documents in WhatsApp using Tasker.
+>
+>Possibly with the screen off, phone locked, without unlocking, etc. Had some time to make this so here it is.
 
 # Details
-Contains assets that are used for running Mdtest V5 directly in Tasker, without needing Termux.
+Contains assets that are used for running Mdtest V5 directly in Tasker.
+
+Also supports sending WhatsApp messages from the Terminal(Termux).
 
 Made for Project Mdtest V5.
 
@@ -38,7 +44,52 @@ Made for Project Mdtest V5.
 - Receive details of incoming messages as Tasker variables. Can use this for automated replies.  
   **Be sure to check [VARIABLE.md](https://github.com/HunterXProgrammer/Tasker-MdtestV5/blob/main/VARIABLES.md) for all the available variables.**  
   Current list of message types that are supported and can be received as Tasker variables:-
-  - Text, image, video, audio, document, status, contact, link, location, poll, button, list, etc.
+  - **Text message**
+    - text body
+  - **Image message**
+    - caption
+    - image file
+  - **Video message**
+    - caption
+    - video file
+  - **Audio message**
+    - audio file
+  - **Document**
+    - caption
+    - document name
+    - document file
+  - **Status message**
+    - caption
+    - status media file
+  - **Contact message**
+    - contact display name
+    - contact `.vcf` file
+  - **Link message**
+    - text body
+    - link title
+    - link description
+    - link url
+    - image preview file
+  - **Location message**
+    - latitude
+    - longitude
+    - image preview file
+  - **Poll response message**
+    - poll question
+    - poll selected options
+  - **Button response message**
+    - button title
+    - button body
+    - button footer
+    - selected button
+  - **List response message**
+    - list title
+    - list body
+    - list footer
+    - list header
+    - list button text
+    - selected title
+    - selected description
 - Added support to link WhatsApp using phone number pairing method
 
 ### Changes in Mdtest V5 Compared To Previous V4
@@ -65,7 +116,9 @@ Check this Tasker Reddit **[post]()** for more info and importable Taskernet lin
 
 ### For CLI Users
 **NOTE:-**
->This section is helpful for those who want to make shell scripts to use `mdtest` to send messages. Not recommended for Tasker beginners since there are ready made Taskernet links in the Tasker Reddit Post that you can import.
+>This section is helpful for those who want to make shell scripts to use `mdtest` to send messages
+>
+> Not recommended for Tasker beginners since there are ready made Taskernet links in the Tasker Reddit Post that you can import.
 
 #### CLI In Tasker
 Added preliminary CLI support to run `mdtest` from within Tasker itself using action [Run Shell].
