@@ -153,6 +153,7 @@ OR
 
 You can build and compile it by yourself in Termux -
 
+    rm -rf Tasker-MdtestV5
     git clone https://github.com/HunterXProgrammer/Tasker-MdtestV5
     cd Tasker-MdtestV5
     bash build_whatsmeow5.sh
