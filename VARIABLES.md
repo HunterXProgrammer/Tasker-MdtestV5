@@ -12,27 +12,34 @@ These variables are populated whenever a WhatApp message of the corresponding ty
 
 #### Generally Available For All Message Types:-
 
-    %type = The type of message received.
-            Can be one of:-
-            - text_message, image_message, video_message,
-              audio_message, document_message, status_message,
-              contact_message, link_message, location_message,
-              poll_response_message, button_response_message, list_response_message
+- **`%type`**  
+  It indicates the type of message received.  
+  Can be one of:-  
+  - text_message, image_message, video_message,   
+    audio_message, document_message, status_message,  
+    contact_message, link_message, location_message,  
+    poll_response_message, button_response_message, list_response_message
 
-    %port = Think of it as a unique identifier that is used for distinction when you use multiple numbers.
+- **`%port`**  
+  Think of it as a unique identifier.  
+  It is used for distinction when you use multiple numbers.
 
-    %sender_name = Name of the sender.
-                   Will only be set if the sender is saved in contacts.
+- **`%sender_name`**  
+  Name of the sender.  
+  Will only be set if the sender is saved in contacts.
 
-    %sender_pushname = Push Name of the sender.
+- **`%sender_pushname`**  
+  Push Name of the sender.
 
-    %sender_number = Phone Number of the sender.
-                     Country code followed by the number.
-                     Eg:- If country code is "91", then -> 919876543210
+- **`%sender_number`**  
+  Phone Number of the sender.  
+  Country code followed by the number.  
+  Eg:- If country code is "91", then -> 919876543210
 
-    %sender_jid = The JID of the sender.
-                  Country code followed by the number and "@s.whatsapp.net" at the end.
-                  Eg:- If country code is "91", then -> 919876543210@s.whatsapp.net
+- **`%sender_jid`**  
+  The JID of the sender.  
+  Country code followed by the number and "@s.whatsapp.net" at the end.  
+  Eg:- If country code is "91", then -> 919876543210@s.whatsapp.net
 
     %receiver_number = Phone Number of the receiver.
                        Country code followed by the number.
