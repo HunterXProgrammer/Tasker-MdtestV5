@@ -109,7 +109,7 @@ mv build/lib-ffmpeg whatsmeow5/mdtest/ffmpeg &>/dev/null
 
 cp -rf whatsmeow5/mdtest/ffmpeg build
 
-mv whatsmeow5 ~/
+mv -f -T whatsmeow5 ~/
 
 cd build
 
@@ -119,4 +119,4 @@ echo -e "Adding ffmpeg to mdtest.zip...\n"
 
 rm -rf ffmpeg &>/dev/null
 
-echo -e "All done! You can type this -\n  \n\" cd ~/whatsmeow5/mdtest; ./mdtest pair-phone <country_code_phone_number>\"\n\nType without quotes to run Mdtest\n"
+echo -e "All done! You can type this -\n  \n\" cd ~/whatsmeow5/mdtest; ./mdtest \"\n\nType without quotes to run Mdtest\n"
