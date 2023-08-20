@@ -309,7 +309,7 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 	} else {
 		is_group = "false"
 	}
-	if receiver_jid != "status@broadcast" {
+	if receiver_jid == "status@broadcast" {
 		receiver_jid = default_jid
 	}
 	jsonData, _ = AppendToJSON(jsonData, "port", port)
