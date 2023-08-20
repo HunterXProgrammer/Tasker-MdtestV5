@@ -283,9 +283,9 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 	}
 	is_from_myself := ""
 	if evt.Info.MessageSource.IsFromMe {
-		is_from_myself = "1"
+		is_from_myself = "true"
 	} else {
-		is_from_myself = "0"
+		is_from_myself = "false"
 		if sender_jid == receiver_jid && default_jid != "" {
 			receiver_jid = default_jid
 		}
@@ -293,7 +293,7 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 	is_group := ""
 	group_name := ""
 	if evt.Info.MessageSource.IsGroup && receiver_jid != "status@broadcast" {
-		is_group = "1"
+		is_group = "true"
 		for _, group := range groupInfo.Groups {
 			if group.JID == receiver_jid {
 				group_name = group.Name
@@ -307,7 +307,7 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 			jsonData, _ = AppendToJSON(jsonData, "group_name", " Unknown, Group Not Found")
 		}
 	} else {
-		is_group = "0"
+		is_group = "false"
 	}
 	
 	jsonData, _ = AppendToJSON(jsonData, "port", port)
