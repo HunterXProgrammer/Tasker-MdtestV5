@@ -68,11 +68,11 @@ You need to run **"Mdtest - Start (V5)"** from the **"Receive Messages"** Projec
 
 - **`%is_from_myself`**  
   If message was sent by yourself.  
-  Value is `1` if true, `0` if false.
+  Value is `true` or `false.
 
 - **`%is_group`**  
   If message was sent in group.  
-  Value is `1` if true, `0` if false.
+  Value is `true` or `false.
 
 - **`%group_name`**  
   Name of the Group.  
@@ -140,7 +140,7 @@ You need to run **"Mdtest - Start (V5)"** from the **"Receive Messages"** Projec
 - **`%path`**  
   The path to the downloaded document file.
 
-- **`%file_name`**  
+- **`%document_file_name`**  
   The file name of the document file.
 
 #### \# Variables specific to:-  
