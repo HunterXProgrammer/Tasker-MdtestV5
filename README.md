@@ -217,7 +217,7 @@ The **COMMAND** and **PARAMETERS** are:-
     senddoc <jid> <document path> <title> [mime-type]
     sendpoll <jid> <max answers> <question> -- <option 1> / <option 2> / ...
     sendlink <jid> <url/link> [text]
-    markread <jid> <message ID No.1> [message ID No.X] (Note: Can add multiple message IDs to mark as read. [] is optional)
+    markread <jid> <message ID>
     revoke <jid> <message ID>
     listusers <jid>
     listgroups <group jid>
