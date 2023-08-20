@@ -313,6 +313,7 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 	jsonData, _ = AppendToJSON(jsonData, "port", port)
 	jsonData, _ = AppendToJSON(jsonData, "sender_jid", sender_jid)
 	jsonData, _ = AppendToJSON(jsonData, "receiver_jid", receiver_jid)
+	jsonData, _ = AppendToJSON(jsonData, "default_jid", default_jid)
 	jsonData, _ = AppendToJSON(jsonData, "sender_pushname", sender_pushname)
 	jsonData, _ = AppendToJSON(jsonData, "is_from_myself", is_from_myself)
 	jsonData, _ = AppendToJSON(jsonData, "is_group", is_group)
