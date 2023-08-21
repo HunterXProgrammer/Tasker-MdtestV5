@@ -233,7 +233,7 @@ code_body='
 		}
 	case "senddoc":
 		if len(args) < 3 {
-			log.Errorf("Usage: senddoc <jid> <document path> <title> [mime-type]")
+			log.Errorf("Usage: senddoc <jid> <document path> <document file name> [caption] [mime-type]")
 			return
 		}
 		recipient, ok := parseJID(args[0])
@@ -250,9 +250,14 @@ code_body='
 			log.Errorf("Failed to upload file: %v", err)
 			return
 		}
-		if len(args) < 4 {
+		caption := ""
+		if len(args) > 3 && args[3] != "" {
+			caption = args[3]
+		}
+		if len(args) < 5 {
 			msg := &waProto.Message{DocumentMessage: &waProto.DocumentMessage{
 				Title:         proto.String(args[2]),
+				Caption:       proto.String(caption),
 				Url:           proto.String(uploaded.URL),
 				DirectPath:    proto.String(uploaded.DirectPath),
 				MediaKey:      uploaded.MediaKey,
@@ -270,10 +275,11 @@ code_body='
 		} else {
 			msg := &waProto.Message{DocumentMessage: &waProto.DocumentMessage{
 				Title:         proto.String(args[2]),
+				Caption:       proto.String(caption),
 				Url:           proto.String(uploaded.URL),
 				DirectPath:    proto.String(uploaded.DirectPath),
 				MediaKey:      uploaded.MediaKey,
-				Mimetype:      proto.String(args[3]),
+				Mimetype:      proto.String(args[4]),
 				FileEncSha256: uploaded.FileEncSHA256,
 				FileSha256:    uploaded.FileSHA256,
 				FileLength:    proto.Uint64(uint64(len(data))),
