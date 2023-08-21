@@ -279,7 +279,7 @@ code_body='
 				Url:           proto.String(uploaded.URL),
 				DirectPath:    proto.String(uploaded.DirectPath),
 				MediaKey:      uploaded.MediaKey,
-				Mimetype:      proto.String(args[3]),
+				Mimetype:      proto.String(args[4]),
 				FileEncSha256: uploaded.FileEncSHA256,
 				FileSha256:    uploaded.FileSHA256,
 				FileLength:    proto.Uint64(uint64(len(data))),
