@@ -42,7 +42,7 @@ Made for Project Mdtest V5.
 - Multi-Number/User support (New!)
   - Previously Mdtest could support only one WhatsApp number, but now you can have as many as you want
 - Receive details of incoming messages as Tasker variables. Can use this for automated replies.  
-  **Be sure to check [VARIABLE.md](https://github.com/HunterXProgrammer/Tasker-MdtestV5/blob/main/VARIABLES.md) for all the available variables.**  
+  **-> Be sure to check [VARIABLE.md](https://github.com/HunterXProgrammer/Tasker-MdtestV5/blob/main/VARIABLES.md) for all the available variables.**  
   Current list of message types that are supported and can be received as Tasker variables:-
   - **Text message**
     - text body
