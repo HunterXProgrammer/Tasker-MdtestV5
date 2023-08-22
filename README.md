@@ -114,7 +114,7 @@ You are responsible for what you do with this.
 
 # Instructions
 ### For Tasker Users
-TODO
+Check the Tasker Reddit **[post]([https://www.reddit.com/r/tasker/comments/13xoenw/project_share_sendreceive_whatsapp_message/](https://www.reddit.com/r/tasker/comments/15ydqa1/project_share_sendreceive_whatsapp_message/))** for more info and importable Taskernet links.
 
 ### For CLI Users
 **NOTE:-**
@@ -125,7 +125,7 @@ TODO
 #### CLI In Tasker
 Added preliminary CLI support to run `mdtest` from within Tasker itself using action [Run Shell].
 
-1\) Set it up as described in this Tasker Reddit **[post]()**.
+1\) Set it up as described in this Tasker Reddit **[post](https://www.reddit.com/r/tasker/comments/15ydqa1/project_share_sendreceive_whatsapp_message/)**.
 
 This will prepare Tasker to enable CLI support natively.
 
