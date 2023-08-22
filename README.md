@@ -123,7 +123,18 @@ TODO
 > Not recommended for Tasker beginners since there are ready made Taskernet links in the Tasker Reddit Post that you can import.
 
 #### CLI In Tasker
-TODO
+Added preliminary CLI support to run `mdtest` from within Tasker itself using action [Run Shell].
+
+1\) Set it up as described in this Tasker Reddit **[post]()**.
+
+This will prepare Tasker to enable CLI support natively.
+
+Your [Run Shell] action to use `mdtest` will look like this -
+
+    #!/system/bin/sh
+    mdtest_dir="/data/data/net.dinglisch.android.taskerm/files/whatsmeow5/mdtest"
+    cd $mdtest_dir/../mdtest.7774
+    sh $mdtest_dir/mdtest FLAGS COMMAND PARAMETERS
 
 #### CLI In Termux
 CLI Setup:-
@@ -162,7 +173,7 @@ You can build and compile it by yourself in Termux -
 >
 >or by open WhatsApp -> ⋮ (menu) -> Linked Devices -> Link with phone number
 >
->Wait about 15s for pairing to complete. All done.
+>Wait about 20s for pairing to complete. All done.
 
 This finishes the CLI setup.
 
