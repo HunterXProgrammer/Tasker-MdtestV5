@@ -522,7 +522,7 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 			locData := evt.Message.GetLiveLocationMessage()
 			caption := locData.GetCaption()
 			if caption != "" {
-				jsonData, _ = AppendToJSON(jsonData, "caption", caption)
+				jsonData, _ = AppendToJSON(jsonData, "message", caption)
 			}
 			latitude := fmt.Sprintf("%f", locData.GetDegreesLatitude())
 			longitude := fmt.Sprintf("%f", locData.GetDegreesLongitude())
@@ -600,7 +600,7 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 			imgData := evt.Message.GetImageMessage()
 			caption := imgData.GetCaption()
 			if caption != "" {
-				jsonData, _ = AppendToJSON(jsonData, "caption", caption)
+				jsonData, _ = AppendToJSON(jsonData, "message", caption)
 			}
 			data, err := cli.Download(imgData)
 			if err != nil {
@@ -652,7 +652,7 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 			vidData := evt.Message.GetVideoMessage()
 			caption := vidData.GetCaption()
 			if caption != "" {
-				jsonData, _ = AppendToJSON(jsonData, "caption", caption)
+				jsonData, _ = AppendToJSON(jsonData, "message", caption)
 			}
 			data, err := cli.Download(vidData)
 			if err != nil {
@@ -705,7 +705,7 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 			docData := evt.Message.GetDocumentMessage()
 			caption := docData.GetCaption()
 			if caption != "" {
-				jsonData, _ = AppendToJSON(jsonData, "caption", caption)
+				jsonData, _ = AppendToJSON(jsonData, "message", caption)
 			}
 			file_name := docData.GetFileName()
 			if file_name != "" {
