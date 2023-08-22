@@ -7,7 +7,7 @@ Previous post intro:-
 
 >Recently I've been getting a lot of inquiries on how to send images, videos or documents in WhatsApp using Tasker.
 >
->Possibly with the screen off, phone locked, without unlocking, etc. Had some time to make this so here it is.
+>Possibly with the screen off, phone locked, without unlocking, etc.
 
 # Details
 Contains assets that are used for running Mdtest V5 directly in Tasker.
@@ -47,19 +47,19 @@ Made for Project Mdtest V5.
   - **Text message**
     - text body
   - **Image message**
-    - caption
+    - caption message
     - image file
   - **Video message**
-    - caption
+    - caption message
     - video file
   - **Audio message**
     - audio file
   - **Document**
-    - caption
+    - caption message
     - document name
     - document file
   - **Status message**
-    - caption
+    - caption message
     - status media file
   - **Contact message**
     - contact display name
@@ -176,20 +176,20 @@ Your script will look like this -
 
 The **FLAGS** are -
 
-    --save-media
-          Download And Save Media.
-          - This flag also enables receiving media message types
-            such as:- images, videos, audio, documents, contacts,
-            status, location previews.
-          - Media saved to whatsmeow5/mdtest/media
-          - Note:- To be used in conjuction with "--mode <value>"
-                   Will only be effective if "<value>" is "both"
-    
     --mode <value>
           Select mode: none, both or send
           (default option: none)
           - both -> Mdtest will receive mesages and as well as send messages
           - send -> Mdtest will only send messages, not receive.
+    
+    --save-media
+          Download And Save Media.
+          - This flag also enables receiving media message types
+            such as:- images, videos, audio, documents, contacts,
+            status, location previews.
+          - Media saved to ~/whatsmeow5/mdtest/media
+          - Note:- To be used in conjuction with "--mode <value>"
+                   Will only be effective if "<value>" is "both"
     
     --port <value>
           Port can be anything from 1024 ~ 65535
@@ -214,7 +214,7 @@ The **COMMAND** and **PARAMETERS** are:-
     sendimg <jid> <image path> [caption]
     sendvid <jid> <video path> [caption]
     sendaudio <jid> <audio path>
-    senddoc <jid> <document path> <title> [mime-type]
+    senddoc <jid> <document path> <title> [caption] [mime-type]
     sendpoll <jid> <max answers> <question> -- <option 1> / <option 2> / ...
     sendlink <jid> <url/link> [text]
     markread <jid> <message ID>
