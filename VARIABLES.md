@@ -72,11 +72,11 @@ To enable receiving WhatsApp messages as Tasker variables:-
 
 - **`%is_from_myself`**  
   If message was sent by yourself.  
-  Value is `true` or `false.
+  Value is `true` or `false`.
 
 - **`%is_group`**  
   If message was sent in group.  
-  Value is `true` or `false.
+  Value is `true` or `false`.
 
 - **`%group_name`**  
   Name of the Group.  
