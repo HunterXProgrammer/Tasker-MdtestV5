@@ -7,7 +7,7 @@ Previous post intro:-
 
 >Recently I've been getting a lot of inquiries on how to send images, videos or documents in WhatsApp using Tasker.
 >
->Possibly with the screen off, phone locked, without unlocking, etc. Had some time to make this so here it is.
+>Possibly with the screen off, phone locked, without unlocking, etc.
 
 # Details
 Contains assets that are used for running Mdtest V5 directly in Tasker.
