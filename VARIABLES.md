@@ -1,14 +1,18 @@
 # Description
 This Section is recommended for advanced Tasker users.
 
-It contains a detailed list of variables that is populated when a WhatsApp message of the corresponding TYPE is received
+It contains a detailed list of variables that is populated when a WhatsApp message of the corresponding **TYPE** is received
 
 Based on these variables, you can setup your own Tasks that would analyze the contents of the received messages and send back automated replies.
 
 # List Of Tasker Variables
-These variables are populated whenever a WhatApp message of the corresponding type is received.
+These variables are populated whenever a WhatApp message of the corresponding **TYPE** is received.
 
-You need to run **"Mdtest - Start (V5)"** from the **"Receive Messages"** Project in **`%mode` = `both`** for the variables to be populated in the Task **"This Task Runs When Message Received (V5)"**.
+To enable receiving WhatsApp messages as Tasker variables:-
+
+1. Run Task **"Mdtest - Start (V5)"** from the **"Receive Messages [MdtestV5]"** Project in **`%mode` = `both`**
+
+2. Done. Now whenever you receive a WhatsApp message it will run the Task **"This Task Runs When Message Received (V5)"** with all the variables directly usable as per the received message **TYPE**.
 
 **Note:-** Added support for receiving media messages and downloading the media file. 
   - Includes downloading images/videos/audio/documents/status/contacts/links/location previews.
@@ -107,9 +111,8 @@ You need to run **"Mdtest - Start (V5)"** from the **"Receive Messages"** Projec
 #### \# Variables specific to:-  
 **\-> `%type` = `image_message`**
 
-- **`%caption`**  
+- **`%message`**  
   The caption in the image message.  
-  It is similar to `%message` but for caption.
 
 - **`%path`**  
   The path to the downloaded image file.
@@ -117,9 +120,8 @@ You need to run **"Mdtest - Start (V5)"** from the **"Receive Messages"** Projec
 #### \# Variables specific to:-  
 **\-> `%type` = `video_message`**
 
-- **`%caption`**  
+- **`%message`**  
   The caption in the video message.  
-  It is similar to `%message` but for caption.
 
 - **`%path`**  
   The path to the downloaded video file.
@@ -133,9 +135,8 @@ You need to run **"Mdtest - Start (V5)"** from the **"Receive Messages"** Projec
 #### \# Variables specific to:-  
 **\-> `%type` = `document_message`**
 
-- **`%caption`**  
+- **`%message`**  
   The caption in the document message.  
-  It is similar to `%message` but for caption.
 
 - **`%path`**  
   The path to the downloaded document file.
@@ -146,7 +147,7 @@ You need to run **"Mdtest - Start (V5)"** from the **"Receive Messages"** Projec
 #### \# Variables specific to:-  
 **\-> `%type` = `status_message`**
 
-- **`%caption`**  
+- **`%message`**  
   The caption in the status message.  
   It is similar to `%message` but for caption.
 
@@ -186,9 +187,8 @@ You need to run **"Mdtest - Start (V5)"** from the **"Receive Messages"** Projec
 #### \# Variables specific to:-  
 **\-> `%type` = `location_message`**
 
-- **`%caption`**  
+- **`%message`**  
   The caption in the location message.  
-  It is similar to `%message` but for caption.
 
 - **`%location_latitude`**  
   The latitude co-ordinate in the location message.
