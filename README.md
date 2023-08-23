@@ -134,7 +134,7 @@ Your [Run Shell] action to use `mdtest` will look like this -
     #!/system/bin/sh
     mdtest_dir="/data/data/net.dinglisch.android.taskerm/files/whatsmeow5/mdtest"
     cd $mdtest_dir/../mdtest.7774
-    sh $mdtest_dir/mdtest FLAGS COMMAND PARAMETERS
+    sh $mdtest_dir/mdtest COMMAND PARAMETERS
 
 #### CLI In Termux
 CLI Setup:-
