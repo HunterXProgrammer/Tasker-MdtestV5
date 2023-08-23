@@ -5,7 +5,87 @@ step_number="$(basename "$0" | grep -Eo '^[0-9]+')"
 echo "$step_number) $step_name"
 
 code_body='
+			//start
+			"type": strings.ToLower(waProto.ListMessage_ListType_name[int32(*waProto.ListMessage_PRODUCT_LIST.Enum())]),
+			//stop
+'
+
+sed -i -e "$(grep -nm 1 -F '"type": strings.ToLower(waProto.ListMessage_ListType_name[int32(msg.ListMessage.GetListType())]),' whatsmeow/send.go | sed 's/:.*//')r /dev/stdin" whatsmeow/send.go <<< $code_body
+
+sed -i '/"type": strings.ToLower(waProto.ListMessage_ListType_name\[int32(msg.ListMessage.GetListType())\]),/d' whatsmeow/send.go
+
+code_body='
 	//start
+	case "sendlist":
+		if len(args) < 9 {
+			log.Errorf("Usage: sendlist <jid> <title> <text> <footer> <button text> <sub title> -- <heading 1> <description 1> / ...")
+			return
+		}
+		recipient, ok := parseJID(args[0])
+		if !ok {
+			return
+		}
+		
+		if args[6] != "--" {
+			log.Errorf("Missing -- seperator")
+			log.Errorf("Usage: sendlist <jid> <title> <text> <footer> <button text> <sub title> -- <heading 1> <description 1> / ...")
+			return
+		}
+		
+		msg := &waProto.Message{
+			ListMessage: &waProto.ListMessage{
+				Title:       proto.String(args[1]),
+				Description: proto.String(args[2]),
+				FooterText:  proto.String(args[3]),
+				ButtonText:  proto.String(args[4]),
+				ListType:    waProto.ListMessage_SINGLE_SELECT.Enum(),
+				Sections: []*waProto.ListMessage_Section{
+					{
+						Title: proto.String(args[5]),
+						Rows:  []*waProto.ListMessage_Row{},
+					},
+				},
+			},
+		}
+		
+		items := args[7:]
+		
+		itemTmp := ""
+		for i, _ := range items {
+			if (i+1)%3 == 0 {
+				if items[i] != "/" {
+					log.Errorf("Error at \"%s\"", items[i])
+					log.Errorf("Seperator \"/\" is missing")
+					return
+				} else if len(items)!= 2 && i+1 == len(items) {
+					log.Errorf("Missing items after \"/\"")
+					return
+				}
+			} else if i%3 == 0 {
+				itemTmp = items[i]
+				if i+1 == len(items) {
+					log.Errorf("Error at \"%s\"", items[i])
+					log.Errorf("Missing description after heading")
+					return
+				}
+			} else if (i+2)%3 == 0 {
+				newRow := &waProto.ListMessage_Row{
+			        RowId:       proto.String(fmt.Sprintf("id%d", i+1)),
+					Title:       proto.String(itemTmp),
+					Description: proto.String(items[i]),
+			    }
+			    msg.ListMessage.Sections[0].Rows = append(msg.ListMessage.Sections[0].Rows, newRow)
+				if i+1 == len(items) {
+					break
+				}
+			}
+		}
+		resp, err := cli.SendMessage(context.Background(), recipient, msg)
+		if err != nil {
+			log.Errorf("Error sending message: %v", err)
+		} else {
+			log.Infof("Message sent (server timestamp: %s)", resp.Timestamp)
+		}
 	case "listusers":
 		users, err := cli.Store.Contacts.GetAllContacts()
 		if err != nil {
