@@ -225,7 +225,7 @@ The **COMMAND** and **PARAMETERS** are:-
     sendimg <jid> <image path> [caption]
     sendvid <jid> <video path> [caption]
     sendaudio <jid> <audio path>
-    senddoc <jid> <document path> <title> [caption] [mime-type]
+    senddoc <jid> <document path> <document file name> [caption] [mime-type]
     sendpoll <jid> <max answers> <question> -- <option 1> / <option 2> / ...
     sendlink <jid> <url/link> [text]
     markread <jid> <message ID>
