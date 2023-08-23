@@ -23,6 +23,10 @@ Made for Project Mdtest V5.
 - Send Audio
 - Send PDF/Documents
 - Send Link Previews (New!)
+- Send List messages (New!)
+  - Experimental support for sending list messages.  
+    WhatsApp business account not supported, only normal WhatsApp account.  
+    More about it here [#372](https://github.com/tulir/whatsmeow/issues/372).
 - Send Poll messages
 - Mark as read
 - Revoke messages
@@ -228,6 +232,7 @@ The **COMMAND** and **PARAMETERS** are:-
     senddoc <jid> <document path> <title> [caption] [mime-type]
     sendpoll <jid> <max answers> <question> -- <option 1> / <option 2> / ...
     sendlink <jid> <url/link> [text]
+    sendlist <jid> <title> <text> <footer> <button text> <sub title> -- <heading 1> <description 1> / [heading 2] [description2] / ...
     markread <jid> <message ID>
     revoke <jid> <message ID>
     listusers <jid>
