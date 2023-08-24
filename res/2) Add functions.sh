@@ -291,6 +291,7 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 		}
 	}
 	is_group := ""
+	status_message := false
 	group_name := ""
 	if evt.Info.MessageSource.IsGroup && receiver_jid != "status@broadcast" {
 		is_group = "true"
@@ -311,6 +312,7 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 	}
 	if receiver_jid == "status@broadcast" {
 		receiver_jid = default_jid
+		status_message = true
 	}
 	jsonData, _ = AppendToJSON(jsonData, "port", port)
 	jsonData, _ = AppendToJSON(jsonData, "sender_jid", sender_jid)
@@ -607,7 +609,7 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 				log.Errorf("Failed to download image: %v", err)
 				return
 			}
-			if receiver_jid == "status@broadcast" {
+			if status_message {
 				jsonData, _ = AppendToJSON(jsonData, "type", "status_message")
 				os.MkdirAll(filepath.Join(currentDir, "media", "status"), os.ModePerm)
 				path = filepath.Join(currentDir, "media", "status", fmt.Sprintf("%s.tmp", evt.Info.ID))
@@ -659,7 +661,7 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 				log.Errorf("Failed to download video: %v", err)
 				return
 			}
-			if receiver_jid == "status@broadcast" {
+			if status_message {
 				jsonData, _ = AppendToJSON(jsonData, "type", "status_message")
 				os.MkdirAll(filepath.Join(currentDir, "media", "status"), os.ModePerm)
 				path = filepath.Join(currentDir, "media", "status", fmt.Sprintf("%s.tmp", evt.Info.ID))
