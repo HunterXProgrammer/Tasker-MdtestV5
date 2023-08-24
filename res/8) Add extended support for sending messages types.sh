@@ -84,7 +84,7 @@ code_body='
 		if err != nil {
 			log.Errorf("Error sending message: %v", err)
 		} else {
-			log.Infof("Message sent (server timestamp: %s)", resp.Timestamp)
+			log.Infof("List message sent (server timestamp: %s)", resp.Timestamp)
 		}
 	case "listusers":
 		users, err := cli.Store.Contacts.GetAllContacts()
@@ -174,7 +174,7 @@ code_body='
 			if err != nil {
 				log.Errorf("Error sending message: %v", err)
 			} else {
-				log.Infof("Message sent (server timestamp: %s)", resp.Timestamp)
+				log.Infof("Poll message sent (server timestamp: %s)", resp.Timestamp)
 			}
 			return
 		}
@@ -182,7 +182,7 @@ code_body='
 		if err != nil {
 			log.Errorf("Error sending message: %v", err)
 		} else {
-			log.Infof("Message sent (server timestamp: %s)", resp.Timestamp)
+			log.Infof("Poll message sent (server timestamp: %s)", resp.Timestamp)
 		}
 	case "sendlink":
 		if len(args) < 2 {
@@ -398,7 +398,7 @@ code_body='
 			"-nostats",
 			"-loglevel", "0",
 			"-vframes", "1",
-			"-q:v", "1",
+			"-q:v", "0",
 			"-f", "mjpeg",
 			"pipe:1",
 		}
@@ -584,6 +584,16 @@ code_body='
 			return
 		}
 		
+		isCompatible := false
+		
+		mimeType := mimemagic.MatchMagic(data)
+		
+		if len(mimeType.Extensions) != 0 {
+			compatibleFormats := []string{".jpg", ".jpeg", ".jpe", ".png"}
+			joinedFormats := strings.Join(compatibleFormats, "|")
+			isCompatible = strings.Contains(strings.Join(mimeType.Extensions, "|"), joinedFormats)
+		}
+		
 		outBuf := new(bytes.Buffer)
 		
 		command := []string{
@@ -594,7 +604,7 @@ code_body='
 			"-nostats",
 			"-loglevel", "0",
 			"-vframes", "1",
-			"-q:v", "1",
+			"-q:v", "0",
 			"-f", "mjpeg",
 			"pipe:1",
 		}
@@ -686,6 +696,7 @@ code_body='
 			return
 		}
 		
+		outBytes := outBuf.Bytes()
 		img, _, err := image.Decode(outBuf)
 		if err != nil {
 			log.Errorf("Error decoding image: %s", err)
@@ -704,10 +715,20 @@ code_body='
 		
 		jpegBytes := buffer.Bytes()
 		
-		uploaded, err := cli.Upload(context.Background(), data, whatsmeow.MediaImage)
-		if err != nil {
-			log.Errorf("Failed to upload file: %v", err)
-			return
+		uploaded := whatsmeow.UploadResponse{}
+		
+		if isCompatible {
+			uploaded, err = cli.Upload(context.Background(), data, whatsmeow.MediaImage)
+			if err != nil {
+				log.Errorf("Failed to upload file: %v", err)
+				return
+			}
+		} else {
+			uploaded, err = cli.Upload(context.Background(), outBytes, whatsmeow.MediaImage)
+			if err != nil {
+				log.Errorf("Failed to upload file: %v", err)
+				return
+			}
 		}
 		thumbnailResp, err := cli.Upload(context.Background(), jpegBytes, whatsmeow.MediaImage)
 		if err != nil {

@@ -618,8 +618,8 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 					log.Errorf("Failed to save status: %v", err)
 					return
 				}
-				mimeType, err := mimemagic.MatchFilePath(path, -1)
-				if len(mimeType.Extensions) == 0 || err != nil {
+				mimeType := mimemagic.MatchMagic(data)
+				if len(mimeType.Extensions) == 0 {
 					log.Errorf("Status message extension unknown, saving as %s", path)
 					jsonData, _ = AppendToJSON(jsonData, "path", path)
 				} else {
@@ -637,8 +637,8 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 					log.Errorf("Failed to save image: %v", err)
 					return
 				}
-				mimeType, err := mimemagic.MatchFilePath(path, -1)
-				if len(mimeType.Extensions) == 0 || err != nil {
+				mimeType := mimemagic.MatchMagic(data)
+				if len(mimeType.Extensions) == 0 {
 					log.Errorf("Image message extension unknown, saving as %s", path)
 					jsonData, _ = AppendToJSON(jsonData, "path", path)
 				} else {
@@ -670,8 +670,8 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 					log.Errorf("Failed to save status: %v", err)
 					return
 				}
-				mimeType, err := mimemagic.MatchFilePath(path, -1)
-				if len(mimeType.Extensions) == 0 || err != nil {
+				mimeType := mimemagic.MatchMagic(data)
+				if len(mimeType.Extensions) == 0 {
 					log.Errorf("Status message extension unknown, saving as %s", path)
 					jsonData, _ = AppendToJSON(jsonData, "path", path)
 				} else {
@@ -689,8 +689,8 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 					log.Errorf("Failed to save video: %v", err)
 					return
 				}
-				mimeType, err := mimemagic.MatchFilePath(path, -1)
-				if len(mimeType.Extensions) == 0 || err != nil {
+				mimeType := mimemagic.MatchMagic(data)
+				if len(mimeType.Extensions) == 0 {
 					log.Errorf("Video message extension unknown, saving as %s", path)
 					jsonData, _ = AppendToJSON(jsonData, "path", path)
 				} else {
@@ -725,8 +725,8 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 				log.Errorf("Failed to save document: %v", err)
 				return
 			}
-			mimeType, err := mimemagic.MatchFilePath(path, -1)
-			if len(mimeType.Extensions) == 0 || err != nil {
+			mimeType := mimemagic.MatchMagic(data)
+			if len(mimeType.Extensions) == 0 {
 				log.Errorf("Document message extension unknown, saving as %s", path)
 				jsonData, _ = AppendToJSON(jsonData, "path", path)
 			} else {
@@ -752,8 +752,8 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 				log.Errorf("Failed to save audio: %v", err)
 				return
 			}
-			mimeType, err := mimemagic.MatchFilePath(path, -1)
-			if len(mimeType.Extensions) == 0 || err != nil {
+			mimeType := mimemagic.MatchMagic(data)
+			if len(mimeType.Extensions) == 0 {
 				log.Errorf("Audio message extension unknown, saving as %s", path)
 				jsonData, _ = AppendToJSON(jsonData, "path", path)
 			} else {
