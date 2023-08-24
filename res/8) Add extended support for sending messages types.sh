@@ -716,7 +716,8 @@ code_body='
 		jpegBytes := buffer.Bytes()
 		
 		uploaded := whatsmeow.UploadResponse{}
-		
+		lenData := len(data)
+  		contentData := data
 		if isCompatible {
 			uploaded, err = cli.Upload(context.Background(), data, whatsmeow.MediaImage)
 			if err != nil {
@@ -724,6 +725,8 @@ code_body='
 				return
 			}
 		} else {
+			lenData = len(outBytes)
+   			contentData = outBytes
 			uploaded, err = cli.Upload(context.Background(), outBytes, whatsmeow.MediaImage)
 			if err != nil {
 				log.Errorf("Failed to upload file: %v", err)
@@ -744,10 +747,10 @@ code_body='
 		    ThumbnailEncSha256: thumbnailResp.FileEncSHA256,
 		    JpegThumbnail: jpegBytes,
 		    MediaKey:      uploaded.MediaKey,
-		    Mimetype:      proto.String(http.DetectContentType(data)),
+		    Mimetype:      proto.String(http.DetectContentType(contentData)),
 		    FileEncSha256: uploaded.FileEncSHA256,
 		    FileSha256:    uploaded.FileSHA256,
-		    FileLength:    proto.Uint64(uint64(len(data))),
+		    FileLength:    proto.Uint64(uint64(lenData)),
 	    }}
 	    resp, err := cli.SendMessage(context.Background(), recipient, msg)
 	    if err != nil {
