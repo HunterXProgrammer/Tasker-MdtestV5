@@ -268,7 +268,6 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 	isSupported := false
 	jsonData := "{}"
 	path := ""
-	newPath := ""
 	port := fmt.Sprintf("%d", *httpPort)
 	message_id := fmt.Sprintf("%s", evt.Info.ID)
 	sender_pushname := fmt.Sprintf("%s", evt.Info.PushName)
@@ -609,49 +608,57 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 				log.Errorf("Failed to download image: %v", err)
 				return
 			}
+			mimeType := mimemagic.MatchMagic(data)
 			if status_message {
 				jsonData, _ = AppendToJSON(jsonData, "type", "status_message")
 				os.MkdirAll(filepath.Join(currentDir, "media", "status"), os.ModePerm)
-				path = filepath.Join(currentDir, "media", "status", fmt.Sprintf("%s.tmp", evt.Info.ID))
-				err = os.WriteFile(path, data, 0644)
-				if err != nil {
-					log.Errorf("Failed to save status: %v", err)
-					return
-				}
-				mimeType := mimemagic.MatchMagic(data)
 				if len(mimeType.Extensions) == 0 {
+					path = filepath.Join(currentDir, "media", "status", fmt.Sprintf("%s.tmp", evt.Info.ID))
+					err = os.WriteFile(path, data, 0644)
+					if err != nil {
+						log.Errorf("Failed to save status: %v", err)
+						return
+					}
 					log.Errorf("Status message extension unknown, saving as %s", path)
-					jsonData, _ = AppendToJSON(jsonData, "path", path)
 				} else {
-					newPath = filepath.Join(currentDir, "media", "status", fmt.Sprintf("%s%s", evt.Info.ID, mimeType.Extensions[0]))
-					os.Rename(path, newPath)
-					log.Infof("Saved status in message to %s", newPath)
-					jsonData, _ = AppendToJSON(jsonData, "path", newPath)
+					path = filepath.Join(currentDir, "media", "status", fmt.Sprintf("%s%s", evt.Info.ID, mimeType.Extensions[0]))
+					err = os.WriteFile(path, data, 0644)
+					if err != nil {
+						log.Errorf("Failed to save status: %v", err)
+						return
+					}
+					log.Infof("Saved status in message to %s", path)
 				}
 			} else {
 				jsonData, _ = AppendToJSON(jsonData, "type", "image_message")
 				os.MkdirAll(filepath.Join(currentDir, "media", "image"), os.ModePerm)
-				path = filepath.Join(currentDir, "media", "image", fmt.Sprintf("%s.tmp", evt.Info.ID))
-				err = os.WriteFile(path, data, 0644)
-				if err != nil {
-					log.Errorf("Failed to save image: %v", err)
-					return
-				}
-				mimeType := mimemagic.MatchMagic(data)
 				if len(mimeType.Extensions) == 0 {
+					path = filepath.Join(currentDir, "media", "image", fmt.Sprintf("%s.tmp", evt.Info.ID))
+					err = os.WriteFile(path, data, 0644)
+					if err != nil {
+						log.Errorf("Failed to save image: %v", err)
+						return
+					}
 					log.Errorf("Image message extension unknown, saving as %s", path)
-					jsonData, _ = AppendToJSON(jsonData, "path", path)
 				} else {
-					newPath = filepath.Join(currentDir, "media", "image", fmt.Sprintf("%s%s", evt.Info.ID, mimeType.Extensions[0]))
-					os.Rename(path, newPath)
-					log.Infof("Saved image in message to %s", newPath)
-					jsonData, _ = AppendToJSON(jsonData, "path", newPath)
+					path = filepath.Join(currentDir, "media", "image", fmt.Sprintf("%s%s", evt.Info.ID, mimeType.Extensions[0]))
+					err = os.WriteFile(path, data, 0644)
+					if err != nil {
+						log.Errorf("Failed to save image: %v", err)
+						return
+					}
+					log.Infof("Saved image in message to %s", path)
 				}
 			}
+			jsonData, _ = AppendToJSON(jsonData, "path", path)
 		} else if evt.Message.GetVideoMessage() != nil {
 			isSupported = true
 			jsonData, _ = AppendToJSON(jsonData, "message_id", message_id)
 			vidData := evt.Message.GetVideoMessage()
+			isGif := false
+			if evt.Info.MediaType == "gif" {
+				isGif = true
+			}
 			caption := vidData.GetCaption()
 			if caption != "" {
 				jsonData, _ = AppendToJSON(jsonData, "message", caption)
@@ -661,45 +668,65 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 				log.Errorf("Failed to download video: %v", err)
 				return
 			}
+			mimeType := mimemagic.MatchMagic(data)
 			if status_message {
 				jsonData, _ = AppendToJSON(jsonData, "type", "status_message")
 				os.MkdirAll(filepath.Join(currentDir, "media", "status"), os.ModePerm)
-				path = filepath.Join(currentDir, "media", "status", fmt.Sprintf("%s.tmp", evt.Info.ID))
-				err = os.WriteFile(path, data, 0644)
-				if err != nil {
-					log.Errorf("Failed to save status: %v", err)
-					return
-				}
-				mimeType := mimemagic.MatchMagic(data)
-				if len(mimeType.Extensions) == 0 {
+				if isGif {
+					path = filepath.Join(currentDir, "media", "status", fmt.Sprintf("%s.gif", evt.Info.ID))
+					err = os.WriteFile(path, data, 0644)
+					if err != nil {
+						log.Errorf("Failed to save status: %v", err)
+						return
+					}
+					log.Infof("Saved status in message to %s", path)
+				} else if len(mimeType.Extensions) == 0 {
+					path = filepath.Join(currentDir, "media", "status", fmt.Sprintf("%s.tmp", evt.Info.ID))
+					err = os.WriteFile(path, data, 0644)
+					if err != nil {
+						log.Errorf("Failed to save status: %v", err)
+						return
+					}
 					log.Errorf("Status message extension unknown, saving as %s", path)
-					jsonData, _ = AppendToJSON(jsonData, "path", path)
 				} else {
-					newPath = filepath.Join(currentDir, "media", "status", fmt.Sprintf("%s%s", evt.Info.ID, mimeType.Extensions[0]))
-					os.Rename(path, newPath)
-					log.Infof("Saved status in message to %s", newPath)
-					jsonData, _ = AppendToJSON(jsonData, "path", newPath)
+					path = filepath.Join(currentDir, "media", "status", fmt.Sprintf("%s%s", evt.Info.ID, mimeType.Extensions[0]))
+					err = os.WriteFile(path, data, 0644)
+					if err != nil {
+						log.Errorf("Failed to save status: %v", err)
+						return
+					}
+					log.Infof("Saved status in message to %s", path)
 				}
 			} else {
 				jsonData, _ = AppendToJSON(jsonData, "type", "video_message")
 				os.MkdirAll(filepath.Join(currentDir, "media", "video"), os.ModePerm)
-				path = filepath.Join(currentDir, "media", "video", fmt.Sprintf("%s.tmp", evt.Info.ID))
-				err = os.WriteFile(path, data, 0644)
-				if err != nil {
-					log.Errorf("Failed to save video: %v", err)
-					return
-				}
-				mimeType := mimemagic.MatchMagic(data)
-				if len(mimeType.Extensions) == 0 {
+				if isGif {
+					path = filepath.Join(currentDir, "media", "video", fmt.Sprintf("%s.gif", evt.Info.ID))
+					err = os.WriteFile(path, data, 0644)
+					if err != nil {
+						log.Errorf("Failed to save status: %v", err)
+						return
+					}
+					log.Infof("Saved video in message to %s", path)
+				} else if len(mimeType.Extensions) == 0 {
+					path = filepath.Join(currentDir, "media", "video", fmt.Sprintf("%s.tmp", evt.Info.ID))
+					err = os.WriteFile(path, data, 0644)
+					if err != nil {
+						log.Errorf("Failed to save video: %v", err)
+						return
+					}
 					log.Errorf("Video message extension unknown, saving as %s", path)
-					jsonData, _ = AppendToJSON(jsonData, "path", path)
 				} else {
-					newPath = filepath.Join(currentDir, "media", "video", fmt.Sprintf("%s%s", evt.Info.ID, mimeType.Extensions[0]))
-					os.Rename(path, newPath)
-					log.Infof("Saved video in message to %s", newPath)
-					jsonData, _ = AppendToJSON(jsonData, "path", newPath)
+					path = filepath.Join(currentDir, "media", "video", fmt.Sprintf("%s%s", evt.Info.ID, mimeType.Extensions[0]))
+					err = os.WriteFile(path, data, 0644)
+					if err != nil {
+						log.Errorf("Failed to save video: %v", err)
+						return
+					}
+					log.Infof("Saved video in message to %s", path)
 				}
 			}
+			jsonData, _ = AppendToJSON(jsonData, "path", path)
 		} else if evt.Message.GetDocumentMessage() != nil {
 			isSupported = true
 			jsonData, _ = AppendToJSON(jsonData, "type", "document_message")
@@ -718,23 +745,26 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 				log.Errorf("Failed to download document: %v", err)
 				return
 			}
-			os.MkdirAll(filepath.Join(currentDir, "media", "document"), os.ModePerm)
-			path = filepath.Join(currentDir, "media", "document", fmt.Sprintf("%s.tmp", evt.Info.ID))
-			err = os.WriteFile(path, data, 0644)
-			if err != nil {
-				log.Errorf("Failed to save document: %v", err)
-				return
-			}
 			mimeType := mimemagic.MatchMagic(data)
+			os.MkdirAll(filepath.Join(currentDir, "media", "document"), os.ModePerm)
 			if len(mimeType.Extensions) == 0 {
+				path = filepath.Join(currentDir, "media", "document", fmt.Sprintf("%s.tmp", evt.Info.ID))
+				err = os.WriteFile(path, data, 0644)
+				if err != nil {
+					log.Errorf("Failed to save document: %v", err)
+					return
+				}
 				log.Errorf("Document message extension unknown, saving as %s", path)
-				jsonData, _ = AppendToJSON(jsonData, "path", path)
 			} else {
-				newPath = filepath.Join(currentDir, "media", "document", fmt.Sprintf("%s%s", evt.Info.ID, mimeType.Extensions[0]))
-				os.Rename(path, newPath)
-				log.Infof("Saved document in message to %s", newPath)
-				jsonData, _ = AppendToJSON(jsonData, "path", newPath)
+				path = filepath.Join(currentDir, "media", "document", fmt.Sprintf("%s%s", evt.Info.ID, mimeType.Extensions[0]))
+				err = os.WriteFile(path, data, 0644)
+				if err != nil {
+					log.Errorf("Failed to save document: %v", err)
+					return
+				}
+				log.Infof("Saved document in message to %s", path)
 			}
+			jsonData, _ = AppendToJSON(jsonData, "path", path)
 		} else if evt.Message.GetAudioMessage() != nil {
 			isSupported = true
 			jsonData, _ = AppendToJSON(jsonData, "type", "audio_message")
@@ -745,30 +775,36 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 				log.Errorf("Failed to download audio: %v", err)
 				return
 			}
-			os.MkdirAll(filepath.Join(currentDir, "media", "audio"), os.ModePerm)
-			path = filepath.Join(currentDir, "media", "audio", fmt.Sprintf("%s.tmp", evt.Info.ID))
-			err = os.WriteFile(path, data, 0644)
-			if err != nil {
-				log.Errorf("Failed to save audio: %v", err)
-				return
-			}
 			mimeType := mimemagic.MatchMagic(data)
+			os.MkdirAll(filepath.Join(currentDir, "media", "audio"), os.ModePerm)
 			if len(mimeType.Extensions) == 0 {
+				path = filepath.Join(currentDir, "media", "audio", fmt.Sprintf("%s.tmp", evt.Info.ID))
+				err = os.WriteFile(path, data, 0644)
+				if err != nil {
+					log.Errorf("Failed to save audio: %v", err)
+					return
+				}
 				log.Errorf("Audio message extension unknown, saving as %s", path)
-				jsonData, _ = AppendToJSON(jsonData, "path", path)
 			} else {
 				if mimeType.Extensions[0] == ".ogg" || mimeType.Extensions[0] == ".oga" {
-					newPath = filepath.Join(currentDir, "media", "audio", fmt.Sprintf("%s.ogg", evt.Info.ID))
-					os.Rename(path, newPath)
-					log.Infof("Saved audio in message to %s", newPath)
-					jsonData, _ = AppendToJSON(jsonData, "path", newPath)
+					path = filepath.Join(currentDir, "media", "audio", fmt.Sprintf("%s.ogg", evt.Info.ID))
+					err = os.WriteFile(path, data, 0644)
+					if err != nil {
+						log.Errorf("Failed to save audio: %v", err)
+						return
+					}
+					log.Infof("Saved audio in message to %s", path)
 				} else {
-					newPath = filepath.Join(currentDir, "media", "audio", fmt.Sprintf("%s%s", evt.Info.ID, mimeType.Extensions[0]))
-					os.Rename(path, newPath)
-					log.Infof("Saved audio in message to %s", newPath)
-					jsonData, _ = AppendToJSON(jsonData, "path", newPath)
+					path = filepath.Join(currentDir, "media", "audio", fmt.Sprintf("%s%s", evt.Info.ID, mimeType.Extensions[0]))
+					err = os.WriteFile(path, data, 0644)
+					if err != nil {
+						log.Errorf("Failed to save audio: %v", err)
+						return
+					}
+					log.Infof("Saved audio in message to %s", path)
 				}
 			}
+			jsonData, _ = AppendToJSON(jsonData, "path", path)
 		}
 	}
 	if isSupported {
@@ -779,10 +815,9 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 	}
 	if *autoDelete {
 		go func() {
-			if path != "" || newPath != "" {
+			if path != "" {
 				time.Sleep(30 * time.Second)
 				os.Remove(path)
-				os.Remove(newPath)
 			}
 		}()
 	}
