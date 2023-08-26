@@ -4,6 +4,43 @@ step_name="$(basename "$0" | sed -E 's/^[0-9]+\) //' | sed -E 's/\.sh$//')"
 step_number="$(basename "$0" | grep -Eo '^[0-9]+')"
 echo "$step_number) $step_name"
 
+code_body='
+//start
+var greatestChunkOrder uint32 = 0
+var currentCount uint32 = 0
+var initialSync bool
+//stop
+'
+
+sed -i -e "$(grep -nm 1 -F 'var pbSerializer = store.SignalProtobufSerializer' whatsmeow/message.go | sed 's/:.*//')r /dev/stdin" whatsmeow/message.go <<< $code_body
+
+code_body='
+			//start
+			go func() {
+				if historySync.GetSyncType() == waProto.HistorySync_RECENT {
+					if atomic.LoadUint32(&greatestChunkOrder) < historySync.GetChunkOrder() {
+						atomic.StoreUint32(&greatestChunkOrder, historySync.GetChunkOrder())
+					}
+					cli.storeHistoricalMessageSecrets(historySync.GetConversations())
+					atomic.AddUint32(&currentCount, 1)
+					time.Sleep(5 * time.Second)
+					if  !initialSync {
+						if atomic.LoadUint32(&greatestChunkOrder) == atomic.LoadUint32(&currentCount) {
+							initialSync = true
+							cli.Log.Infof("Initial Sync Completed")
+						}
+					}
+				} else {
+					cli.storeHistoricalMessageSecrets(historySync.GetConversations())
+				}
+			}()
+			//stop
+'
+
+sed -i -e "$(grep -nm 1 -F 'go cli.storeHistoricalMessageSecrets(historySync.GetConversations()' whatsmeow/message.go | sed 's/:.*//')r /dev/stdin" whatsmeow/message.go <<< $code_body
+
+sed -i '/go cli.storeHistoricalMessageSecrets(historySync.GetConversations()/d' whatsmeow/message.go
+
 sed -i '/case "sendimg":/,/var startupTime = time.Now().Unix()/d' whatsmeow/mdtest/main.go
 
 start_line=""
