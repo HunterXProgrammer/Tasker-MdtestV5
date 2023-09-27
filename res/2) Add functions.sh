@@ -332,7 +332,11 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 		if evt.Info.Type == "text" {
 			isSupported = true
 			message := fmt.Sprintf("%s", evt.Message.ExtendedTextMessage.GetText())
-			jsonData, _ = AppendToJSON(jsonData, "type", "text_message")
+			if !status_message {
+				jsonData, _ = AppendToJSON(jsonData, "type", "text_message")
+			} else {
+				jsonData, _ = AppendToJSON(jsonData, "type", "status_message")
+			}
 			jsonData, _ = AppendToJSON(jsonData, "message", message)
 			jsonData, _ = AppendToJSON(jsonData, "message_id", message_id)
 		} else if evt.Info.Type == "media" {

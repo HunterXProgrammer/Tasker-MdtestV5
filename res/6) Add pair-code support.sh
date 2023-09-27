@@ -16,9 +16,9 @@ sed -i '/log.Errorf("Usage: pair-phone <number>")/,/return/ {
 
 sed -i -e "$(grep -nm 1 -F 'log.Errorf("Usage: pair-phone <number>")' whatsmeow/mdtest/main.go | sed 's/:.*//')r /dev/stdin" whatsmeow/mdtest/main.go <<< $code_body
 
-start_line="$(($(grep -nm 1 -F 'linkingCode, err := cli.PairPhone(args[0], true, whatsmeow.PairClientFirefox, "Firefox (Linux)")' whatsmeow/mdtest/main.go | sed 's/:.*//')-1))"
+start_line="$(($(grep -nm 1 -F 'linkingCode, err := cli.PairPhone(args[0], true, whatsmeow.PairClientChrome, "Chrome (Linux)")' whatsmeow/mdtest/main.go | sed 's/:.*//')-1))"
 
-sed -i '/linkingCode, err := cli.PairPhone(args\[0\], true, whatsmeow.PairClientFirefox, "Firefox (Linux)")/,/fmt.Println("Linking code:", linkingCode)/d' whatsmeow/mdtest/main.go
+sed -i '/linkingCode, err := cli.PairPhone(args\[0\], true, whatsmeow.PairClientChrome, "Chrome (Linux)")/,/fmt.Println("Linking code:", linkingCode)/d' whatsmeow/mdtest/main.go
 
 code_body='
 		//start
