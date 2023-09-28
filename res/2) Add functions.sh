@@ -362,7 +362,11 @@ func parseReceivedMessage(evt *events.Message, wg *sync.WaitGroup) {
 				}
 				log.Infof("Saved link preview thumbnail in message to %s", path)
 				jsonData, _ = AppendToJSON(jsonData, "path", path)
-				jsonData, _ = AppendToJSON(jsonData, "type", "link_message")
+				if !status_message {
+					jsonData, _ = AppendToJSON(jsonData, "type", "link_message")
+				} else {
+					jsonData, _ = AppendToJSON(jsonData, "type", "status_message")
+				}
 				jsonData, _ = AppendToJSON(jsonData, "message", message)
 				jsonData, _ = AppendToJSON(jsonData, "link_matched_text", matched_text)
 				jsonData, _ = AppendToJSON(jsonData, "link_canonical_url", canonical_url)
