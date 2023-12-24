@@ -1,23 +1,29 @@
 #!/usr/bin/env bash
 
+WHATSMEOW_GITHUB_URL="https://github.com/tulir/whatsmeow"
+DEPENDENCIES="git golang ffmpeg termux-elf-cleaner p7zip"
+TMPDIR="$(dirname "$(mktemp -qdu)")"
+
 if [ -n "$TERMUX_VERSION" ]; then
-    apt update
-    yes | pkg install -y git golang ffmpeg termux-elf-cleaner p7zip 2>/dev/null | grep -E '(Need to get |Get:|Unpacking |Setting up )'
+  for i in root-repo $DEPENDENCIES; do
+    if ! dpkg-query -W -f"\${db:Status-Abbrev}\n" "$i" 2>/dev/null | grep -Eq "^.i"; then
+      [ -z "${apt_update}" ] && { apt update || exit 1; } && apt_update=true
+      { yes | pkg install -y "$i" 2>/dev/null || exit 1; } | grep -E "(Need to get |Get:|Unpacking |Setting up )"
+    fi
+  done
 else
     echo "The script should run on Termux"
     exit 1
 fi
 
 current_dir="$(pwd)"
-tmpdir="$(mktemp -d)"
+tmp_dir="$(mktemp -d)"
 
-cd "${tmpdir}"
+cd "$tmp_dir"
 
-git clone --depth=1 https://github.com/tulir/whatsmeow
+git clone --depth=1 "$WHATSMEOW_GITHUB_URL" || exit 1
 
-if [ -n "$TERM" ]; then
-    clear
-fi
+clear &>/dev/null || true
 
 # Add extended support
 echo -e "\n------------------------\n\nAdding extended support:-\n"
@@ -36,12 +42,12 @@ go mod tidy
 
 echo -e "\nFinal step, building mdtest binary. Takes about 10s~1min"
 
-mdtest_script='#!/system/bin/sh
+script='#!/system/bin/sh
 
 dir="$(cd "$(dirname "$0")"; pwd)"
 bin_name="$(basename "$0")"
-chmod 744 "$0" &>/dev/null
-chmod 744 "$dir/${bin_name}.bin" &>/dev/null
+chmod 755 "$0" &>/dev/null
+chmod 755 "$dir/${bin_name}.bin" &>/dev/null
 
 if [ $(getprop ro.build.version.sdk) -gt 28 ]; then
 	if getprop ro.product.cpu.abilist | grep -q "64"
@@ -57,37 +63,37 @@ fi'
 go build -ldflags="-extldflags -s" -o mdtest.bin
 
 if [ $? -eq 0 ]; then
-    if [ -n "$TERMUX_VERSION" ]; then
-        termux-elf-cleaner "${tmpdir}/whatsmeow/mdtest/mdtest.bin" &>/dev/null
-    fi
-    cd $current_dir
-    rm -rf build/mdtest.zip build/mdtest build/mdtest.bin &>/dev/null
-    mkdir -p build
-    cd build
-    cp "${tmpdir}/whatsmeow/mdtest/mdtest.bin" .
-    if [ $? -ne 0 ]; then
-        rm -rf "$tmpdir" &>/dev/null
-        echo "Error occured, exiting..."
-	exit 1
-    fi
-    echo "$mdtest_script" > mdtest
-    chmod 744 mdtest mdtest.bin
-    7z a -tzip -mx=9 -bd -bso0 mdtest.zip mdtest mdtest.bin
-    rm -rf mdtest mdtest.bin &>/dev/null
-else
-    rm -rf "$tmpdir" &>/dev/null
+  if [ -n "$TERMUX_VERSION" ]; then
+    termux-elf-cleaner "$tmp_dir/whatsmeow/mdtest/mdtest.bin" &>/dev/null
+  fi
+  cd "$current_dir"
+  rm -rf build/mdtest.zip build/mdtest build/mdtest.bin &>/dev/null
+  mkdir -p build
+  cd build
+  cp "$tmp_dir/whatsmeow/mdtest/mdtest.bin" .
+  if [ $? -ne 0 ]; then
+    rm -rf "$tmp_dir" &>/dev/null
     echo "Error occured, exiting..."
     exit 1
+  fi
+  echo "$script" > mdtest
+  chmod 755 mdtest mdtest.bin
+  7z a -tzip -mx=9 -bd -bso0 mdtest.zip mdtest mdtest.bin
+  rm -rf mdtest mdtest.bin &>/dev/null
+else
+  rm -rf "$tmp_dir" &>/dev/null
+  echo "Error occured, exiting..."
+  exit 1
 fi
 
-rm -rf $tmpdir &>/dev/null
-#echo $tmpdir
+rm -rf "$tmp_dir" &>/dev/null
+#echo "$tmp_dir"
 #exit 0
 #go clean -cache
 
 echo -e "\nSuccessfuly built Mdtest. Adding media support\nusing ffmpeg...\n"
 
-cd $current_dir
+cd "$current_dir"
 
 bash res/build_dynamic.sh ffmpeg
 
@@ -95,7 +101,7 @@ if [ -n "$TERMUX_VERSION" ]; then
     pkg clean
 fi
 
-chmod 744 build/ffmpeg build/ffmpeg.bin
+chmod 755 build/ffmpeg build/ffmpeg.bin
 
 rm -rf ffmpeg &>/dev/null
 
@@ -121,6 +127,6 @@ mkdir -p ~/whatsmeow5/mdtest
 
 7z x -aoa mdtest.zip -o"$HOME/whatsmeow5/mdtest" &>/dev/null
 
-chmod 744 ~/whatsmeow5/mdtest/mdtest
+chmod 755 ~/whatsmeow5/mdtest/mdtest
 
 echo -e "All done! You can type this -\n  \n\" cd ~/whatsmeow5/mdtest; ./mdtest \"\n\nType without quotes to run Mdtest\n"
