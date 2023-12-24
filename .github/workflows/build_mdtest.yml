@@ -18,7 +18,7 @@ jobs:
       - name: Get Commit Hash
         id: get-commit-hash
         run: |
-          git clone https://github.com/tulir/whatsmeow
+          git clone --depth=1 https://github.com/tulir/whatsmeow
           cd whatsmeow
           echo "commit_hash=$(git show HEAD | grep -Eo '^commit [0-9a-f]{40}' | awk '{print $2}')" >> "$GITHUB_OUTPUT"
     
@@ -32,17 +32,6 @@ jobs:
         platform: [arm, aarch64, i686, x86_64]
 
     steps:
-      - name: Install Docker
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y ca-certificates curl gnupg
-          sudo install -m 0755 -d /etc/apt/keyrings
-          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-          sudo chmod a+r /etc/apt/keyrings/docker.gpg
-          echo "deb [arch=\"$(dpkg --print-architecture)\" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo \"$VERSION_CODENAME\") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-          sudo apt-get update
-          sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
       - name: Set Build Architecture
         run: |
           if [ "${{ matrix.platform }}" = "aarch64" ]; then
