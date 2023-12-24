@@ -1,4 +1,4 @@
-#!/data/data/com.termux/files/usr/bin/bash
+#!/data/data/com.termux/files/usr/bin/env bash
 
 if ! [[ $- == *i* ]]; then
     exec bash -i "$0" "$@"
@@ -19,9 +19,9 @@ package_script='#!/system/bin/sh
 
 dir="$(cd "$(dirname "$0")"; pwd)"
 bin_name="$(basename "$0")"
-chmod 700 "$0" &>/dev/null
-chmod 700 "$dir/${bin_name}.bin" &>/dev/null
-chmod -R 700 "$dir/lib-${bin_name}" &>/dev/null
+chmod 755 "$0" 2>&1 >/dev/null
+chmod 755 "$dir/${bin_name}.bin" 2>&1 >/dev/null
+chmod -R 755 "$dir/lib-${bin_name}" 2>&1 >/dev/null
 export LD_LIBRARY_PATH="$dir/lib-${bin_name}"
 
 if [ $(getprop ro.build.version.sdk) -gt 28 ]; then
@@ -56,7 +56,7 @@ for package in "${package_list[@]}"; do
             is_valid="false"
         fi
     fi
-    if [ "$is_valid" = "true" ]; then
+    if [[ "$is_valid" == "true" ]]; then
         rm -rf ${package}.zip ${package} ${package}.bin lib-${package} &>/dev/null
         echo "${package_script}" > "${package}"
         cp -L "$(command -v ${package})" ${package}.bin
@@ -69,13 +69,13 @@ for package in "${package_list[@]}"; do
             is_valid="false"
         fi
 
-        if [ "$is_valid" = "true" ]; then
+        if [[ "$is_valid" == "true" ]]; then
             echo -e "\n  Getting dependencies..."
             for libpath in $(ldd $(command -v ${package}) | grep -F "/data/data/com.termux/" | sed "s/.* //g"); do
                 cp -L "$libpath" lib-${package} &>/dev/null
             done
             echo -e "\n  Zipping package..."
-            chmod 744 ${package} ${package}.bin &>/dev/null
+            chmod 755 ${package} ${package}.bin &>/dev/null
             7z a -tzip -mx=9 -bd -bso0 ${package}.zip ${package} ${package}.bin lib-${package}
         else
             echo -e "\n  Package ${package} not valid. Skipping..."

@@ -42,12 +42,12 @@ go mod tidy
 
 echo -e "\nFinal step, building mdtest binary. Takes about 10s~1min"
 
-script='#!/system/bin/sh
+mdtest_script='#!/system/bin/sh
 
 dir="$(cd "$(dirname "$0")"; pwd)"
 bin_name="$(basename "$0")"
-chmod 755 "$0" &>/dev/null
-chmod 755 "$dir/${bin_name}.bin" &>/dev/null
+chmod 755 "$0" 2>&1 >/dev/null
+chmod 755 "$dir/${bin_name}.bin" 2>&1 >/dev/null
 
 if [ $(getprop ro.build.version.sdk) -gt 28 ]; then
 	if getprop ro.product.cpu.abilist | grep -q "64"
@@ -76,7 +76,7 @@ if [ $? -eq 0 ]; then
     echo "Error occured, exiting..."
     exit 1
   fi
-  echo "$script" > mdtest
+  echo "$mdtest_script" > mdtest
   chmod 755 mdtest mdtest.bin
   7z a -tzip -mx=9 -bd -bso0 mdtest.zip mdtest mdtest.bin
   rm -rf mdtest mdtest.bin &>/dev/null
