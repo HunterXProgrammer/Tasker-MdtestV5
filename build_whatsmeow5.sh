@@ -1,6 +1,6 @@
-#!/usr/bin/bash
+#!/usr/bin/env basb
 
-if [ -n $TERMUX_VERSION ]; then
+if [ -n "$TERMUX_VERSION" ]; then
     apt update
     yes | pkg install -y git golang ffmpeg termux-elf-cleaner p7zip 2>/dev/null | grep -E '(Need to get |Get:|Unpacking |Setting up )'
 else
@@ -15,7 +15,7 @@ cd $tmpdir
 
 git clone https://github.com/tulir/whatsmeow
 
-if [ -n $TERM ]; then
+if [ -n "$TERM" ]; then
     clear
 fi
 
@@ -27,7 +27,7 @@ done
 echo -e "\nDone adding extended support\n\n------------------------\n"
 
 # fix Termux permissions
-if [ -n $TERMUX_VERSION ]; then
+if [ -n "$TERMUX_VERSION" ]; then
     value="true"; key="allow-external-apps"; file="/data/data/com.termux/files/home/.termux/termux.properties"; mkdir -p "$(dirname "$file")"; chmod 700 "$(dirname "$file")"; if ! grep -E '^'"$key"'=.*' $file &>/dev/null; then [[ -s "$file" && ! -z "$(tail -c 1 "$file")" ]] && newline=$'\n' || newline=""; echo "$newline$key=$value" >> "$file"; else sed -i'' -E 's/^'"$key"'=.*/'"$key=$value"'/' $file; fi
 fi
 
@@ -57,16 +57,16 @@ fi'
 go build -ldflags="-extldflags -s" -o mdtest.bin
 
 if [ $? -eq 0 ]; then
-    if [ -n $TERMUX_VERSION ]; then
-        termux-elf-cleaner ${tmpdir}/whatsmeow/mdtest/mdtest.bin &>/dev/null
+    if [ -n "$TERMUX_VERSION" ]; then
+        termux-elf-cleaner "${tmpdir}/whatsmeow/mdtest/mdtest.bin" &>/dev/null
     fi
     cd $current_dir
     rm -rf build/mdtest.zip build/mdtest build/mdtest.bin &>/dev/null
     mkdir -p build
     cd build
-    cp ${tmpdir}/whatsmeow/mdtest/mdtest.bin .
+    cp "${tmpdir}/whatsmeow/mdtest/mdtest.bin" .
     if [ $? -ne 0 ]; then
-        rm -rf $tmpdir &>/dev/null
+        rm -rf "$tmpdir" &>/dev/null
         echo "Error occured, exiting..."
 	exit 1
     fi
@@ -75,7 +75,7 @@ if [ $? -eq 0 ]; then
     7z a -tzip -mx=9 -bd -bso0 mdtest.zip mdtest mdtest.bin
     rm -rf mdtest mdtest.bin &>/dev/null
 else
-    rm -rf $tmpdir &>/dev/null
+    rm -rf "$tmpdir" &>/dev/null
     echo "Error occured, exiting..."
     exit 1
 fi
@@ -91,7 +91,7 @@ cd $current_dir
 
 bash res/build_dynamic.sh ffmpeg
 
-if [ -n $TERMUX_VERSION ]; then
+if [ -n "$TERMUX_VERSION" ]; then
     pkg clean
 fi
 
@@ -119,7 +119,7 @@ rm -rf ffmpeg &>/dev/null
 
 mkdir -p ~/whatsmeow5/mdtest
 
-7z x -aoa mdtest.zip -o$HOME/whatsmeow5/mdtest &>/dev/null
+7z x -aoa mdtest.zip -o"$HOME/whatsmeow5/mdtest" &>/dev/null
 
 chmod 744 ~/whatsmeow5/mdtest/mdtest
 
