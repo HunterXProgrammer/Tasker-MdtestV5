@@ -7,10 +7,10 @@ fi
 apt update
 
 if [[ "$1" != "ffmpeg" ]]; then
-    yes | pkg upgrade -y
+    yes | pkg upgrade
 fi
 
-yes | pkg install -y p7zip ldd file tur-repo root-repo x11-repo
+yes | pkg upgrade p7zip ldd file tur-repo root-repo x11-repo
 
 mkdir -p "build" &>/dev/null
 cd build
@@ -19,9 +19,8 @@ package_script='#!/system/bin/sh
 
 dir="$(cd "$(dirname "$0")"; pwd)"
 bin_name="$(basename "$0")"
-chmod 700 "$0" &>/dev/null
-chmod 700 "$dir/${bin_name}.bin" &>/dev/null
-chmod -R 700 "$dir/lib-${bin_name}" &>/dev/null
+chmod 755 "$0" "$dir/${bin_name}.bin" &>/dev/null
+chmod -R 755 "$dir/lib-${bin_name}" &>/dev/null
 export LD_LIBRARY_PATH="$dir/lib-${bin_name}"
 
 if [ $(getprop ro.build.version.sdk) -gt 28 ]; then
