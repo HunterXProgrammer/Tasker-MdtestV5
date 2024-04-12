@@ -7,7 +7,7 @@ else
     exit 1
 fi
 
-yes | pkg upgrade p7zip ldd file command-not-found tur-repo root-repo x11-repo
+yes | pkg upgrade p7zip ldd binutils command-not-found tur-repo root-repo x11-repo
 
 mkdir -p "build" &>/dev/null
 cd build
@@ -58,10 +58,10 @@ for package in "${package_list[@]}"; do
         cp -L "$(command -v "$package")" "${package}.bin"
         mkdir -p "lib-$package"
         echo -e "\n  Checking package..."
-        if ! file "$(command -v "$package")" | grep -q "ELF"; then
+        if ! readelf -h "$(command -v "$package")" &>/dev/null; then
             is_valid="false"
         fi
-        if ! file "$(command -v "$package")" | grep -q "dynamically linked"; then
+        if ! readelf -d "$(command -v "$package")" | grep -q "Dynamic section at"; then
             is_valid="false"
         fi
 
