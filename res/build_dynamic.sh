@@ -1,16 +1,13 @@
-#!/data/data/com.termux/files/usr/bin/bash
+#!/usr/bin/bash
 
-if ! [[ $- == *i* ]]; then
-    exec bash -i "$0" "$@"
+if [ -n "$TERMUX_VERSION" ]; then
+    apt update
+else
+    echo "This script should run on Termux"
+    exit 1
 fi
 
-apt update
-
-if [[ "$1" != "ffmpeg" ]]; then
-    yes | pkg upgrade
-fi
-
-yes | pkg upgrade p7zip ldd file tur-repo root-repo x11-repo
+yes | pkg upgrade p7zip ldd file command-not-found tur-repo root-repo x11-repo
 
 mkdir -p "build" &>/dev/null
 cd build
@@ -44,11 +41,11 @@ echo ""
 for package in "${package_list[@]}"; do
     is_valid="true"
     echo "  Selected package ${package}..."
-    if ! command -v ${package} &>/dev/null; then
-        pkg_install="$(${package} 2>&1 | grep "pkg install" | head -n 1 | sed "s/.* //g")"
-        if [ -n "${pkg_install}" ]; then
+    if ! command -v "$package" &>/dev/null; then
+        pkg_install="$("$PREFIX/libexec/termux/command-not-found" "$package" 2>&1 | grep "pkg install" | head -n 1 | sed "s/.* //g")"
+        if [ -n "$pkg_install" ]; then
             echo ""
-            yes | pkg install -y "${pkg_install}"
+            yes | pkg install "$pkg_install"
             is_valid="true"
         else
             echo -e "\n  Package ${package} not valid. Skipping..."
@@ -56,26 +53,27 @@ for package in "${package_list[@]}"; do
         fi
     fi
     if [ "$is_valid" = "true" ]; then
-        rm -rf ${package}.zip ${package} ${package}.bin lib-${package} &>/dev/null
-        echo "${package_script}" > "${package}"
-        cp -L "$(command -v ${package})" ${package}.bin
-        mkdir -p lib-${package}
+        rm -rf "${package}.zip" "$package" "${package}.bin" "lib-$package" &>/dev/null
+        echo "$package_script" > "$package"
+        cp -L "$(command -v "$package")" "${package}.bin"
+        mkdir -p "lib-$package"
         echo -e "\n  Checking package..."
-        if ldd "$(command -v ${package})" 2>&1 | head -n 1 | grep -q "Not an ELF file"; then
+        if ! file "$(command -v "$package")" | grep -q "ELF"; then
             is_valid="false"
         fi
-        if ! file "$(command -v ${package})" | grep -q "dynamically linked"; then
+        if ! file "$(command -v "$package")" | grep -q "dynamically linked"; then
             is_valid="false"
         fi
 
         if [ "$is_valid" = "true" ]; then
             echo -e "\n  Getting dependencies..."
-            for libpath in $(ldd $(command -v ${package}) | grep -F "/data/data/com.termux/" | sed "s/.* //g"); do
-                cp -L "$libpath" lib-${package} &>/dev/null
+            for libpath in $(ldd $(command -v "$package") | grep -F "/data/data/com.termux/" | sed "s/.* //g"); do
+                cp -L "$libpath" "lib-$package" &>/dev/null
             done
             echo -e "\n  Zipping package..."
-            chmod 744 ${package} ${package}.bin &>/dev/null
-            7z a -tzip -mx=9 -bd -bso0 ${package}.zip ${package} ${package}.bin lib-${package}
+            chmod 755 "$package" "${package}.bin" &>/dev/null
+            chmod -R 755 "lib-$package" &>/dev/null
+            7z a -tzip -mx=9 -bd -bso0 "${package}.zip" "$package" "${package}.bin" "lib-$package"
         else
             echo -e "\n  Package ${package} not valid. Skipping..."
         fi
