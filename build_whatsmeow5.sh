@@ -20,7 +20,8 @@ clear 2>/dev/null
 # Add extended support
 echo -e "\n------------------------\n\nAdding extended support:-\n"
 find "$CURRENT_DIR/res" -maxdepth 1 -type f -name "*)*" -regex ".*/[0-9]+) .*" | sort -V | while read -r i; do
-    echo -n " " && bash "$i"
+    echo -n " "
+    bash "$i"
 done
 echo -e "\nDone adding extended support\n\n------------------------\n"
 
