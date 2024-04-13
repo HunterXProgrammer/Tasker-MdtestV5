@@ -73,9 +73,9 @@ else
     exit 1
 fi
 
-#rm -rf "$TMP_DIR" &>/dev/null
-echo $TMP_DIR
-exit 0
+rm -rf "$TMP_DIR" &>/dev/null
+#echo $TMP_DIR
+#exit 0
 #go clean -cache
 
 echo -e "\nSuccessfuly built Mdtest. Adding media support\nusing ffmpeg...\n"
