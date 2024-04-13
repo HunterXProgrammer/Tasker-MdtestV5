@@ -48,7 +48,7 @@ jobs:
           fi
 
           docker run --privileged --name "mdtest-${{ matrix.platform }}" "termux/termux-docker:${{ env.ARCH_NAME }}" bash -c "
-              while true; do yes | pkg upgrade && break; done && \
+              while true; do yes | pkg upgrade -y && break; done && \
               pkg install -y git && \
               git clone --depth 1 'https://github.com/${{ env.GITHUB_REPOSITORY }}' repo && \
               cd repo && \
