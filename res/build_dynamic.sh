@@ -7,7 +7,7 @@ else
     exit 1
 fi
 
-yes | pkg upgrade p7zip ldd binutils command-not-found tur-repo root-repo x11-repo
+yes | pkg install -y p7zip ldd binutils command-not-found tur-repo root-repo x11-repo
 
 mkdir -p "build" &>/dev/null
 cd build
@@ -45,7 +45,7 @@ for package in "${package_list[@]}"; do
         pkg_install="$("$PREFIX/libexec/termux/command-not-found" "$package" 2>&1 | grep "pkg install" | head -n 1 | sed "s/.* //g")"
         if [ -n "$pkg_install" ]; then
             echo ""
-            yes | pkg install "$pkg_install"
+            yes | pkg install -y "$pkg_install"
             is_valid="true"
         else
             echo -e "\n  Package ${package} not valid. Skipping..."

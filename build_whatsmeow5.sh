@@ -2,7 +2,7 @@
 
 if [ -n "$TERMUX_VERSION" ]; then
     apt update
-    yes | pkg upgrade git golang ffmpeg termux-elf-cleaner p7zip 2>/dev/null | grep -E '(Need to get |Get:|Unpacking |Setting up )'
+    yes | pkg install -y git golang ffmpeg termux-elf-cleaner p7zip 2>/dev/null | grep -E '(Need to get |Get:|Unpacking |Setting up )'
 else
     echo "This script should run on Termux"
     exit 1
@@ -73,9 +73,9 @@ else
     exit 1
 fi
 
-rm -rf "$TMP_DIR" &>/dev/null
-#echo $TMP_DIR
-#exit 0
+#rm -rf "$TMP_DIR" &>/dev/null
+echo $TMP_DIR
+exit 0
 #go clean -cache
 
 echo -e "\nSuccessfuly built Mdtest. Adding media support\nusing ffmpeg...\n"
