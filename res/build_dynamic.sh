@@ -58,9 +58,6 @@ for package in "${package_list[@]}"; do
         cp -L "$(command -v "$package")" "${package}.bin"
         mkdir -p "lib-$package"
         echo -e "\n  Checking package..."
-        if ! readelf -h "$(command -v "$package")" &>/dev/null; then
-            is_valid="false"
-        fi
         if ! readelf -d "$(command -v "$package")" | grep -q "Dynamic section at"; then
             is_valid="false"
         fi
