@@ -29,13 +29,15 @@ jobs:
       contents: write
     strategy:
       matrix:
-        platform: [arm, aarch64, x86, x86_64]
+        platform: [arm, aarch64, i686, x86_64]
 
     steps:
       - name: Set Build Architecture
         run: |
-          if [ "${{ matrix.platform }}" = "x86" ]; then
-            echo "ARCH_NAME=i686" >> $GITHUB_ENV
+          if [ "${{ matrix.platform }}" = "aarch64" ]; then
+            echo "ARCH_NAME=arm64" >> $GITHUB_ENV
+          elif [ "${{ matrix.platform }}" = "i686" ]; then
+            echo "ARCH_NAME=x86" >> $GITHUB_ENV
           else
             echo "ARCH_NAME=${{ matrix.platform }}" >> $GITHUB_ENV
           fi
@@ -47,7 +49,7 @@ jobs:
             docker run --rm --privileged aptman/qus -s -- -p arm aarch64
           fi
 
-          docker run --privileged --name "mdtest-${{ matrix.platform }}" "termux/termux-docker:${{ env.ARCH_NAME }}" bash -c "
+          docker run --privileged --name "mdtest-${{ env.ARCH_NAME }}" "termux/termux-docker:${{ matrix.platform }}" bash -c "
               while true; do yes | pkg upgrade -y && break; done && \
               pkg install -y git && \
               git clone --depth 1 'https://github.com/${{ env.GITHUB_REPOSITORY }}' repo && \
@@ -55,14 +57,14 @@ jobs:
               bash build_whatsmeow5.sh \
           "
 
-          docker cp "mdtest-${{ matrix.platform }}":/data/data/com.termux/files/home/repo/build/mdtest.zip .
+          docker cp "mdtest-${{ env.ARCH_NAME }}":/data/data/com.termux/files/home/repo/build/mdtest.zip .
 
       - name: Upload Release
         uses: svenstaro/upload-release-action@v2
         with:
            repo_token: ${{ secrets.GITHUB_TOKEN }}
            file: mdtest.zip
-           asset_name: "mdtest-${{ matrix.platform }}.zip"
+           asset_name: "mdtest-${{ env.ARCH_NAME }}.zip"
            tag: "MdtestV5-Assets"
            release_name: "Assets for Project MdtestV5"
            body: "This release of MdtestV5 uses whatsmeow repo commit hash: ${{needs.get_commit_hash.outputs.commit-hash}}"
