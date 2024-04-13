@@ -54,15 +54,14 @@ for package in "${package_list[@]}"; do
     fi
     if [ "$is_valid" = "true" ]; then
         rm -rf "${package}.zip" "$package" "${package}.bin" "lib-$package" &>/dev/null
-        echo "$package_script" > "$package"
-        cp -L "$(command -v "$package")" "${package}.bin"
-        mkdir -p "lib-$package"
         echo -e "\n  Checking package..."
         if ! readelf -d "$(command -v "$package")" 2>/dev/null | grep -q "Dynamic section at"; then
             is_valid="false"
         fi
-
         if [ "$is_valid" = "true" ]; then
+            echo "$package_script" > "$package"
+            cp -L "$(command -v "$package")" "${package}.bin"
+            mkdir -p "lib-$package"
             echo -e "\n  Getting dependencies..."
             for libpath in $(ldd $(command -v "$package") | grep -F "/data/data/com.termux/" | sed "s/.* //g"); do
                 cp -L "$libpath" "lib-$package" &>/dev/null
