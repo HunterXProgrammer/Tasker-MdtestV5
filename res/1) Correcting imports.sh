@@ -19,6 +19,7 @@ code_body='
 	_ "image/png"
 	"os/exec"
 	"sync"
+	"go.mau.fi/util/random"
 	//stop
 '
 

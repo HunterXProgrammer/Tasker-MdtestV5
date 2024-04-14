@@ -1151,3 +1151,14 @@ do
         break
     fi
 done
+
+code_body='
+			//start
+			if recipient.Server == types.GroupServer {
+				msg.MessageContextInfo = &waProto.MessageContextInfo{MessageSecret: random.Bytes(32)}
+			}
+			//stop
+'
+
+grep -n -E 'cli\.SendMessage\(.*msg\)' whatsmeow/mdtest/main.go | sed 's/:.*//' | sort -V | sort -r | while read -r line; do line="$(($line-1))"; sed -i -e "${line}r /dev/stdin" whatsmeow/mdtest/main.go <<< "$code_body"; done
+
