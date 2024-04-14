@@ -63,7 +63,7 @@ for package in "${package_list[@]}"; do
             cp -L "$(command -v "$package")" "${package}.bin"
             mkdir -p "lib-$package"
             echo -e "\n  Getting dependencies..."
-            for libpath in $(ldd $(command -v "$package") | grep -F "/data/data/com.termux/" | sed "s/.* //g"); do
+            for libpath in $(PATH="/system/bin:$PATH" ldd "$(command -v "$package")" | grep -F "/data/data/com.termux/" | sed "s/.* \//\//" | sed "s/ .*//"); do
                 cp -L "$libpath" "lib-$package" &>/dev/null
             done
             echo -e "\n  Zipping package..."
