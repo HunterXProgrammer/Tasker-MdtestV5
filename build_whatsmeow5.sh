@@ -52,6 +52,9 @@ fi'
 
 go build -ldflags="-extldflags -s" -o mdtest.bin
 
+#echo "$TMP_DIR"
+#exit 0
+
 if [ $? -eq 0 ]; then
     termux-elf-cleaner "$TMP_DIR/whatsmeow/mdtest/mdtest.bin" &>/dev/null
     cd "$CURRENT_DIR"
@@ -75,8 +78,7 @@ else
 fi
 
 rm -rf "$TMP_DIR" &>/dev/null
-#echo $TMP_DIR
-#exit 0
+
 #go clean -cache
 
 echo -e "\nSuccessfuly built Mdtest. Adding media support\nusing ffmpeg...\n"
