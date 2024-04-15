@@ -5,6 +5,14 @@ step_number="$(basename "$0" | grep -Eo '^[0-9]+')"
 echo "$step_number) $step_name"
 
 code_body='
+	//start
+	"sync/atomic"
+	//stop
+'
+
+sed -i -e "$(grep -nm 1 -F '"errors"' whatsmeow/message.go | sed 's/:.*//')r /dev/stdin" whatsmeow/message.go <<< $code_body
+
+code_body='
 //start
 var greatestChunkOrder uint32 = 0
 var currentCount uint32 = 0

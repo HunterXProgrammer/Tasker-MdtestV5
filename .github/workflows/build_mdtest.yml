@@ -18,7 +18,7 @@ jobs:
       - name: Get Commit Hash
         id: get-commit-hash
         run: |
-          git clone https://github.com/tulir/whatsmeow
+          git clone --depth 1 https://github.com/tulir/whatsmeow
           cd whatsmeow
           echo "commit_hash=$(git show HEAD | grep -Eo '^commit [0-9a-f]{40}' | awk '{print $2}')" >> "$GITHUB_OUTPUT"
     
@@ -32,53 +32,39 @@ jobs:
         platform: [arm, aarch64, i686, x86_64]
 
     steps:
-      - name: Install Docker
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y ca-certificates curl gnupg
-          sudo install -m 0755 -d /etc/apt/keyrings
-          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-          sudo chmod a+r /etc/apt/keyrings/docker.gpg
-          echo "deb [arch=\"$(dpkg --print-architecture)\" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo \"$VERSION_CODENAME\") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-          sudo apt-get update
-          sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
       - name: Set Build Architecture
         run: |
           if [ "${{ matrix.platform }}" = "aarch64" ]; then
-            echo "arch_name=arm64" >> $GITHUB_ENV
+            echo "ARCH_NAME=arm64" >> $GITHUB_ENV
           elif [ "${{ matrix.platform }}" = "i686" ]; then
-            echo "arch_name=x86" >> $GITHUB_ENV
+            echo "ARCH_NAME=x86" >> $GITHUB_ENV
           else
-            echo "arch_name=${{ matrix.platform }}" >> $GITHUB_ENV
+            echo "ARCH_NAME=${{ matrix.platform }}" >> $GITHUB_ENV
           fi
 
       - name: Build Mdtest
         run: |
-          mkdir -p build
-          
           # Support for ARM and AARCH64
           if [[ "${{ matrix.platform }}" == "arm" || "${{ matrix.platform }}" == "aarch64" ]]; then
-            docker pull aptman/qus
             docker run --rm --privileged aptman/qus -s -- -p arm aarch64
           fi
 
-          docker pull termux/termux-docker:${{ matrix.platform }}
-          docker run --privileged --name mdtest-${{ matrix.platform }} termux/termux-docker:${{ matrix.platform }} bash -c "yes | pkg upgrade -y && pkg install -y git && git clone https://github.com/HunterXProgrammer/Tasker-MdtestV5 --depth 1 repo && cd repo && bash build_whatsmeow5.sh"
-          docker cp mdtest-${{ matrix.platform }}:/data/data/com.termux/files/home/repo/build/mdtest.zip build/mdtest-${{ env.arch_name }}.zip
+          docker run --privileged --name "mdtest-${{ env.ARCH_NAME }}" "termux/termux-docker:${{ matrix.platform }}" bash -c "
+              while true; do yes | pkg upgrade -y && break; done && \
+              pkg install -y git && \
+              git clone --depth 1 'https://github.com/${{ env.GITHUB_REPOSITORY }}' repo && \
+              cd repo && \
+              bash build_whatsmeow5.sh \
+          "
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: mdtest-${{ env.arch_name }}
-          path: build/mdtest-${{ env.arch_name }}.zip
+          docker cp "mdtest-${{ env.ARCH_NAME }}":/data/data/com.termux/files/home/repo/build/mdtest.zip .
 
       - name: Upload Release
         uses: svenstaro/upload-release-action@v2
         with:
            repo_token: ${{ secrets.GITHUB_TOKEN }}
-           file: build/mdtest-${{ env.arch_name }}.zip
-           asset_name: mdtest-${{ env.arch_name }}.zip
+           file: mdtest.zip
+           asset_name: "mdtest-${{ env.ARCH_NAME }}.zip"
            tag: "MdtestV5-Assets"
            release_name: "Assets for Project MdtestV5"
            body: "This release of MdtestV5 uses whatsmeow repo commit hash: ${{needs.get_commit_hash.outputs.commit-hash}}"

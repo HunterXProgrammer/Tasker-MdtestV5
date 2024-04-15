@@ -60,4 +60,4 @@ code_body='
 	//stop
 '
 
-sed -i -e "$(($(grep -nm 1 -F 'c := make(chan os.Signal)' whatsmeow/mdtest/main.go | sed 's/:.*//')-1))r /dev/stdin" whatsmeow/mdtest/main.go <<< $code_body
+sed -i -e "$(($(grep -nm 1 -F 'c := make(chan os.Signal, 1)' whatsmeow/mdtest/main.go | sed 's/:.*//')-1))r /dev/stdin" whatsmeow/mdtest/main.go <<< $code_body

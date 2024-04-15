@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: Get Commit Hash
         run: |
-          git clone https://github.com/tulir/whatsmeow target-repo
+          git clone --depth 1 https://github.com/tulir/whatsmeow target-repo
           cd target-repo
           echo "commit_hash=$(git show HEAD | grep -Eo '^commit [0-9a-f]{40}' | awk '{print $2}')" >> $GITHUB_ENV
 

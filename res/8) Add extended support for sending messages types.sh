@@ -257,7 +257,14 @@ code_body='
 		config, _, err := image.DecodeConfig(bytes.NewReader(jpegBytes))
 		if err != nil {
 			log.Errorf("Could not decode image: %s", err)
-			thumbnailResp, err := cli.Upload(context.Background(), jpegBytes, whatsmeow.MediaLinkThumbnail)
+			err := error(nil)
+			thumbnailResp := whatsmeow.UploadResponse{}
+			if recipient.Server == types.NewsletterServer {
+				thumbnailResp, err = cli.UploadNewsletter(context.Background(), jpegBytes, whatsmeow.MediaLinkThumbnail)
+			} else {
+				thumbnailResp, err = cli.Upload(context.Background(), jpegBytes, whatsmeow.MediaLinkThumbnail)
+			}
+			//thumbnailResp, err := cli.Upload(context.Background(), jpegBytes, whatsmeow.MediaLinkThumbnail)
 			if err != nil {
 				log.Errorf("Failed to upload preview thumbnail file: %v", err)
 				return
@@ -283,7 +290,14 @@ code_body='
 		    	log.Infof("Link message sent (server timestamp: %s)", resp.Timestamp)
 		    }
 		} else {
-			thumbnailResp, err := cli.Upload(context.Background(), jpegBytes, whatsmeow.MediaLinkThumbnail)
+			err := error(nil)
+			thumbnailResp := whatsmeow.UploadResponse{}
+			if recipient.Server == types.NewsletterServer {
+				thumbnailResp, err = cli.UploadNewsletter(context.Background(), jpegBytes, whatsmeow.MediaLinkThumbnail)
+			} else {
+				thumbnailResp, err = cli.Upload(context.Background(), jpegBytes, whatsmeow.MediaLinkThumbnail)
+			}
+			//thumbnailResp, err := cli.Upload(context.Background(), jpegBytes, whatsmeow.MediaLinkThumbnail)
 			if err != nil {
 				log.Errorf("Failed to upload preview thumbnail file: %v", err)
 				return
@@ -325,7 +339,13 @@ code_body='
 			log.Errorf("Failed to read %s: %v", args[1], err)
 			return
 		}
-		uploaded, err := cli.Upload(context.Background(), data, whatsmeow.MediaDocument)
+		uploaded := whatsmeow.UploadResponse{}
+		if recipient.Server == types.NewsletterServer {
+			uploaded, err = cli.UploadNewsletter(context.Background(), data, whatsmeow.MediaDocument)
+		} else {
+			uploaded, err = cli.Upload(context.Background(), data, whatsmeow.MediaDocument)
+		}
+		//uploaded, err := cli.Upload(context.Background(), data, whatsmeow.MediaDocument)
 		if err != nil {
 			log.Errorf("Failed to upload file: %v", err)
 			return
@@ -410,7 +430,14 @@ code_body='
 		if err != nil {
 			log.Errorf("Error while using ffmpeg to create thumbnail: %s", err)
 			log.Errorf("Sending video without preview thumbnail")
-			uploaded, err := cli.Upload(context.Background(), data, whatsmeow.MediaVideo)
+			err := error(nil)
+			uploaded := whatsmeow.UploadResponse{}
+			if recipient.Server == types.NewsletterServer {
+				uploaded, err = cli.UploadNewsletter(context.Background(), data, whatsmeow.MediaVideo)
+			} else {
+				uploaded, err = cli.Upload(context.Background(), data, whatsmeow.MediaVideo)
+			}
+			//uploaded, err := cli.Upload(context.Background(), data, whatsmeow.MediaVideo)
 			if err != nil {
 				log.Errorf("Failed to upload file: %v", err)
 				return
@@ -452,12 +479,24 @@ code_body='
 		
 		jpegBytes := buffer.Bytes()
 		
-		uploaded, err := cli.Upload(context.Background(), data, whatsmeow.MediaVideo)
+		uploaded := whatsmeow.UploadResponse{}
+		if recipient.Server == types.NewsletterServer {
+			uploaded, err = cli.UploadNewsletter(context.Background(), data, whatsmeow.MediaVideo)
+		} else {
+			uploaded, err = cli.Upload(context.Background(), data, whatsmeow.MediaVideo)
+		}
+		//uploaded, err := cli.Upload(context.Background(), data, whatsmeow.MediaVideo)
 		if err != nil {
 			log.Errorf("Failed to upload file: %v", err)
 			return
 		}
-		thumbnailResp, err := cli.Upload(context.Background(), jpegBytes, whatsmeow.MediaImage)
+		thumbnailResp := whatsmeow.UploadResponse{}
+		if recipient.Server == types.NewsletterServer {
+			thumbnailResp, err = cli.UploadNewsletter(context.Background(), jpegBytes, whatsmeow.MediaImage)
+		} else {
+			thumbnailResp, err = cli.Upload(context.Background(), jpegBytes, whatsmeow.MediaImage)
+		}
+		//thumbnailResp, err := cli.Upload(context.Background(), jpegBytes, whatsmeow.MediaImage)
 		if err != nil {
 			log.Errorf("Failed to upload preview thumbnail file: %v", err)
 			return
@@ -522,7 +561,13 @@ code_body='
 				log.Errorf("Failed to read %s: %v", args[1], err)
 				return
 			}
-			uploaded, err := cli.Upload(context.Background(), data, whatsmeow.MediaAudio)
+			uploaded := whatsmeow.UploadResponse{}
+			if recipient.Server == types.NewsletterServer {
+				uploaded, err = cli.UploadNewsletter(context.Background(), data, whatsmeow.MediaAudio)
+			} else {
+				uploaded, err = cli.Upload(context.Background(), data, whatsmeow.MediaAudio)
+			}
+			//uploaded, err := cli.Upload(context.Background(), data, whatsmeow.MediaAudio)
 			if err != nil {
 				log.Errorf("Failed to upload file: %v", err)
 				return
@@ -548,7 +593,14 @@ code_body='
 		
 		data := outBuf.Bytes()
 		
-		uploaded, err := cli.Upload(context.Background(), data, whatsmeow.MediaAudio)
+		err = nil
+		uploaded := whatsmeow.UploadResponse{}
+		if recipient.Server == types.NewsletterServer {
+			uploaded, err = cli.UploadNewsletter(context.Background(), data, whatsmeow.MediaAudio)
+		} else {
+			uploaded, err = cli.Upload(context.Background(), data, whatsmeow.MediaAudio)
+		}
+		//uploaded, err := cli.Upload(context.Background(), data, whatsmeow.MediaAudio)
 		if err != nil {
 			log.Errorf("Failed to upload file: %v", err)
 			return
@@ -625,7 +677,14 @@ code_body='
 			if err != nil {
 				log.Errorf("Error decoding image: %s", err)
 				log.Errorf("Sending image without preview thumbnail")
-				uploaded, err := cli.Upload(context.Background(), data, whatsmeow.MediaImage)
+				err := error(nil)
+				uploaded := whatsmeow.UploadResponse{}
+				if recipient.Server == types.NewsletterServer {
+					uploaded, err = cli.UploadNewsletter(context.Background(), data, whatsmeow.MediaImage)
+				} else {
+					uploaded, err = cli.Upload(context.Background(), data, whatsmeow.MediaImage)
+				}
+				//uploaded, err := cli.Upload(context.Background(), data, whatsmeow.MediaImage)
 				if err != nil {
 					log.Errorf("Failed to upload file: %v", err)
 					return
@@ -662,12 +721,24 @@ code_body='
 			
 			jpegBytes := buffer.Bytes()
 			
-			uploaded, err := cli.Upload(context.Background(), data, whatsmeow.MediaImage)
+			uploaded := whatsmeow.UploadResponse{}
+			if recipient.Server == types.NewsletterServer {
+				uploaded, err = cli.UploadNewsletter(context.Background(), data, whatsmeow.MediaImage)
+			} else {
+				uploaded, err = cli.Upload(context.Background(), data, whatsmeow.MediaImage)
+			}
+			//uploaded, err := cli.Upload(context.Background(), data, whatsmeow.MediaImage)
 			if err != nil {
 				log.Errorf("Failed to upload file: %v", err)
 				return
 			}
-			thumbnailResp, err := cli.Upload(context.Background(), jpegBytes, whatsmeow.MediaImage)
+			thumbnailResp := whatsmeow.UploadResponse{}
+			if recipient.Server == types.NewsletterServer {
+				thumbnailResp, err = cli.UploadNewsletter(context.Background(), jpegBytes, whatsmeow.MediaImage)
+			} else {
+				thumbnailResp, err = cli.Upload(context.Background(), jpegBytes, whatsmeow.MediaImage)
+			}
+			//thumbnailResp, err := cli.Upload(context.Background(), jpegBytes, whatsmeow.MediaImage)
 			if err != nil {
 				log.Errorf("Failed to upload preview thumbnail file: %v", err)
 				return
@@ -717,23 +788,42 @@ code_body='
 		
 		uploaded := whatsmeow.UploadResponse{}
 		lenData := len(data)
-  		contentData := data
+		contentData := data
 		if isCompatible {
-			uploaded, err = cli.Upload(context.Background(), data, whatsmeow.MediaImage)
+			err := error(nil)
+			if recipient.Server == types.NewsletterServer {
+				uploaded, err = cli.UploadNewsletter(context.Background(), data, whatsmeow.MediaImage)
+			} else {
+				uploaded, err = cli.Upload(context.Background(), data, whatsmeow.MediaImage)
+			}
+			//uploaded, err = cli.Upload(context.Background(), data, whatsmeow.MediaImage)
 			if err != nil {
 				log.Errorf("Failed to upload file: %v", err)
 				return
 			}
 		} else {
 			lenData = len(outBytes)
-   			contentData = outBytes
-			uploaded, err = cli.Upload(context.Background(), outBytes, whatsmeow.MediaImage)
+			contentData = outBytes
+			err := error(nil)
+			if recipient.Server == types.NewsletterServer {
+				uploaded, err = cli.UploadNewsletter(context.Background(), outBytes, whatsmeow.MediaImage)
+			} else {
+				uploaded, err = cli.Upload(context.Background(), outBytes, whatsmeow.MediaImage)
+			}
+			//uploaded, err = cli.Upload(context.Background(), outBytes, whatsmeow.MediaImage)
 			if err != nil {
 				log.Errorf("Failed to upload file: %v", err)
 				return
 			}
 		}
-		thumbnailResp, err := cli.Upload(context.Background(), jpegBytes, whatsmeow.MediaImage)
+		err = nil
+		thumbnailResp := whatsmeow.UploadResponse{}
+		if recipient.Server == types.NewsletterServer {
+			thumbnailResp, err = cli.UploadNewsletter(context.Background(), jpegBytes, whatsmeow.MediaImage)
+		} else {
+			thumbnailResp, err = cli.Upload(context.Background(), jpegBytes, whatsmeow.MediaImage)
+		}
+		//thumbnailResp, err := cli.Upload(context.Background(), jpegBytes, whatsmeow.MediaImage)
 		if err != nil {
 			log.Errorf("Failed to upload preview thumbnail file: %v", err)
 			return
@@ -810,6 +900,17 @@ code_body='
 				}
 			}
 		}
+	case "setpushname":
+		if len(args) == 0 {
+			log.Errorf("Usage: setpushname <name>")
+			return
+		}
+		err := cli.SendAppState(appstate.BuildSettingPushName(strings.Join(args, " ")))
+		if err != nil {
+			log.Errorf("Error setting push name: %v", err)
+		} else {
+			log.Infof("Push name updated")
+		}
 	case "setstatus":
 		if len(args) == 0 {
 			log.Errorf("Usage: setstatus <message>")
@@ -849,7 +950,7 @@ code_body='
 		}
 		err = cli.SendAppState(appstate.BuildArchive(target, action, time.Time{}, nil))
 		if err != nil {
-			log.Errorf("Error changing chat archive state: %v", err)
+			log.Errorf("Error changing chat'\''s archive state: %v", err)
 		}
 	case "mute":
 		if len(args) < 2 {
@@ -892,7 +993,7 @@ code_body='
 		}
 		err = cli.SendAppState(appstate.BuildMute(target, action, hours))
 		if err != nil {
-			log.Errorf("Error changing chat mute state: %v", err)
+			log.Errorf("Error changing chat'\''s mute state: %v", err)
 		} else {
 			if action {
 					log.Infof("Changed mute state for JID: %s, state: %t, duration: %s", target, action, hours)
@@ -928,7 +1029,7 @@ code_body='
 		}
 		err = cli.SendAppState(appstate.BuildPin(target, action))
 		if err != nil {
-			log.Errorf("Error changing chat pin state: %v", err)
+			log.Errorf("Error changing chat'\''s pin state: %v", err)
 		}
 	case "getblocklist":
 		blocklist, err := cli.GetBlocklist()
@@ -967,6 +1068,69 @@ code_body='
 		} else {
 			log.Infof("Blocklist updated: %+v", resp)
 		}
+	case "labelchat":
+		if len(args) < 3 {
+			log.Errorf("Usage: labelchat <jid> <labelID> <action>")
+			return
+		}
+		jid, ok := parseJID(args[0])
+		if !ok {
+			return
+		}
+		labelID := args[1]
+		action, err := strconv.ParseBool(args[2])
+		if err != nil {
+			log.Errorf("invalid third argument: %v", err)
+			return
+		}
+
+		err = cli.SendAppState(appstate.BuildLabelChat(jid, labelID, action))
+		if err != nil {
+			log.Errorf("Error changing chat'\''s label state: %v", err)
+		}
+	case "labelmessage":
+		if len(args) < 4 {
+			log.Errorf("Usage: labelmessage <jid> <labelID> <messageID> <action>")
+			return
+		}
+		jid, ok := parseJID(args[0])
+		if !ok {
+			return
+		}
+		labelID := args[1]
+		messageID := args[2]
+		action, err := strconv.ParseBool(args[3])
+		if err != nil {
+			log.Errorf("invalid fourth argument: %v", err)
+			return
+		}
+
+		err = cli.SendAppState(appstate.BuildLabelMessage(jid, labelID, messageID, action))
+		if err != nil {
+			log.Errorf("Error changing message'\''s label state: %v", err)
+		}
+	case "editlabel":
+		if len(args) < 4 {
+			log.Errorf("Usage: editlabel <labelID> <name> <color> <action>")
+			return
+		}
+		labelID := args[0]
+		name := args[1]
+		color, err := strconv.Atoi(args[2])
+		if err != nil {
+			log.Errorf("invalid third argument: %v", err)
+			return
+		}
+		action, err := strconv.ParseBool(args[3])
+		if err != nil {
+			log.Errorf("invalid fourth argument: %v", err)
+			return
+		}
+
+		err = cli.SendAppState(appstate.BuildLabelEdit(labelID, name, int32(color), action))
+		if err != nil {
+			log.Errorf("Error editing label: %v", err)
+		}
 	}
 }
 	//stop
@@ -987,3 +1151,14 @@ do
         break
     fi
 done
+
+code_body='
+			//start
+			if recipient.Server == types.GroupServer {
+				msg.MessageContextInfo = &waProto.MessageContextInfo{MessageSecret: random.Bytes(32)}
+			}
+			//stop
+'
+
+grep -n -E 'cli\.SendMessage\(.*msg\)' whatsmeow/mdtest/main.go | sed 's/:.*//' | sort -V | sort -r | while read -r line; do line="$(($line-1))"; sed -i -e "${line}r /dev/stdin" whatsmeow/mdtest/main.go <<< "$code_body"; done
+
