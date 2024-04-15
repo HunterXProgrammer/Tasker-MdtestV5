@@ -52,7 +52,8 @@ jobs:
           docker run --privileged --name "mdtest-${{ env.ARCH_NAME }}" "termux/termux-docker:${{ matrix.platform }}" bash -c "
               while true; do yes | pkg upgrade -y && break; done && \
               pkg install -y git && \
-              git clone --depth 1 'https://github.com/${{ env.GITHUB_REPOSITORY }}' repo && \
+              export TERMUX_VERSION="0.118.0" && \
+              git clone --depth 1 'https://github.com/$GITHUB_REPOSITORY' repo && \
               cd repo && \
               bash build_whatsmeow5.sh \
           "
