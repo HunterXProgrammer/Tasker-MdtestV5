@@ -1160,5 +1160,5 @@ code_body='
 			//stop
 '
 
-grep -n -E 'cli\.SendMessage\(.*msg\)' whatsmeow/mdtest/main.go | sed 's/:.*//' | sort -V | sort -r | while read -r line; do line="$(($line-1))"; sed -i -e "${line}r /dev/stdin" whatsmeow/mdtest/main.go <<< "$code_body"; done
+grep -n -E 'cli\.SendMessage\(.*msg\)' whatsmeow/mdtest/main.go | sed 's/:.*//' | sort -Vr | while read -r line; do line="$(($line-1))"; sed -i -e "${line}r /dev/stdin" whatsmeow/mdtest/main.go <<< "$code_body"; done
 

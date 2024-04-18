@@ -76,4 +76,4 @@ code_body='
 				//stop
 '
 
-grep -n -F 'log.Infof("Marked self as available")' whatsmeow/mdtest/main.go | sed 's/:.*//' | sort -V | sort -r | while read -r line; do sed -i -e "${line}r /dev/stdin" whatsmeow/mdtest/main.go <<< "$code_body"; done
+grep -n -F 'log.Infof("Marked self as available")' whatsmeow/mdtest/main.go | sed 's/:.*//' | sort -Vr | while read -r line; do sed -i -e "${line}r /dev/stdin" whatsmeow/mdtest/main.go <<< "$code_body"; done
